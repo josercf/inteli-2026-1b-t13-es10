@@ -1,0 +1,33 @@
+{
+  "name": "inteli-2026-1b-t13-es10",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests configured\"",
+    "prepare": "husky",
+    "lint": "prettier --check \"**/*.{md,yml,yaml,json}\"",
+    "format": "prettier --write \"**/*.{md,yml,yaml,json}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/josercf/inteli-2026-1b-t13-es10.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/josercf/inteli-2026-1b-t13-es10/issues"
+  },
+  "homepage": "https://github.com/josercf/inteli-2026-1b-t13-es10#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.8.3"
+  },
+  "private": true,
+  "lint-staged": {
+    "*.{md,yml,yaml,json}": "prettier --check"
+  }
+}
