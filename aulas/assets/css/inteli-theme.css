@@ -381,6 +381,100 @@
 .exercise-slide code { background: rgba(255, 255, 255, 0.15); color: var(--inteli-white); }
 .exercise-slide a { color: var(--inteli-lilac); border-bottom-color: var(--inteli-lilac); }
 
+/* ---------- Sala de aula invertida (micro, 2 a 4 min) ---------- */
+.flip-slide {
+  background: var(--inteli-white);
+  color: var(--inteli-purple);
+  padding: 70px 60px 70px 60px;
+  position: relative;
+}
+.flip-slide .top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background: var(--inteli-coral);
+}
+.flip-slide .flip-tag {
+  display: inline-block;
+  background: var(--inteli-coral);
+  color: var(--inteli-white);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: var(--inteli-mono);
+  font-size: 0.45em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.flip-slide h2 {
+  font-size: 1.25em;
+  color: var(--inteli-purple);
+  margin: 0 0 6px;
+  line-height: 1.15;
+}
+.flip-slide .flip-prompt {
+  font-size: 0.72em;
+  color: var(--inteli-purple-deep);
+  margin: 0 0 16px;
+  max-width: 900px;
+}
+.flip-slide .flip-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.flip-slide .flip-cards.three { grid-template-columns: repeat(3, 1fr); }
+.flip-slide .flip-cards.four { grid-template-columns: repeat(4, 1fr); }
+.flip-slide .flip-card {
+  background: var(--inteli-bg-soft);
+  border-left: 4px solid var(--inteli-coral);
+  border-radius: var(--inteli-radius-sm);
+  padding: 12px 14px;
+  font-size: 0.68em;
+  line-height: 1.35;
+}
+.flip-slide .flip-card h4 {
+  font-size: 1.05em;
+  margin: 0 0 4px;
+  color: var(--inteli-purple);
+  font-weight: 700;
+}
+.flip-slide .flip-card p {
+  margin: 0;
+  color: var(--inteli-purple-deep);
+}
+.flip-slide .flip-card .flip-hint {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--inteli-mono);
+  font-size: 0.85em;
+  color: var(--inteli-dark-green);
+}
+.flip-slide .flip-footer {
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  padding: 10px 16px;
+  border-radius: var(--inteli-radius-sm);
+  font-size: 0.65em;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.flip-slide .flip-footer strong {
+  color: var(--inteli-coral);
+  font-family: var(--inteli-mono);
+  letter-spacing: 0.05em;
+}
+.flip-slide .flip-footer .flip-footer-label {
+  font-family: var(--inteli-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85em;
+  color: var(--inteli-lilac);
+}
+
 /* ---------- Quiz ---------- */
 .quiz-slide {
   padding: 80px 60px 70px 60px;

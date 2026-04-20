@@ -627,6 +627,44 @@
         </div>
       </section>
 
+      <!-- FLIP A, Cascata ou ágil -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 3 min em duplas</span>
+        <h2>Cascata, ágil ou híbrido?</h2>
+        <p class="flip-prompt">Para cada cenário, decidam: <strong>cascata, ágil ou híbrido</strong>, e justifiquem em uma frase. Não existe resposta única, mas existe justificativa fraca.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Firmware de marcapasso</h4>
+            <p>Dispositivo médico implantável, certificação obrigatória pela Anvisa, um bug pode matar o paciente.</p>
+            <span class="flip-hint">O que pesa: risco de vida e regulação.</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, App de delivery novo</h4>
+            <p>Startup quer ver se um novo vertical de mercado emplaca em três cidades antes de escalar nacionalmente.</p>
+            <span class="flip-hint">O que pesa: incerteza e descoberta.</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Pipeline de ML para fraude</h4>
+            <p>Modelo precisa ser retreinado toda semana, dados mudam, negócio aprova aumento de falso positivo caso a caso.</p>
+            <span class="flip-hint">O que pesa: dados vivos e feedback rápido.</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, ERP bancário regulado</h4>
+            <p>Sistema core do banco, contrato com o cliente trava escopo, auditoria do Bacen exige rastreabilidade completa.</p>
+            <span class="flip-hint">O que pesa: contrato fechado e auditoria.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Duas duplas apresentam, escolho no momento. <strong>Defendam a escolha pela restrição, não pela moda.</strong></span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
       <!-- 11, Papéis no processo -->
       <section class="content-slide">
         <div class="top-bar"></div>
@@ -683,7 +721,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">11</div>
+          <div class="footer-page">12</div>
         </div>
       </section>
 
@@ -732,7 +770,186 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">12</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 13, ALM em profundidade -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>ALM por dentro, da ideia ao sunset</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">ALM começa <em>antes</em> do código (ideia, requisito, orçamento) e termina <em>depois</em> da produção (migração, descontinuação). São cinco frentes, do nascimento ao sunset da aplicação.</p>
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 12px;">
+            <div style="background: var(--inteli-bg-soft); border-top: 4px solid var(--inteli-purple); padding: 10px; border-radius: 6px;">
+              <div style="font-family: var(--inteli-mono); font-size: 0.55em; color: var(--inteli-coral); font-weight: 700;">01</div>
+              <h4 style="font-size: 0.75em; margin: 2px 0 4px; color: var(--inteli-purple);">Portfólio</h4>
+              <p style="font-size: 0.58em; margin: 0; line-height: 1.3;">Qual produto cabe no portfólio da empresa? Roadmap, priorização, orçamento.</p>
+              <p style="font-size: 0.5em; margin: 6px 0 0; color: var(--inteli-dark-green); font-family: var(--inteli-mono);">Jira Align, ProductBoard</p>
+            </div>
+            <div style="background: var(--inteli-bg-soft); border-top: 4px solid var(--inteli-purple); padding: 10px; border-radius: 6px;">
+              <div style="font-family: var(--inteli-mono); font-size: 0.55em; color: var(--inteli-coral); font-weight: 700;">02</div>
+              <h4 style="font-size: 0.75em; margin: 2px 0 4px; color: var(--inteli-purple);">Requisitos</h4>
+              <p style="font-size: 0.58em; margin: 0; line-height: 1.3;">O que o produto precisa fazer? Histórias, critérios de aceite, dependências.</p>
+              <p style="font-size: 0.5em; margin: 6px 0 0; color: var(--inteli-dark-green); font-family: var(--inteli-mono);">Jira, Azure Boards, Confluence</p>
+            </div>
+            <div style="background: var(--inteli-lilac-soft); border-top: 4px solid var(--inteli-coral); padding: 10px; border-radius: 6px;">
+              <div style="font-family: var(--inteli-mono); font-size: 0.55em; color: var(--inteli-coral); font-weight: 700;">03</div>
+              <h4 style="font-size: 0.75em; margin: 2px 0 4px; color: var(--inteli-purple);">Desenvolvimento</h4>
+              <p style="font-size: 0.58em; margin: 0; line-height: 1.3;">Aqui mora o SDLC. Design, código, testes, revisão, build, release.</p>
+              <p style="font-size: 0.5em; margin: 6px 0 0; color: var(--inteli-dark-green); font-family: var(--inteli-mono);">GitHub, GitLab, Jenkins</p>
+            </div>
+            <div style="background: var(--inteli-bg-soft); border-top: 4px solid var(--inteli-purple); padding: 10px; border-radius: 6px;">
+              <div style="font-family: var(--inteli-mono); font-size: 0.55em; color: var(--inteli-coral); font-weight: 700;">04</div>
+              <h4 style="font-size: 0.75em; margin: 2px 0 4px; color: var(--inteli-purple);">Operação</h4>
+              <p style="font-size: 0.58em; margin: 0; line-height: 1.3;">Como a aplicação se comporta em produção? Observabilidade, incidentes, SLOs.</p>
+              <p style="font-size: 0.5em; margin: 6px 0 0; color: var(--inteli-dark-green); font-family: var(--inteli-mono);">Datadog, New Relic, PagerDuty</p>
+            </div>
+            <div style="background: var(--inteli-bg-soft); border-top: 4px solid var(--inteli-purple); padding: 10px; border-radius: 6px;">
+              <div style="font-family: var(--inteli-mono); font-size: 0.55em; color: var(--inteli-coral); font-weight: 700;">05</div>
+              <h4 style="font-size: 0.75em; margin: 2px 0 4px; color: var(--inteli-purple);">Fim de vida</h4>
+              <p style="font-size: 0.58em; margin: 0; line-height: 1.3;">Quando aposentar, migrar ou descontinuar? Plano de saída e preservação de dados.</p>
+              <p style="font-size: 0.5em; margin: 6px 0 0; color: var(--inteli-dark-green); font-family: var(--inteli-mono);">Runbooks, ADRs, migração</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 6px;">
+            <h4>Caso real, iFood</h4>
+            <p>O produto nasceu em 2011 como ideia (portfólio), virou um app com poucos requisitos (requisitos), cresceu até ser plataforma de delivery (desenvolvimento), hoje processa milhões de pedidos por dia (operação) e já descontinuou features inteiras como o iFood Shop (fim de vida). O ALM olha essa linha inteira, não só o meio.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 14, SDLC em profundidade -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SDLC por dentro, o que acontece em cada fase</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.62em; margin: 0 0 6px;">O SDLC é a parte de engenharia do ALM. Cinco fases clássicas, cada uma com entrada, saída e protagonistas. Em times ágeis, elas se repetem a cada sprint; em cascata, rodam uma vez.</p>
+          <table style="font-size: 0.58em;">
+            <thead>
+              <tr><th style="width: 17%;">Fase</th><th style="width: 29%;">O que entra</th><th style="width: 29%;">O que sai</th><th style="width: 25%;">Quem conduz</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Requisitos</strong></td>
+                <td>Problema de negócio, conversa com cliente, benchmark.</td>
+                <td>Histórias, critérios de aceite, mockups.</td>
+                <td>PO, UX, analista</td>
+              </tr>
+              <tr>
+                <td><strong>Design</strong></td>
+                <td>Histórias priorizadas, restrições técnicas.</td>
+                <td>Arquitetura, ADRs, contratos de API.</td>
+                <td>Arquiteto, Tech Lead</td>
+              </tr>
+              <tr>
+                <td><strong>Implementação</strong></td>
+                <td>Desenho aprovado, ambiente de dev configurado.</td>
+                <td>Código em branch, PR aberto, revisão de pares.</td>
+                <td>Dev, Tech Lead</td>
+              </tr>
+              <tr>
+                <td><strong>Verificação</strong></td>
+                <td>PR aprovado, pipeline verde.</td>
+                <td>Testes automatizados, regressão, homologação.</td>
+                <td>Dev, QA</td>
+              </tr>
+              <tr>
+                <td><strong>Manutenção</strong></td>
+                <td>Release em produção, uso real dos usuários.</td>
+                <td>Correções, melhorias, observabilidade, incidentes.</td>
+                <td>Dev, SRE, QA</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout" style="margin-top: 6px; padding: 8px 14px;">
+            <h4 style="font-size: 0.82em; margin: 0 0 2px;">Exemplo, feature de login no Nubank</h4>
+            <p style="font-size: 0.62em; margin: 0; line-height: 1.4;">Requisitos: cliente quer biometria. Design: Tech Lead define WebAuthn. Implementação: dev abre PR. Verificação: QA valida em staging. Manutenção: time observa taxa de sucesso e corrige bugs reportados.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 15, SCM primeiro contato -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SCM, um primeiro contato</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 12px;">Se ALM é o guarda-chuva e SDLC é o ciclo, <strong>SCM é a disciplina que garante que tudo fique rastreável</strong>. Não só o código: também as configurações, dependências e artefatos gerados.</p>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px;">
+            <div class="concept-card">
+              <h4>O que o SCM controla</h4>
+              <p style="font-size: 0.66em;">Código, dependências (package.json, requirements.txt), configuração (variáveis de ambiente, feature flags) e artefatos (builds, imagens Docker, pacotes).</p>
+            </div>
+            <div class="concept-card">
+              <h4>Para que serve</h4>
+              <p style="font-size: 0.66em;">Saber <em>quem</em> mudou <em>o quê</em> e <em>quando</em>. Reproduzir a versão exata que rodava em produção no dia do incidente. Voltar atrás com segurança.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Com o que você interage</h4>
+              <p style="font-size: 0.66em;">Git (histórico e branches), tags e releases, pipelines de build, registries de artefatos. Tudo isso forma o <em>bill of materials</em> da aplicação.</p>
+            </div>
+          </div>
+          <div class="callout warn">
+            <h4>Aula 02 mergulha aqui</h4>
+            <p>Estratégias de branching, convenções de commit, proteção de main, assinatura de releases e rastreabilidade ponta a ponta. Por hoje, basta guardar: <strong>SCM é o registro de tudo que entrou na aplicação</strong>.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- FLIP B, Encontre os três -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 4 min em trios</span>
+        <h2>Encontre os três, ALM, SDLC e SCM</h2>
+        <p class="flip-prompt">Vou abrir um repositório real no GitHub na tela. Em trios, vocês têm 4 minutos para identificar <strong>um sinal concreto</strong> de cada camada dentro do repositório.</p>
+        <div class="flip-cards three">
+          <div class="flip-card">
+            <h4>Sinal de ALM</h4>
+            <p>Onde aparece a visão de <em>produto</em>, não só de código? Roadmap, issues agrupadas por épico, milestones com datas, documentos de estratégia.</p>
+            <span class="flip-hint">Olhe: Projects, Milestones, README de visão.</span>
+          </div>
+          <div class="flip-card">
+            <h4>Sinal de SDLC</h4>
+            <p>Onde aparece o <em>ciclo de engenharia</em>? Pull requests com revisão, pipeline rodando testes, tags de release, labels de bug/feature.</p>
+            <span class="flip-hint">Olhe: PRs, Actions, Releases, CHANGELOG.</span>
+          </div>
+          <div class="flip-card">
+            <h4>Sinal de SCM</h4>
+            <p>Onde aparece o <em>controle de configuração</em>? Arquivo de dependências versionado, lockfile, branch protection, política de commits.</p>
+            <span class="flip-hint">Olhe: package-lock.json, .gitignore, CODEOWNERS.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Um trio por camada apresenta o sinal encontrado. <strong>Duas frases por resposta.</strong></span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">17</div>
         </div>
       </section>
 
@@ -845,7 +1062,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">13</div>
+          <div class="footer-page">18</div>
         </div>
       </section>
 
@@ -890,7 +1107,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">14</div>
+          <div class="footer-page">19</div>
         </div>
       </section>
 
@@ -942,7 +1159,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">15</div>
+          <div class="footer-page">20</div>
         </div>
       </section>
 
@@ -1045,7 +1262,45 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">16</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- FLIP C, Que pizza é essa -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 2 min individual</span>
+        <h2>Que pizza é essa?</h2>
+        <p class="flip-prompt">Classifique cada serviço abaixo em <strong>On-prem</strong>, <strong>IaaS</strong>, <strong>PaaS</strong> ou <strong>SaaS</strong>. Anote a resposta e a razão. Depois, vamos abrir para o plenário em 1 minuto.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Amazon EC2</h4>
+            <p>Provisiono a máquina virtual, escolho o sistema operacional, instalo dependências e publico a aplicação.</p>
+            <span class="flip-hint">Pista: a nuvem me dá a cozinha, não o cozinheiro.</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Google Docs</h4>
+            <p>Abro o navegador, escrevo o documento, compartilho o link. Não instalo nada, não atualizo nada.</p>
+            <span class="flip-hint">Pista: tudo pronto, só consumo.</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Heroku</h4>
+            <p>Dou git push e o provedor cuida de build, servidor, banco gerenciado e SSL. Eu só escrevo a aplicação.</p>
+            <span class="flip-hint">Pista: a plataforma monta o restaurante pra mim.</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Servidor no rack do laboratório</h4>
+            <p>Time interno comprou o hardware, ligou o servidor na sala dos fundos, instalou Linux e subiu o sistema.</p>
+            <span class="flip-hint">Pista: tudo na mão de casa.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Quem discorda de alguma classificação? <strong>Um porquê em 10 segundos basta.</strong></span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">22</div>
         </div>
       </section>
 
@@ -1096,7 +1351,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">17</div>
+          <div class="footer-page">23</div>
         </div>
       </section>
 
@@ -1136,7 +1391,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">18</div>
+          <div class="footer-page">24</div>
         </div>
       </section>
 
@@ -1184,7 +1439,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">19</div>
+          <div class="footer-page">25</div>
         </div>
       </section>
 
@@ -1224,7 +1479,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">20</div>
+          <div class="footer-page">26</div>
         </div>
       </section>
 
@@ -1237,7 +1492,7 @@
 
       <!-- 22, Exercício -->
       <section class="exercise-slide">
-        <span class="exercise-tag">Hands-on, em grupos de 4</span>
+        <span class="exercise-tag">Hands-on, em seus grupos</span>
         <h2>Desenhe um processo para a Jacto Drones</h2>
         <ol class="exercise-steps">
           <li>Liste as três frentes da Jacto Drones e 1 risco específico de cada uma quando operam sem processo compartilhado.</li>
@@ -1270,7 +1525,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">23</div>
+          <div class="footer-page">29</div>
         </div>
       </section>
 
@@ -1296,7 +1551,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">24</div>
+          <div class="footer-page">30</div>
         </div>
       </section>
 
@@ -1322,7 +1577,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">25</div>
+          <div class="footer-page">31</div>
         </div>
       </section>
 
@@ -1344,7 +1599,7 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
-          <div class="footer-page">26</div>
+          <div class="footer-page">32</div>
         </div>
       </section>
 
