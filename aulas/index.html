@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Módulo 13 · DevOps · T13 · Inteli 2026.1B</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --inteli-purple: #2e2640;
+      --inteli-purple-deep: #1d1829;
+      --inteli-coral: #ff4545;
+      --inteli-lilac: #90a5e5;
+      --inteli-lilac-soft: #dfe5f8;
+      --inteli-green: #89cea5;
+      --inteli-dark-green: #066d73;
+      --inteli-gray-dark: #b2b6bf;
+      --inteli-gray-light: #e6eaeb;
+      --inteli-bg-soft: #f6f6f8;
+      --inteli-white: #ffffff;
+      --inteli-font: 'Manrope', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--inteli-font);
+      color: var(--inteli-purple);
+      background: var(--inteli-bg-soft);
+    }
+    header {
+      background: var(--inteli-purple);
+      color: var(--inteli-white);
+      padding: 56px 8% 48px 8%;
+      position: relative;
+      overflow: hidden;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      right: -80px; bottom: -80px;
+      width: 320px; height: 320px;
+      background: var(--inteli-coral);
+      border-radius: 50%;
+      opacity: 0.22;
+    }
+    header .tag {
+      display: inline-block;
+      background: var(--inteli-lilac-soft);
+      color: var(--inteli-purple);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    header h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      margin: 14px 0 10px 0;
+      letter-spacing: -0.02em;
+    }
+    header p {
+      margin: 0;
+      color: var(--inteli-lilac);
+      font-size: clamp(14px, 1.6vw, 18px);
+      max-width: 780px;
+      line-height: 1.5;
+    }
+    .wordmark {
+      position: absolute;
+      top: 28px;
+      right: 8%;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--inteli-white);
+      letter-spacing: -0.04em;
+    }
+    .wordmark::after { content: "."; color: var(--inteli-coral); }
+
+    main { padding: 48px 8% 80px 8%; max-width: 1280px; margin: 0 auto; }
+
+    .sprint {
+      background: var(--inteli-white);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(46, 38, 64, 0.08);
+      padding: 28px 32px;
+      margin-bottom: 32px;
+    }
+    .sprint-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .sprint-header h2 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--inteli-purple);
+    }
+    .sprint-dates {
+      font-size: 13px;
+      color: var(--inteli-gray-dark);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .sprint-theme {
+      color: var(--inteli-coral);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .aula-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-auto-rows: 1fr;
+      gap: 16px;
+    }
+    .aula-list li { display: flex; }
+    .aula-card {
+      border: 2px solid var(--inteli-gray-light);
+      border-radius: 12px;
+      padding: 18px 20px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+      text-decoration: none;
+      width: 100%;
+    }
+    .aula-card h3 { flex: 1; }
+    .aula-card:hover {
+      border-color: var(--inteli-coral);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(46, 38, 64, 0.1);
+    }
+    .aula-card .aula-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .aula-card h3 {
+      margin: 6px 0 10px 0;
+      font-size: 17px;
+      color: var(--inteli-purple);
+    }
+    .aula-card .aula-date {
+      font-size: 13px;
+      color: var(--inteli-gray-dark);
+      margin: 0;
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 30px 8%;
+      font-size: 13px;
+      color: var(--inteli-gray-dark);
+      border-top: 1px solid var(--inteli-gray-light);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span class="wordmark">inteli</span>
+    <span class="tag">Módulo 13 · Turma T13 · 2026.1B</span>
+    <h1>Engenharia de Software com DevOps</h1>
+    <p>
+      Cronograma do módulo e acesso às apresentações. Os decks são apresentações HTML
+      baseadas em Reveal.js com identidade visual Inteli.
+    </p>
+  </header>
+
+  <main>
+    <section class="sprint">
+      <div class="sprint-header">
+        <h2>Sprint 1</h2>
+        <span class="sprint-dates">22/04/2026 a 05/05/2026</span>
+      </div>
+      <div class="sprint-theme">Fundamentos do processo de software</div>
+      <ul class="aula-list">
+        <li><a class="aula-card" href="aula01.html">
+          <span class="aula-num">Aula 01</span>
+          <h3>Ciclo de vida de software</h3>
+          <p class="aula-date">23/04/2026 (quarta)</p>
+        </a></li>
+        <li><a class="aula-card" href="aula02.html">
+          <span class="aula-num">Aula 02</span>
+          <h3>Gestão de configuração (SCM)</h3>
+          <p class="aula-date">27/04/2026 (segunda)</p>
+        </a></li>
+        <li><a class="aula-card" href="aula03.html">
+          <span class="aula-num">Aula 03</span>
+          <h3>Métricas de software: processo, produto e DORA</h3>
+          <p class="aula-date">28/04/2026 (terça)</p>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="sprint">
+      <div class="sprint-header">
+        <h2>Sprint 2</h2>
+        <span class="sprint-dates">06/05/2026 a 19/05/2026</span>
+      </div>
+      <div class="sprint-theme">Qualidade e Integração Contínua</div>
+      <ul class="aula-list">
+        <li><a class="aula-card" href="aula04.html">
+          <span class="aula-num">Aula 04</span>
+          <h3>Qualidade de software e IA no processo</h3>
+          <p class="aula-date">07/05/2026 (quinta)</p>
+        </a></li>
+        <li><a class="aula-card" href="aula05.html">
+          <span class="aula-num">Aula 05</span>
+          <h3>CI parte 1: etapas locais (pré-commit, build, testes, secrets)</h3>
+          <p class="aula-date">11/05/2026 (segunda)</p>
+        </a></li>
+        <li><a class="aula-card" href="aula06.html">
+          <span class="aula-num">Aula 06</span>
+          <h3>CI parte 2: SAST no pipeline (shift-left)</h3>
+          <p class="aula-date">13/05/2026 (quarta)</p>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="sprint" style="opacity: 0.55;">
+      <div class="sprint-header">
+        <h2>Próximas sprints</h2>
+        <span class="sprint-dates">a definir</span>
+      </div>
+      <div class="sprint-theme">Entrega contínua, IaC, observabilidade e DevSecOps</div>
+      <p style="margin: 0; color: var(--inteli-gray-dark); font-size: 14px;">
+        Aulas 07 a 14 em planejamento.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    Prof. José Romualdo da Costa Filho · Inteli 2026.1B · T13 ES10
+  </footer>
+</body>
+</html>

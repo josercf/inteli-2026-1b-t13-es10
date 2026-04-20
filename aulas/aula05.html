@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 05, CI parte 1: etapas locais, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 02, Qualidade e CI</span>
+          <h1>CI parte 1: etapas locais</h1>
+          <p class="subtitle">Pré-commit, build, testes e proteção contra secrets: tudo que deve passar antes do push.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>05 de 14</span>
+            <strong>Data</strong><span>11 de maio de 2026, segunda-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>José Romualdo da Costa Filho</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
+            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
+          </p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
+              <tr><td>10h15, Fundamentos</td><td>Pré-commit, build reprodutível e testes locais</td><td>55 min</td></tr>
+              <tr><td>11h10, Prática</td><td>Configurar Husky, lint-staged e scanner de secrets (TruffleHog, Gitleaks)</td><td>40 min</td></tr>
+              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily Time -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos de aprendizagem -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Compreender</h4><p>Explicar o papel da etapa local no ciclo de CI.</p></div>
+            <div class="concept-card"><h4>Configurar</h4><p>Montar um pipeline pré-commit com validações rápidas e de baixo atrito.</p></div>
+            <div class="concept-card"><h4>Proteger</h4><p>Bloquear secrets acidentais com ferramentas automatizadas.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 55 min</span>
+        <h2>O shift-left começa no laptop</h2>
+        <p class="section-description">Pré-commit, validações rápidas e feedback sem esperar pipeline.</p>
+      </section>
+
+      <!-- 06, Conteúdo (placeholder) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Conteúdo, a preencher</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout">
+            <h4>Placeholder de conteúdo</h4>
+            <p>O que é pré-commit, por que rodar validações locais antes do push, como configurar Husky + lint-staged, e como detectar secrets com TruffleHog e Gitleaks.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-page">06</div>
+        </div>
+      </section>
+
+      <!-- 07, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 40 min</span>
+        <h2>Ferramentas da trilha</h2>
+        <p class="section-description">Husky, lint-staged, TruffleHog, Gitleaks e outros.</p>
+      </section>
+
+      <!-- 08, Exercício hands-on -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Hands-on, individual</span>
+        <h2>Instale o CI local no seu repositório</h2>
+        <ol class="exercise-steps">
+          <li><em>Placeholder:</em> clonar o repositório do projeto.</li>
+          <li>Instalar Husky e configurar hook pre-commit com lint-staged.</li>
+          <li>Adicionar Gitleaks como hook para bloquear secrets.</li>
+          <li>Provocar uma falha de propósito e verificar o bloqueio.</li>
+          <li>Submeter um commit válido e verificar que passa.</li>
+        </ol>
+      </section>
+
+      <!-- 09, Quiz -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question"><em>Placeholder:</em> qual o principal ganho de rodar validações em pré-commit em vez de só no pipeline?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Reduz o custo da nuvem de CI</li>
+            <li data-correct="true">Acelera o feedback e encurta o ciclo de correção</li>
+            <li data-correct="false">Substitui o pipeline remoto</li>
+            <li data-correct="false">Garante segurança total do código</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Feedback local encurta o ciclo e reduz idas e vindas no pipeline."
+               data-incorrect-msg="Ainda não. O ponto central é o feedback mais rápido, não substituir o pipeline."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 10, Auto-estudo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a próxima</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
+            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
+            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Até a próxima</h2>
+        <p>Aula 06, CI parte 2, SAST no pipeline, 13/05</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>

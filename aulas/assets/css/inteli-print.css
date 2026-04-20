@@ -1,0 +1,31 @@
+/* Estilos de impressão para os decks Inteli.
+   Use ?print-pdf na URL para gerar PDF via Reveal.js. */
+
+@page {
+  size: 1280px 720px;
+  margin: 0;
+}
+
+@media print {
+  html, body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background: #ffffff !important;
+  }
+
+  .reveal .slides section {
+    page-break-after: always;
+    box-shadow: none !important;
+  }
+
+  .reveal .controls,
+  .reveal .progress,
+  .reveal .playback {
+    display: none !important;
+  }
+
+  .footer-bar, .footer-page, .top-bar {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

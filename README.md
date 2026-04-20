@@ -1,138 +1,103 @@
-# Módulo de DevOps — Turma T13 (Base dos Slides)
+# Módulo 13 · DevOps · Turma T13 · Inteli 2026.1B
 
-## Contexto
+Repositório com as apresentações do módulo de DevOps da turma T13 do Inteli.
 
-Este repositório contém a **base inicial dos slides** para o módulo de DevOps da Turma 13.
+Os decks são apresentações HTML baseadas em [Reveal.js 5](https://revealjs.com/)
+com tema e identidade visual do Inteli, inspirado no padrão
+[canaldoovidio/2026-1a-es09-t13](https://github.com/canaldoovidio/2026-1a-es09-t13)
+e na arquitetura de tema Reveal usada em
+[josercf/FIAP-2026-1-3SIZ](https://github.com/josercf/FIAP-2026-1-3SIZ).
 
-O material foi estruturado com referência no padrão do repositório:
+## Como abrir
 
-- https://github.com/canaldoovidio/2026-1a-es09-t13
-
-> **Nota:** o cronograma detalhado e a divisão final das aulas serão definidos na sequência.
-
----
-
-## Objetivo deste repositório
-
-Consolidar uma base reutilizável para montagem das aulas, mantendo:
-
-- organização clara do conteúdo;
-- foco em aprendizagem prática;
-- alinhamento com práticas modernas de DevOps.
-
----
-
-## Estrutura base sugerida para os slides
-
-Cada aula pode seguir esta espinha dorsal:
-
-1. **Abertura**
-   - Tema da aula
-   - Objetivos de aprendizagem
-2. **Fundamentos**
-   - Conceitos essenciais do tópico
-   - Contexto de uso no ciclo de software
-3. **Aplicação prática**
-   - Exemplo guiado
-   - Demonstração de fluxo DevOps
-4. **Atividade**
-   - Exercício em grupo ou hands-on
-5. **Síntese e próximos passos**
-   - Recapitulação
-   - Conexão com a próxima aula
-
----
-
-## Trilhas de conteúdo para o módulo de DevOps
-
-### 1) Cultura e Fundamentos DevOps
-
-- Colaboração entre Dev e Ops
-- Fluxo de valor e entrega contínua
-- Métricas de desempenho (lead time, frequência de deploy, MTTR)
-
-### 2) Versionamento e Fluxo de Trabalho
-
-- Git e estratégia de branches
-- Pull Requests e revisão de código
-- Boas práticas para integração frequente
-
-### 3) Integração Contínua (CI)
-
-- Pipelines automatizados
-- Build e testes automatizados
-- Qualidade de código no pipeline
-
-### 4) Entrega e Deploy Contínuos (CD)
-
-- Estratégias de entrega
-- Deploy seguro (blue/green, canary, rollback)
-- Gestão de configuração e ambientes
-
-### 5) Infraestrutura como Código (IaC)
-
-- Conceitos e benefícios
-- Reprodutibilidade de ambientes
-- Governança de infraestrutura
-
-### 6) Observabilidade e Operação
-
-- Logs, métricas e traces
-- Alertas e SLO/SLA
-- Resposta a incidentes e melhoria contínua
-
-### 7) DevSecOps
-
-- Segurança no ciclo de desenvolvimento
-- SAST/DAST e análise de dependências
-- Práticas de compliance e redução de risco
-
----
-
-## Modelo de slide (template por aula)
-
-Para cada aula, manter no mínimo:
-
-- **Slide 1:** título, contexto e objetivos
-- **Slide 2-4:** conceitos-chave
-- **Slide 5-7:** exemplo prático e fluxo técnico
-- **Slide 8:** atividade guiada
-- **Slide 9:** discussão e aprendizados
-- **Slide 10:** fechamento e próximos passos
-
----
-
-## Próximos passos
-
-- Definir sequência oficial das aulas do módulo
-- Detalhar cronograma com duração por bloco
-- Produzir os decks finais por aula com exemplos e exercícios
-
----
-
-## Publicação das aulas no GitHub Pages
-
-Foi criado o workflow `.github/workflows/deploy-pages.yml` para publicar o conteúdo da pasta `aulas/` no GitHub Pages.
-
-### Como funciona
-
-- Dispara em push para `main` (e manualmente por `workflow_dispatch`);
-- Copia o conteúdo de `aulas/` para o artefato do Pages;
-- Faz deploy para o ambiente `github-pages`.
-
-> Para funcionar, habilite o GitHub Pages no repositório usando **GitHub Actions** como source.
-
-## Husky para boas práticas
-
-O projeto agora usa Husky com hook `pre-commit` para validar formatação antes de cada commit.
-
-### Setup local
+Abra `aulas/index.html` em um navegador moderno, ou rode um servidor local:
 
 ```bash
-npm install
+npx serve aulas
 ```
 
-### Scripts úteis
+Depois navegue até `http://localhost:3000`.
 
-- `npm run lint`: valida formatação (`md`, `yml`, `yaml`, `json`);
-- `npm run format`: aplica formatação automaticamente.
+## Estrutura
+
+```
+aulas/
+├── assets/
+│   ├── css/
+│   │   ├── inteli-theme.css     tema Reveal com paleta Inteli
+│   │   └── inteli-print.css     estilos de impressão (PDF)
+│   ├── js/
+│   │   ├── inteli-quiz.js       quiz interativo
+│   │   └── inteli-zoom.js       zoom em imagens
+│   └── img/                      pasta para logos oficiais
+├── aula01.html                  Ciclo de vida de software (23/04)
+├── aula02.html                  Gestão de configuração SCM (27/04)
+├── aula03.html                  Métricas de software (28/04)
+├── aula04.html                  Qualidade de software e IA (07/05)
+├── aula05.html                  CI parte 1, etapas locais (11/05)
+├── aula06.html                  CI parte 2, SAST no pipeline (13/05)
+├── index.html                    cronograma principal
+└── index.md                      índice auxiliar em markdown
+```
+
+## Cronograma
+
+### Sprint 1 · Fundamentos do processo · 22/04 a 05/05
+
+| Aula | Data | Tema |
+|------|------|------|
+| 01 | 23/04 (qua) | Ciclo de vida de software |
+| 02 | 27/04 (seg) | Gestão de configuração (SCM) |
+| 03 | 28/04 (ter) | Métricas de software: processo, produto e DORA |
+
+### Sprint 2 · Qualidade e CI · 06/05 a 19/05
+
+| Aula | Data | Tema |
+|------|------|------|
+| 04 | 07/05 (qui) | Qualidade de software e IA no processo |
+| 05 | 11/05 (seg) | CI parte 1, etapas locais |
+| 06 | 13/05 (qua) | CI parte 2, SAST no pipeline |
+
+### Próximas sprints
+
+Aulas 07 a 14 em planejamento. Tópicos em roteiro incluem entrega contínua,
+containers, IaC, observabilidade e DevSecOps.
+
+## Identidade visual
+
+O tema usa a paleta institucional Inteli:
+
+- Purple `#2e2640`
+- Coral `#ff4545`
+- Lilac `#90a5e5`
+- Green `#89cea5`
+- Dark green `#066d73`
+
+Tipografia: Manrope para texto e Space Mono para código.
+
+A wordmark `inteli.` é renderizada em CSS enquanto não há arquivos PNG/SVG
+oficiais na pasta `aulas/assets/img/`.
+
+## Scripts
+
+```bash
+npm install         # instala Husky e Prettier
+npm run lint        # valida formatação de md/yml/yaml/json
+npm run format      # aplica formatação automaticamente
+```
+
+O hook `pre-commit` roda `lint-staged` antes de cada commit.
+
+## Publicação
+
+O workflow `.github/workflows/deploy-pages.yml` publica o conteúdo da pasta
+`aulas/` no GitHub Pages a cada push em `main`.
+
+Para ativar a primeira vez: em Settings, Pages, escolha a source "GitHub Actions".
+
+## Estado atual
+
+Os esqueletos das aulas 01 a 06 estão criados, com capa, agenda, objetivos,
+separadores de bloco, slide de exercício, quiz, auto-estudo e encerramento.
+O conteúdo detalhado (slides internos de fundamentos e práticas) será populado
+aula por aula.

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 03, Métricas de software: processo, produto e DORA, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 01, Fundamentos do processo</span>
+          <h1>Métricas de software: processo, produto e DORA</h1>
+          <p class="subtitle">O que medir, por que medir e como métricas guiam decisões em engenharia e em DevOps.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>03 de 14</span>
+            <strong>Data</strong><span>28 de abril de 2026, terça-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>José Romualdo da Costa Filho</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
+            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
+          </p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
+              <tr><td>10h15, Fundamentos</td><td>Métricas de processo, de produto e as 4 chaves DORA</td><td>55 min</td></tr>
+              <tr><td>11h10, Prática</td><td>Instrumentar métricas DORA no projeto do grupo</td><td>40 min</td></tr>
+              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily Time -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos de aprendizagem -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Compreender</h4><p>Identificar famílias de métricas em engenharia de software e seus propósitos.</p></div>
+            <div class="concept-card"><h4>Comparar</h4><p>Diferenciar métricas de processo, de produto e as métricas DORA.</p></div>
+            <div class="concept-card"><h4>Aplicar</h4><p>Desenhar um painel inicial de métricas para o projeto do módulo.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 55 min</span>
+        <h2>Famílias de métricas</h2>
+        <p class="section-description">Processo, produto, qualidade e métricas DORA do livro Accelerate.</p>
+      </section>
+
+      <!-- 06, Conteúdo (placeholder) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Conteúdo, a preencher</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout">
+            <h4>Placeholder de conteúdo</h4>
+            <p>Métricas de processo (lead time, WIP), métricas de produto (acoplamento, complexidade, cobertura) e métricas DORA (deploy frequency, lead time for changes, MTTR, change failure rate).</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-page">06</div>
+        </div>
+      </section>
+
+      <!-- 07, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 40 min</span>
+        <h2>Prática de medição</h2>
+        <p class="section-description">Escolher e instrumentar métricas com dados que o time já tem.</p>
+      </section>
+
+      <!-- 08, Exercício hands-on -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Hands-on, em grupos</span>
+        <h2>Monte o painel inicial de métricas</h2>
+        <ol class="exercise-steps">
+          <li><em>Placeholder:</em> escolher 1 métrica de processo, 1 de produto e 1 DORA que o grupo quer acompanhar.</li>
+          <li>Descrever a fórmula e a fonte de dados de cada uma.</li>
+          <li>Definir a meta inicial e o intervalo de medição.</li>
+          <li>Desenhar um mini dashboard (papel ou Miro).</li>
+          <li>Justificar em 1 minuto por que essas três, e não outras.</li>
+        </ol>
+      </section>
+
+      <!-- 09, Quiz -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question"><em>Placeholder:</em> qual destas NÃO é uma das quatro chaves DORA?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Deploy Frequency</li>
+            <li data-correct="false">Lead Time for Changes</li>
+            <li data-correct="false">Change Failure Rate</li>
+            <li data-correct="true">Cobertura de testes unitários</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Cobertura é uma métrica de produto, não faz parte das chaves DORA."
+               data-incorrect-msg="Ainda não. As quatro chaves DORA são Deploy Frequency, Lead Time, MTTR e Change Failure Rate."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 10, Auto-estudo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a próxima</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
+            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
+            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Até a próxima</h2>
+        <p>Aula 04, Qualidade de software e IA, 07/05</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>

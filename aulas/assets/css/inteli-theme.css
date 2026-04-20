@@ -1,0 +1,740 @@
+/* =========================================================
+   Inteli Theme para Reveal.js
+   Módulo 13 · Turma T13 · Engenharia de Software · 2026.1B
+   Baseado na identidade visual do Inteli (canaldoovidio/2026-1a-es09-t13)
+   e na arquitetura de temas Reveal do curso FIAP 3SIZ.
+   ========================================================= */
+
+/* ---------- Paleta institucional Inteli ---------- */
+:root {
+  --inteli-purple: #2e2640;
+  --inteli-purple-deep: #1d1829;
+  --inteli-coral: #ff4545;
+  --inteli-coral-soft: #ffd4d4;
+  --inteli-lilac: #90a5e5;
+  --inteli-lilac-soft: #dfe5f8;
+  --inteli-green: #89cea5;
+  --inteli-dark-green: #066d73;
+  --inteli-gray-dark: #b2b6bf;
+  --inteli-gray-medium: #caced6;
+  --inteli-gray-light: #e6eaeb;
+  --inteli-bg-soft: #f6f6f8;
+  --inteli-white: #ffffff;
+
+  --inteli-font: 'Manrope', 'Segoe UI', Arial, sans-serif;
+  --inteli-mono: 'Space Mono', 'JetBrains Mono', 'Fira Code', monospace;
+
+  --inteli-radius-sm: 6px;
+  --inteli-radius-md: 12px;
+  --inteli-radius-lg: 18px;
+
+  --inteli-shadow-soft: 0 4px 20px rgba(46, 38, 64, 0.08);
+  --inteli-shadow-card: 0 10px 30px rgba(46, 38, 64, 0.12);
+}
+
+/* ---------- Base Reveal ---------- */
+.reveal {
+  font-family: var(--inteli-font);
+  font-size: 28px;
+  color: var(--inteli-purple);
+  background: var(--inteli-white);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+/* Todos os elementos dentro dos slides usam border-box para que padding
+   não empurre a largura além dos 1280x720 lógicos do Reveal.js */
+.reveal .slides section,
+.reveal .slides section * {
+  box-sizing: border-box;
+}
+
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5 {
+  color: var(--inteli-purple);
+  font-family: var(--inteli-font);
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.reveal h1 { font-weight: 800; font-size: 1.9em; line-height: 1.1; }
+.reveal h2 { font-weight: 700; font-size: 1.3em; line-height: 1.2; }
+.reveal h3 { font-weight: 700; font-size: 1.05em; line-height: 1.25; }
+.reveal h4 { font-weight: 600; font-size: 0.95em; color: var(--inteli-purple); }
+
+.reveal p, .reveal li {
+  font-size: 0.82em;
+  line-height: 1.55;
+  color: var(--inteli-purple);
+}
+
+.reveal ul, .reveal ol { margin-left: 1em; }
+.reveal strong { color: var(--inteli-purple-deep); font-weight: 700; }
+.reveal em { color: var(--inteli-coral); font-style: normal; font-weight: 600; }
+
+/* ---------- Links ---------- */
+.reveal a {
+  color: var(--inteli-dark-green);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--inteli-dark-green);
+}
+.reveal a:hover { color: var(--inteli-coral); border-bottom-color: var(--inteli-coral); }
+
+/* ---------- Código inline e blocos ---------- */
+.reveal code {
+  font-family: var(--inteli-mono);
+  background: var(--inteli-gray-light);
+  color: var(--inteli-purple-deep);
+  padding: 2px 6px;
+  border-radius: var(--inteli-radius-sm);
+  font-size: 0.85em;
+}
+.reveal pre {
+  box-shadow: var(--inteli-shadow-soft);
+  border-radius: var(--inteli-radius-md);
+  overflow: hidden;
+}
+.reveal pre code {
+  background: var(--inteli-purple-deep);
+  color: #f5f5f5;
+  padding: 20px 24px;
+  font-size: 0.65em;
+  line-height: 1.55;
+  border-radius: 0;
+}
+
+/* ---------- Wordmark textual "inteli." (placeholder de logo) ---------- */
+.inteli-wordmark {
+  font-family: var(--inteli-font);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--inteli-purple);
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1;
+}
+.inteli-wordmark::after {
+  content: ".";
+  color: var(--inteli-coral);
+  margin-left: 2px;
+}
+.inteli-wordmark.light { color: var(--inteli-white); }
+
+/* ---------- Top-bar e accent-bar ---------- */
+.top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg,
+    var(--inteli-purple) 0%,
+    var(--inteli-purple) 40%,
+    var(--inteli-lilac) 70%,
+    var(--inteli-coral) 100%);
+}
+
+.accent-bar {
+  width: 6px;
+  border-radius: 3px;
+  background: var(--inteli-coral);
+  align-self: stretch;
+  min-height: 32px;
+}
+
+/* ---------- Header padrão de slide de conteúdo ---------- */
+.slide-title-area {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.slide-title-area h2 {
+  margin: 0;
+  align-self: center;
+}
+
+.inteli-logo-header {
+  position: absolute;
+  top: 28px;
+  right: 40px;
+  opacity: 0.55;
+  font-size: 18px;
+}
+
+/* ---------- Footer padrão ---------- */
+.slide-footer {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-bar {
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  padding: 10px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  flex: 1;
+  border-top-right-radius: var(--inteli-radius-md);
+}
+.footer-page {
+  background: var(--inteli-coral);
+  color: var(--inteli-white);
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  min-width: 56px;
+  text-align: center;
+}
+
+/* ===================================================
+   TIPOS DE SLIDE
+   =================================================== */
+
+/* ---------- Capa ---------- */
+.cover-slide {
+  background: var(--inteli-white);
+  padding: 0 !important;
+  display: flex !important;
+  align-items: stretch;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.cover-slide::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 38%;
+  background: var(--inteli-purple);
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+  z-index: 1;
+}
+.cover-slide::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 22%;
+  height: 28%;
+  background: var(--inteli-coral);
+  clip-path: polygon(0 100%, 100% 100%, 0 0);
+  z-index: 2;
+}
+.cover-slide .cover-content {
+  position: relative;
+  z-index: 3;
+  margin-left: 42%;
+  margin-right: 6%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cover-slide .sprint-tag {
+  display: inline-block;
+  background: var(--inteli-lilac-soft);
+  color: var(--inteli-purple);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  width: fit-content;
+}
+.cover-slide h1 {
+  font-size: 2.2em;
+  color: var(--inteli-purple);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.cover-slide .subtitle {
+  font-size: 1em;
+  color: var(--inteli-gray-dark);
+  font-weight: 500;
+  margin: 0;
+}
+.cover-slide .cover-meta {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 18px;
+  font-size: 0.65em;
+  color: var(--inteli-gray-dark);
+}
+.cover-slide .cover-meta strong {
+  color: var(--inteli-purple);
+  font-weight: 700;
+}
+.cover-slide .cover-branding {
+  position: absolute;
+  bottom: 36px;
+  right: 40px;
+  z-index: 3;
+  font-size: 26px;
+}
+
+/* ---------- Separador de seção ---------- */
+.section-slide {
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 8% !important;
+  height: 100%;
+  position: relative;
+}
+.section-slide .section-number {
+  color: var(--inteli-coral);
+  font-size: 0.6em;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.section-slide h2 {
+  color: var(--inteli-white);
+  font-size: 2em;
+  margin: 0 0 18px 0;
+  max-width: 80%;
+}
+.section-slide .section-description {
+  color: var(--inteli-lilac);
+  font-size: 0.9em;
+  max-width: 70%;
+  line-height: 1.5;
+}
+
+/* ---------- Conteúdo ---------- */
+.content-slide {
+  padding: 56px 56px 56px 56px;
+  position: relative;
+  height: 720px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.content-slide .slide-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* ---------- Exercício / hands-on ---------- */
+.exercise-slide {
+  background: linear-gradient(135deg, var(--inteli-purple-deep) 0%, var(--inteli-purple) 100%);
+  color: var(--inteli-white);
+  padding: 80px 60px 70px 60px;
+  position: relative;
+}
+.exercise-slide h2, .exercise-slide h3 { color: var(--inteli-white); }
+.exercise-slide .exercise-tag {
+  display: inline-block;
+  background: var(--inteli-coral);
+  color: var(--inteli-white);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.45em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.exercise-slide .exercise-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+}
+.exercise-slide .exercise-steps li {
+  counter-increment: step;
+  position: relative;
+  padding: 12px 12px 12px 56px;
+  margin-bottom: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--inteli-coral);
+  border-radius: var(--inteli-radius-sm);
+  color: var(--inteli-white);
+  font-size: 0.78em;
+}
+.exercise-slide .exercise-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--inteli-coral);
+  color: var(--inteli-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+.exercise-slide code { background: rgba(255, 255, 255, 0.15); color: var(--inteli-white); }
+.exercise-slide a { color: var(--inteli-lilac); border-bottom-color: var(--inteli-lilac); }
+
+/* ---------- Quiz ---------- */
+.quiz-slide {
+  padding: 80px 60px 70px 60px;
+}
+.quiz-container {
+  background: var(--inteli-bg-soft);
+  padding: 24px 28px;
+  border-radius: var(--inteli-radius-md);
+  border-left: 6px solid var(--inteli-coral);
+}
+.quiz-question {
+  font-size: 0.95em;
+  font-weight: 700;
+  color: var(--inteli-purple);
+  margin-bottom: 18px;
+}
+.quiz-options { list-style: none; padding: 0; margin: 0; }
+.quiz-options li {
+  background: var(--inteli-white);
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: var(--inteli-radius-sm);
+  border: 2px solid var(--inteli-gray-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8em;
+}
+.quiz-options li:hover {
+  border-color: var(--inteli-lilac);
+  background: var(--inteli-lilac-soft);
+}
+.quiz-options li.correct {
+  border-color: var(--inteli-green);
+  background: #d4edda;
+  color: var(--inteli-dark-green);
+  font-weight: 600;
+}
+.quiz-options li.incorrect {
+  border-color: var(--inteli-coral);
+  background: #f8d7da;
+  color: #9b1d2b;
+}
+.quiz-feedback {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: var(--inteli-radius-sm);
+  font-size: 0.78em;
+  display: none;
+}
+.quiz-feedback.visible { display: block; }
+.quiz-feedback.success {
+  background: #d4edda;
+  color: var(--inteli-dark-green);
+  border-left: 4px solid var(--inteli-green);
+}
+.quiz-feedback.error {
+  background: #f8d7da;
+  color: #9b1d2b;
+  border-left: 4px solid var(--inteli-coral);
+}
+
+/* ---------- Daily Time (cronômetro regressivo) ---------- */
+.daily-slide {
+  background: linear-gradient(135deg, var(--inteli-purple) 0%, var(--inteli-purple-deep) 100%);
+  color: var(--inteli-white);
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+.daily-slide .daily-tag {
+  display: inline-block;
+  background: var(--inteli-coral);
+  color: var(--inteli-white);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.daily-slide h2 {
+  color: var(--inteli-white);
+  font-size: 2.4em;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.02em;
+}
+.daily-slide .daily-subtitle {
+  color: var(--inteli-lilac);
+  font-size: 0.85em;
+  max-width: 640px;
+  margin: 0 0 28px 0;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.inteli-timer {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.inteli-timer-display {
+  font-family: var(--inteli-mono);
+  font-weight: 700;
+  font-size: 140px;
+  line-height: 1;
+  color: var(--inteli-white);
+  background: rgba(255, 255, 255, 0.06);
+  border: 3px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  padding: 28px 56px;
+  min-width: 360px;
+  letter-spacing: -0.02em;
+  transition: all 0.3s ease;
+}
+.inteli-timer.running .inteli-timer-display {
+  border-color: var(--inteli-coral);
+  box-shadow: 0 0 40px rgba(255, 69, 69, 0.28);
+}
+.inteli-timer.warning .inteli-timer-display {
+  color: var(--inteli-coral);
+  animation: inteli-pulse 1s infinite alternate;
+}
+.inteli-timer.finished .inteli-timer-display {
+  background: var(--inteli-coral);
+  border-color: var(--inteli-coral);
+  color: var(--inteli-white);
+}
+@keyframes inteli-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
+}
+
+.inteli-timer-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.inteli-timer-controls button {
+  background: var(--inteli-white);
+  color: var(--inteli-purple);
+  border: none;
+  padding: 10px 22px;
+  border-radius: var(--inteli-radius-sm);
+  font-family: var(--inteli-font);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.inteli-timer-controls button:hover {
+  background: var(--inteli-coral);
+  color: var(--inteli-white);
+}
+.inteli-timer-controls button[data-action="pause"] {
+  background: transparent;
+  color: var(--inteli-white);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+}
+.inteli-timer-controls button[data-action="pause"]:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.inteli-timer-controls button[data-action="reset"] {
+  background: transparent;
+  color: var(--inteli-lilac);
+  border: 2px solid transparent;
+}
+.inteli-timer-controls button[data-action="reset"]:hover {
+  color: var(--inteli-white);
+}
+
+/* ---------- Encerramento ---------- */
+.end-slide {
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.end-slide h2 { color: var(--inteli-white); font-size: 2.2em; margin-bottom: 12px; }
+.end-slide p { color: var(--inteli-gray-medium); font-size: 0.85em; }
+.end-slide .inteli-wordmark { font-size: 36px; margin-bottom: 20px; }
+
+/* ===================================================
+   COMPONENTES REUTILIZÁVEIS
+   =================================================== */
+
+/* ---------- Concept cards ---------- */
+.concept-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.concept-card {
+  background: var(--inteli-bg-soft);
+  border-left: 4px solid var(--inteli-coral);
+  padding: 18px 20px;
+  border-radius: var(--inteli-radius-sm);
+}
+.concept-card h4 {
+  margin: 0 0 8px 0;
+  color: var(--inteli-purple);
+  font-size: 0.95em;
+}
+.concept-card p {
+  margin: 0;
+  font-size: 0.78em;
+  color: var(--inteli-gray-dark);
+  line-height: 1.5;
+}
+
+/* ---------- Flow diagram horizontal ---------- */
+.flow-diagram {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.flow-item {
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  padding: 10px 18px;
+  border-radius: var(--inteli-radius-sm);
+  font-weight: 600;
+  font-size: 0.82em;
+}
+.flow-item.alt { background: var(--inteli-lilac); color: var(--inteli-purple); }
+.flow-arrow {
+  color: var(--inteli-coral);
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+/* ---------- Side by side ---------- */
+.side-by-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+.side {
+  background: var(--inteli-bg-soft);
+  padding: 20px;
+  border-radius: var(--inteli-radius-md);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.side h3 { color: var(--inteli-coral); margin-top: 0; }
+
+/* ---------- Callout ---------- */
+.callout {
+  background: linear-gradient(135deg, var(--inteli-lilac-soft) 0%, var(--inteli-bg-soft) 100%);
+  border-left: 5px solid var(--inteli-lilac);
+  padding: 18px 22px;
+  border-radius: var(--inteli-radius-sm);
+  margin: 14px 0;
+}
+.callout.warn { background: var(--inteli-coral-soft); border-left-color: var(--inteli-coral); }
+.callout h4 { margin-top: 0; color: var(--inteli-purple); }
+.callout p { margin-bottom: 0; }
+
+/* ---------- Tabelas ---------- */
+.reveal table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.7em;
+  box-shadow: var(--inteli-shadow-soft);
+  border-radius: var(--inteli-radius-md);
+  overflow: hidden;
+}
+.reveal table th {
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 700;
+}
+.reveal table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--inteli-gray-light);
+  color: var(--inteli-purple);
+}
+.reveal table tr:nth-child(even) td { background: var(--inteli-bg-soft); }
+
+/* ---------- Tag de sprint e rodapé ---------- */
+.section-tag {
+  display: inline-block;
+  background: var(--inteli-lilac);
+  color: var(--inteli-purple);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* ---------- Barra de progresso Reveal ---------- */
+.reveal .progress { color: var(--inteli-coral); height: 4px; }
+.reveal .controls button { color: var(--inteli-purple); }
+
+/* ---------- Scrollbar fino para blocos com overflow ---------- */
+.slide-body::-webkit-scrollbar { width: 6px; }
+.slide-body::-webkit-scrollbar-thumb { background: var(--inteli-coral); border-radius: 3px; }
+.slide-body::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Botão de exportar PDF ---------- */
+#inteli-pdf-btn {
+  position: fixed;
+  bottom: 18px;
+  left: 18px;
+  z-index: 999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--inteli-purple);
+  color: var(--inteli-white);
+  border: 1px solid var(--inteli-purple-deep);
+  border-radius: 999px;
+  font-family: var(--inteli-mono, 'Space Mono', monospace);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(46, 38, 64, 0.25);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+#inteli-pdf-btn:hover {
+  background: var(--inteli-coral);
+  transform: translateY(-1px);
+}
+#inteli-pdf-btn svg {
+  display: block;
+}
+#inteli-pdf-btn span {
+  line-height: 1;
+}
+
+@media print {
+  #inteli-pdf-btn { display: none !important; }
+}

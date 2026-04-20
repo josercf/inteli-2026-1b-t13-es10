@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 01, Ciclo de vida de software, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Ajustes locais para diagramas e layouts desta aula */
+    .svg-stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 6px 0;
+    }
+    .svg-stage svg { max-width: 100%; height: auto; }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .role-card {
+      background: var(--inteli-bg-soft);
+      border-left: 4px solid var(--inteli-coral);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .role-card h4 {
+      margin: 0 0 4px 0;
+      font-size: 0.82em;
+      color: var(--inteli-purple);
+    }
+    .role-card .role-short {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .role-card p {
+      margin: 4px 0 0 0;
+      font-size: 0.7em;
+      color: var(--inteli-purple-deep);
+      line-height: 1.35;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+    .three-col .side {
+      padding: 16px;
+    }
+    .three-col .side h3 {
+      font-size: 0.9em;
+      margin-bottom: 6px;
+    }
+    .three-col .side p, .three-col .side ul {
+      font-size: 0.72em;
+      line-height: 1.4;
+      margin: 4px 0;
+    }
+
+    .tool-card {
+      background: var(--inteli-white);
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 10px;
+    }
+    .tool-card h4 {
+      margin: 0 0 4px 0;
+      color: var(--inteli-coral);
+      font-size: 0.95em;
+    }
+    .tool-card p {
+      margin: 0;
+      font-size: 0.72em;
+      line-height: 1.4;
+    }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Pipeline de entrega */
+    .pipeline-flow {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      align-items: stretch;
+      margin: 8px 0 12px;
+    }
+    .pipeline-step {
+      position: relative;
+      background: var(--inteli-white);
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px 8px 8px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .pipeline-step.accent {
+      border-color: var(--inteli-coral);
+      background: var(--inteli-bg-soft);
+    }
+    .pipeline-step .pipeline-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 6px;
+    }
+    .pipeline-step .pipeline-stage {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.55em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+    .pipeline-step .pipeline-title {
+      font-size: 0.68em;
+      font-weight: 700;
+      color: var(--inteli-purple);
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .pipeline-step .pipeline-detail {
+      font-size: 0.58em;
+      color: var(--inteli-purple-deep);
+      line-height: 1.25;
+    }
+    .pipeline-step::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 10px;
+      height: 2px;
+      background: var(--inteli-coral);
+      z-index: 2;
+    }
+    .pipeline-step:last-child::after { display: none; }
+
+    /* Modelos de serviço (pizza) */
+    .pizza-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .pizza-card {
+      background: var(--inteli-white);
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 12px;
+      padding: 12px 12px 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .pizza-card.pizza-saas { border-color: var(--inteli-coral); }
+    .pizza-card .pizza-icon {
+      text-align: center;
+      margin: 2px auto 4px;
+      width: 44px;
+      height: 44px;
+    }
+    .pizza-card .pizza-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .pizza-card .pizza-label {
+      text-align: center;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.6em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .pizza-card .pizza-title {
+      text-align: center;
+      font-size: 0.82em;
+      font-weight: 700;
+      color: var(--inteli-purple);
+      margin: 2px 0 8px;
+    }
+    .pizza-card .pizza-analogy {
+      font-size: 0.65em;
+      font-style: italic;
+      color: var(--inteli-purple-deep);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .pizza-card ul {
+      font-size: 0.6em;
+      padding-left: 16px;
+      margin: 2px 0;
+      line-height: 1.3;
+    }
+
+    /* Container vs VM */
+    .container-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 8px 0;
+    }
+    .stack-block {
+      background: var(--inteli-white);
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .stack-block h4 {
+      margin: 0 0 8px 0;
+      font-size: 0.8em;
+      color: var(--inteli-purple);
+      text-align: center;
+    }
+    .stack-layer {
+      background: var(--inteli-lilac-soft);
+      color: var(--inteli-purple-deep);
+      text-align: center;
+      padding: 4px 6px;
+      font-size: 0.6em;
+      font-weight: 600;
+      border-radius: 4px;
+      margin-bottom: 3px;
+    }
+    .stack-layer.app { background: var(--inteli-coral); color: #fff; }
+    .stack-layer.runtime { background: var(--inteli-green); color: var(--inteli-purple-deep); }
+    .stack-layer.kernel { background: var(--inteli-purple); color: #fff; }
+
+    /* Kubernetes scale */
+    .k8s-scale {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 6px 0;
+    }
+    .k8s-scale .scale-step {
+      background: var(--inteli-white);
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .k8s-scale .scale-step.critical {
+      border-color: var(--inteli-coral);
+      background: var(--inteli-bg-soft);
+    }
+    .k8s-scale .scale-count {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 1.1em;
+      font-weight: 700;
+      color: var(--inteli-coral);
+    }
+    .k8s-scale .scale-dots {
+      font-size: 0.9em;
+      line-height: 1;
+      margin: 4px 0 6px;
+      letter-spacing: -1px;
+    }
+    .k8s-scale .scale-label {
+      font-size: 0.65em;
+      color: var(--inteli-purple-deep);
+    }
+
+    /* Workload definition */
+    .workload-def {
+      background: var(--inteli-purple);
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 8px 0;
+    }
+    .workload-def h4 {
+      margin: 0 0 6px 0;
+      color: var(--inteli-coral);
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.7em;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .workload-def p {
+      margin: 0;
+      font-size: 0.75em;
+      line-height: 1.4;
+      color: #ffffff;
+    }
+    .reveal .workload-def p { color: #ffffff; }
+    .workload-def em {
+      color: var(--inteli-green);
+      font-style: normal;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 01, Fundamentos do processo</span>
+          <h1>Ciclo de vida de software</h1>
+          <p class="subtitle">SDLC, ALM, SCM e a malha CNCF: o processo que transforma código em produto que entrega valor.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>01 de 14</span>
+            <strong>Data</strong><span>23 de abril de 2026, quarta-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>José Romualdo da Costa Filho</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min, status rápido por grupo</td><td>15 min</td></tr>
+              <tr><td>10h15, Ativação</td><td>Recuperação dos auto-estudos em quiz individual e plenária</td><td>25 min</td></tr>
+              <tr><td>10h40, Fundamentos</td><td>SDLC, metodologias, papéis, ALM, pipeline, ambientes, containers, Kubernetes, governança e OpenChoreo</td><td>35 min</td></tr>
+              <tr><td>11h15, Caso Jacto</td><td>Jacto Drones com três frentes sem processo unificado, prática em grupos</td><td>35 min</td></tr>
+              <tr><td>11h50, Síntese</td><td>Quiz de fechamento, homework e ponte para SCM</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily Time -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Alinhamento rápido de cada grupo: o que avançou desde a última aula, o que trava e qual é a próxima meta.
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Compreender</h4><p>Reconhecer as fases do SDLC e a diferença entre SDLC, ALM e SCM.</p></div>
+            <div class="concept-card"><h4>Comparar</h4><p>Distinguir cascata e ágil como duas formas de organizar o ciclo.</p></div>
+            <div class="concept-card"><h4>Situar</h4><p>Posicionar o ecossistema CNCF e os cenários on-premises e cloud.</p></div>
+            <div class="concept-card"><h4>Aplicar</h4><p>Mapear o ciclo das três frentes da Jacto Drones e propor um processo unificado.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 35 min</span>
+        <h2>SDLC, metodologias, papéis e ecossistema</h2>
+        <p class="section-description">Software não começa no repositório e não termina no deploy. Vamos olhar o ciclo todo.</p>
+      </section>
+
+      <!-- 06, Software como processo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Software como processo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout">
+            <h4>Ponto de partida</h4>
+            <p>Antes do primeiro commit existe um problema de negócio, pessoas afetadas e uma hipótese. Depois do deploy existe operação, suporte, métrica, dívida técnica e novas versões. <em>Código é parte do ciclo, não o ciclo todo.</em></p>
+          </div>
+          <div class="side-by-side" style="margin-top: 16px;">
+            <div class="side">
+              <h3>Sem processo</h3>
+              <ul>
+                <li>A decisão de hoje desfaz a de ontem. Retrabalho vira rotina.</li>
+                <li>Ninguém sabe ao certo o que está em produção.</li>
+                <li>Cada dev tem a sua convenção. O ritmo do time fica irregular.</li>
+              </ul>
+            </div>
+            <div class="side">
+              <h3>Com processo</h3>
+              <ul>
+                <li>Decisões viram conversa rastreável.</li>
+                <li>Onboarding de gente nova fica mais curto.</li>
+                <li>Mudança deixa de doer.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">06</div>
+        </div>
+      </section>
+
+      <!-- 07, SDLC fases -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SDLC, as fases do ciclo</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.78em;">O SDLC (<em>Software Development Life Cycle</em>) é a sequência de fases que todo software atravessa. A ordem, a duração e o grau de sobreposição entre elas variam conforme o modelo adotado.</p>
+
+          <div class="svg-stage">
+            <svg viewBox="0 0 1000 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fases do SDLC">
+              <defs>
+                <marker id="arrowSdlc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#ff4545"/>
+                </marker>
+              </defs>
+              <g font-family="Manrope, sans-serif" font-weight="700" font-size="16" fill="#ffffff">
+                <g>
+                  <rect x="10" y="60" width="170" height="60" rx="12" fill="#2e2640"/>
+                  <text x="95" y="96" text-anchor="middle">Requisitos</text>
+                </g>
+                <line x1="185" y1="90" x2="215" y2="90" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowSdlc)"/>
+                <g>
+                  <rect x="220" y="60" width="150" height="60" rx="12" fill="#90a5e5"/>
+                  <text x="295" y="96" text-anchor="middle" fill="#2e2640">Design</text>
+                </g>
+                <line x1="375" y1="90" x2="405" y2="90" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowSdlc)"/>
+                <g>
+                  <rect x="410" y="60" width="190" height="60" rx="12" fill="#2e2640"/>
+                  <text x="505" y="96" text-anchor="middle">Implementação</text>
+                </g>
+                <line x1="605" y1="90" x2="635" y2="90" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowSdlc)"/>
+                <g>
+                  <rect x="640" y="60" width="170" height="60" rx="12" fill="#90a5e5"/>
+                  <text x="725" y="96" text-anchor="middle" fill="#2e2640">Verificação</text>
+                </g>
+                <line x1="815" y1="90" x2="845" y2="90" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowSdlc)"/>
+                <g>
+                  <rect x="850" y="60" width="140" height="60" rx="12" fill="#2e2640"/>
+                  <text x="920" y="96" text-anchor="middle">Manutenção</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <p class="hint-caption">Figura 1. Fluxo de alto nível do SDLC. Cada fase gera artefatos que alimentam a próxima.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Cascata -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Modelo Cascata</h2>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 20px; align-items: center;">
+          <div class="svg-stage">
+            <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modelo cascata">
+              <defs>
+                <marker id="arrowWf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#ff4545"/>
+                </marker>
+              </defs>
+              <g font-family="Manrope, sans-serif" font-weight="700" font-size="14" fill="#ffffff">
+                <rect x="10" y="20" width="150" height="44" rx="10" fill="#2e2640"/>
+                <text x="85" y="48" text-anchor="middle">Requisitos</text>
+
+                <line x1="85" y1="66" x2="85" y2="82" stroke="#ff4545" stroke-width="3"/>
+                <line x1="85" y1="82" x2="175" y2="82" stroke="#ff4545" stroke-width="3"/>
+                <line x1="175" y1="82" x2="175" y2="94" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowWf)"/>
+
+                <rect x="100" y="100" width="150" height="44" rx="10" fill="#2e2640"/>
+                <text x="175" y="128" text-anchor="middle">Design</text>
+
+                <line x1="175" y1="146" x2="175" y2="162" stroke="#ff4545" stroke-width="3"/>
+                <line x1="175" y1="162" x2="265" y2="162" stroke="#ff4545" stroke-width="3"/>
+                <line x1="265" y1="162" x2="265" y2="174" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowWf)"/>
+
+                <rect x="190" y="180" width="150" height="44" rx="10" fill="#2e2640"/>
+                <text x="265" y="208" text-anchor="middle">Implementação</text>
+
+                <line x1="265" y1="226" x2="265" y2="242" stroke="#ff4545" stroke-width="3"/>
+                <line x1="265" y1="242" x2="355" y2="242" stroke="#ff4545" stroke-width="3"/>
+                <line x1="355" y1="242" x2="355" y2="254" stroke="#ff4545" stroke-width="3" marker-end="url(#arrowWf)"/>
+
+                <rect x="280" y="260" width="150" height="44" rx="10" fill="#2e2640"/>
+                <text x="355" y="288" text-anchor="middle">Verificação</text>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <p style="font-size: 0.75em; margin-top: 0;"><strong>Proposto por Royce em 1970</strong>, o modelo cascata organiza o SDLC em fases sequenciais. Uma fase só começa quando a anterior termina.</p>
+            <div class="concept-cards" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="concept-card"><h4>Pontos fortes</h4><p>É previsível. A documentação sustenta contratos e auditoria.</p></div>
+              <div class="concept-card"><h4>Pontos fracos</h4><p>Mudar requisito custa caro. O feedback do usuário só chega no fim.</p></div>
+              <div class="concept-card"><h4>Quando faz sentido</h4><p>Requisito estável, regulação pesada, sistema embarcado com homologação formal.</p></div>
+              <div class="concept-card"><h4>Evolução</h4><p>Modelo em V, que espelha cada fase de construção em uma fase de teste correspondente.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 09, Ágil -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Metodologia Ágil</h2>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 20px; align-items: center;">
+          <div class="svg-stage">
+            <img src="assets/img/agile-cycle.png" alt="Ciclo Agile com as fases Plan, Design, Develop, Test, Deploy, Review e Launch" style="max-width: 100%; height: auto;" />
+          </div>
+          <div>
+            <p style="font-size: 0.75em; margin-top: 0;">O <strong>Manifesto Ágil (2001)</strong> propôs uma inversão: em vez de fases longas, ciclos curtos com validação frequente. O SDLC continua existindo, mas é percorrido várias vezes, em janelas pequenas.</p>
+            <div class="callout" style="margin: 6px 0;">
+              <h4>Os quatro valores do manifesto</h4>
+              <p style="font-size: 0.72em;">Indivíduos e interações mais que processos e ferramentas. Software em funcionamento mais que documentação abrangente. Colaboração com o cliente mais que negociação de contratos. Responder a mudanças mais que seguir um plano.</p>
+            </div>
+            <div class="concept-cards" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+              <div class="concept-card"><h4>Frameworks comuns</h4><p>Scrum, Kanban, XP, SAFe, LeSS.</p></div>
+              <div class="concept-card"><h4>Ritmo</h4><p>Sprints de 1 a 4 semanas, entregas incrementais, retrospectivas.</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 10, Cascata vs Ágil -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Cascata vs Ágil, onde cada um cabe</h2>
+        </div>
+        <div class="slide-body">
+          <table>
+            <thead>
+              <tr><th style="width: 22%;">Critério</th><th style="width: 39%;">Cascata</th><th style="width: 39%;">Ágil</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Forma do ciclo</strong></td><td>Fases sequenciais, cada uma fecha antes da próxima.</td><td>Iterações curtas, as fases se repetem a cada ciclo.</td></tr>
+              <tr><td><strong>Requisitos</strong></td><td>Definidos no início, mudança é cara.</td><td>Evoluem a cada sprint, mudança é esperada.</td></tr>
+              <tr><td><strong>Entrega</strong></td><td>Produto completo no fim.</td><td>Incrementos funcionais ao longo do tempo.</td></tr>
+              <tr><td><strong>Risco</strong></td><td>Concentrado no final, aparece na homologação.</td><td>Distribuído, aparece cedo e pode ser corrigido.</td></tr>
+              <tr><td><strong>Documentação</strong></td><td>Extensa, contratual.</td><td>Mínima necessária, viva.</td></tr>
+              <tr><td><strong>Bom para</strong></td><td>Regulação pesada, hardware acoplado, contratos fixos.</td><td>Produtos digitais, incerteza alta, descoberta contínua.</td></tr>
+            </tbody>
+          </table>
+          <div class="callout warn" style="margin-top: 16px;">
+            <h4>A pergunta útil não é "qual é melhor?"</h4>
+            <p>É <em>"qual combina com o produto que estamos construindo?"</em>. Muitas empresas usam híbridos: cascata para contratos com cliente, ágil para a execução do time.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, Papéis no processo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Papéis no processo de engenharia</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.75em; margin-top: 0;">Um processo só funciona com pessoas claras sobre o que fazem. Os títulos variam por empresa, mas as funções tendem a se repetir.</p>
+          <div class="role-grid">
+            <div class="role-card">
+              <span class="role-short">PO</span>
+              <h4>Product Owner</h4>
+              <p>Representa o cliente, prioriza o backlog e decide o que entra em cada sprint.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">SM</span>
+              <h4>Scrum Master</h4>
+              <p>Facilita o processo, remove impedimentos e protege o time do ruído externo.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">ARQ</span>
+              <h4>Arquiteto de Software</h4>
+              <p>Define decisões estruturais que são caras de mudar depois.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">TL</span>
+              <h4>Tech Lead</h4>
+              <p>Guia técnico do time no dia a dia, traduz arquitetura em prática.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">DEV</span>
+              <h4>Desenvolvedor</h4>
+              <p>Implementa, revisa PRs dos colegas e cuida da qualidade do código.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">QA</span>
+              <h4>QA, Tester</h4>
+              <p>Pensa testes, encontra problemas antes do usuário e automatiza verificações.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">UX</span>
+              <h4>Designer, UX/UI</h4>
+              <p>Projeta a experiência, valida fluxos com usuários e entrega mockups.</p>
+            </div>
+            <div class="role-card">
+              <span class="role-short">OPS</span>
+              <h4>DevOps, SRE</h4>
+              <p>Automação do ciclo, confiabilidade, observabilidade e performance em produção.</p>
+            </div>
+          </div>
+          <p class="hint-caption" style="margin-top: 10px;">Outros papéis aparecem em contextos específicos: Business Analyst, Data Engineer, Security Champion, Release Manager, Engineering Manager.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, ALM e SCM -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>ALM e SCM, o guarda-chuva e a disciplina</h2>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 20px; align-items: center;">
+          <div class="svg-stage">
+            <svg viewBox="0 0 480 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Camadas ALM SDLC SCM">
+              <g font-family="Manrope, sans-serif" font-weight="700">
+                <rect x="10" y="10" width="460" height="300" rx="14" fill="#2e2640" opacity="0.95"/>
+                <text x="30" y="38" fill="#ffffff" font-size="18">ALM, Application Lifecycle Management</text>
+                <text x="30" y="58" fill="#dfe5f8" font-size="11" font-weight="500">Do problema de negócio ao descomissionamento</text>
+
+                <rect x="30" y="80" width="420" height="210" rx="12" fill="#90a5e5"/>
+                <text x="50" y="108" fill="#2e2640" font-size="16">SDLC, Software Development Life Cycle</text>
+                <text x="50" y="126" fill="#1d1829" font-size="10" font-weight="500">Ciclo de engenharia: requisitos, design, implementação, verificação, manutenção</text>
+
+                <rect x="50" y="150" width="380" height="124" rx="10" fill="#ffffff"/>
+                <text x="70" y="178" fill="#2e2640" font-size="14">SCM, Software Configuration Management</text>
+                <text x="70" y="198" fill="#2e2640" font-size="10" font-weight="500">Identificar, versionar e rastrear cada artefato de software</text>
+                <text x="70" y="224" fill="#066d73" font-size="10" font-weight="700">Git, tags, branches, releases, bill of materials</text>
+                <text x="70" y="244" fill="#066d73" font-size="10" font-weight="700">Pipelines, artefatos assinados, auditoria de mudanças</text>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div class="concept-card" style="margin-bottom: 10px;">
+              <h4>ALM</h4>
+              <p style="font-size: 0.72em;">É a camada mais ampla. Cuida de portfólio, requisitos, planejamento, execução, operação e fim de vida da aplicação. Conecta engenharia com negócio.</p>
+            </div>
+            <div class="concept-card" style="margin-bottom: 10px;">
+              <h4>SDLC</h4>
+              <p style="font-size: 0.72em;">É o ciclo de engenharia dentro do ALM. Transforma requisitos em software funcionando, testado e mantido.</p>
+            </div>
+            <div class="concept-card">
+              <h4>SCM</h4>
+              <p style="font-size: 0.72em;">É a disciplina que mantém os artefatos de software rastreáveis: código, dependências, configurações e builds. A Aula 02 mergulha aqui.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, Pipeline de entrega -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Pipeline de entrega, do commit à produção</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin-top: 0;">Cada mudança de código passa por uma esteira automatizada. Em cada estação, ferramentas validam a alteração antes de liberar o próximo passo. Se algo quebra, o pipeline para ali mesmo e avisa quem fez a mudança.</p>
+
+          <div class="pipeline-flow">
+            <div class="pipeline-step">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <rect x="4" y="8" width="40" height="28" rx="3" fill="#2e2640"/>
+                <rect x="6" y="10" width="36" height="24" rx="2" fill="#1d1829"/>
+                <text x="24" y="26" font-family="Space Mono, monospace" font-size="10" font-weight="700" fill="#89cea5" text-anchor="middle">&lt;/&gt;</text>
+                <rect x="16" y="38" width="16" height="2" fill="#2e2640"/>
+                <rect x="12" y="40" width="24" height="3" rx="1" fill="#2e2640"/>
+              </svg>
+              <div class="pipeline-stage">01</div>
+              <div class="pipeline-title">Dev implementa</div>
+              <div class="pipeline-detail">IDE, branch próprio, testes locais</div>
+            </div>
+
+            <div class="pipeline-step">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="14" cy="14" r="4" fill="#ff4545"/>
+                <circle cx="14" cy="34" r="4" fill="#ff4545"/>
+                <circle cx="34" cy="24" r="4" fill="#2e2640"/>
+                <path d="M14 18 L14 30" stroke="#2e2640" stroke-width="2" fill="none"/>
+                <path d="M18 14 Q30 14 30 22" stroke="#2e2640" stroke-width="2" fill="none"/>
+                <path d="M18 34 Q30 34 30 26" stroke="#2e2640" stroke-width="2" fill="none"/>
+              </svg>
+              <div class="pipeline-stage">02</div>
+              <div class="pipeline-title">Commit e push</div>
+              <div class="pipeline-detail">Git, mensagem clara, referência a issue</div>
+            </div>
+
+            <div class="pipeline-step">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <rect x="6" y="10" width="36" height="28" rx="4" fill="#90a5e5"/>
+                <rect x="10" y="16" width="28" height="3" rx="1" fill="#2e2640"/>
+                <rect x="10" y="22" width="20" height="3" rx="1" fill="#2e2640"/>
+                <circle cx="16" cy="32" r="3" fill="#89cea5"/>
+                <path d="M14 32 L15.5 33.5 L18 31" stroke="#2e2640" stroke-width="1.5" fill="none"/>
+                <circle cx="26" cy="32" r="3" fill="#ff4545"/>
+                <text x="26" y="34" font-family="Space Mono, monospace" font-size="5" font-weight="700" fill="#fff" text-anchor="middle">?</text>
+              </svg>
+              <div class="pipeline-stage">03</div>
+              <div class="pipeline-title">Code review</div>
+              <div class="pipeline-detail">MR aberto, par revisa, discute, aprova</div>
+            </div>
+
+            <div class="pipeline-step accent">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="24" r="20" fill="#2e2640"/>
+                <path d="M14 18 L24 12 L34 18 L34 30 L24 36 L14 30 Z" fill="#ff4545"/>
+                <circle cx="24" cy="24" r="5" fill="#fff"/>
+                <text x="24" y="27" font-family="Space Mono, monospace" font-size="7" font-weight="700" fill="#2e2640" text-anchor="middle">CI</text>
+              </svg>
+              <div class="pipeline-stage">04</div>
+              <div class="pipeline-title">Build, testes e segurança</div>
+              <div class="pipeline-detail">Compila, roda testes, SAST, SCA</div>
+            </div>
+
+            <div class="pipeline-step">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <rect x="8" y="14" width="14" height="10" rx="1" fill="#90a5e5"/>
+                <rect x="24" y="14" width="14" height="10" rx="1" fill="#90a5e5"/>
+                <rect x="16" y="26" width="14" height="10" rx="1" fill="#89cea5"/>
+                <rect x="8" y="38" width="32" height="3" rx="1" fill="#2e2640"/>
+                <text x="24" y="10" font-family="Space Mono, monospace" font-size="5" font-weight="700" fill="#2e2640" text-anchor="middle">STAGING</text>
+              </svg>
+              <div class="pipeline-stage">05</div>
+              <div class="pipeline-title">Deploy em homologação</div>
+              <div class="pipeline-detail">Ambiente igual ao de produção</div>
+            </div>
+
+            <div class="pipeline-step">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <circle cx="24" cy="16" r="6" fill="#2e2640"/>
+                <path d="M10 40 Q10 26 24 26 Q38 26 38 40" fill="#2e2640"/>
+                <circle cx="36" cy="34" r="8" fill="#89cea5"/>
+                <path d="M32 34 L35 37 L40 31" stroke="#2e2640" stroke-width="2" fill="none"/>
+              </svg>
+              <div class="pipeline-stage">06</div>
+              <div class="pipeline-title">Validação externa</div>
+              <div class="pipeline-detail">PO, QA, cliente fazem UAT</div>
+            </div>
+
+            <div class="pipeline-step accent">
+              <svg class="pipeline-icon" viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M12 30 Q6 30 6 22 Q6 14 14 14 Q16 8 24 8 Q34 8 36 18 Q42 18 42 26 Q42 34 34 34 L14 34 Q12 34 12 30 Z" fill="#90a5e5"/>
+                <path d="M20 26 L24 22 L28 26 M24 22 L24 36" stroke="#2e2640" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              </svg>
+              <div class="pipeline-stage">07</div>
+              <div class="pipeline-title">Produção</div>
+              <div class="pipeline-detail">Release liberado, monitoramento ativo</div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px;">
+            <h4>Por que automatizar tudo isso</h4>
+            <p style="font-size: 0.68em;">Toda mudança passa pelo mesmo crivo, sem depender de quem fez o deploy. O tempo entre código pronto e valor entregue cai de dias para minutos, e fica um registro do que rodou, quando rodou e por quê.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, Ecossistema CNCF -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ecossistema CNCF</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.78em; margin-top: 0;">A <strong>Cloud Native Computing Foundation</strong> é a fundação, filiada à Linux Foundation, que hospeda os projetos open source que dão forma ao software cloud-native moderno. É o ecossistema que alimenta as práticas de DevOps que veremos ao longo do módulo.</p>
+
+          <div class="side-by-side">
+            <div class="side">
+              <h3>Exemplos conhecidos</h3>
+              <ul style="font-size: 0.72em;">
+                <li><strong>Kubernetes</strong>, orquestração de containers.</li>
+                <li><strong>Prometheus</strong>, métricas e alertas.</li>
+                <li><strong>Envoy</strong>, proxy de tráfego de serviço.</li>
+                <li><strong>Fluentd</strong>, pipeline de logs.</li>
+                <li><strong>Argo CD</strong>, entrega contínua GitOps.</li>
+                <li><strong>OpenTelemetry</strong>, instrumentação observabilidade.</li>
+              </ul>
+            </div>
+            <div class="side">
+              <h3>Por que interessa ao nosso módulo</h3>
+              <ul style="font-size: 0.72em;">
+                <li>Define padrões abertos para cada fase do ciclo.</li>
+                <li>Reduz lock-in de fornecedor.</li>
+                <li>Conecta SDLC com operação em produção.</li>
+                <li>Serve como base para pipelines de CI e CD.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 14px;">
+            <h4>O landscape tem mais de 200 projetos</h4>
+            <p style="font-size: 0.72em;">Em <em>landscape.cncf.io</em>, o mapa interativo mostra os projetos organizados por função (orquestração, rede, armazenamento, observabilidade, entrega, segurança). Ninguém conhece tudo. Aprender a navegar vale mais que decorar.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 15, On-prem, Cloud e Híbrido -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>On-premises, Cloud e Híbrido</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.78em; margin-top: 0;">Onde o software roda muda o ciclo inteiro. Afeta desenvolvimento, teste, operação e conta no fim do mês.</p>
+
+          <div class="three-col">
+            <div class="side">
+              <h3>On-premises</h3>
+              <p><strong>Infra sua, em data center próprio ou alugado.</strong></p>
+              <ul>
+                <li>Controle total do hardware.</li>
+                <li>Dados no perímetro da empresa.</li>
+                <li>Custo alto de capex e manutenção.</li>
+                <li>Escalar demora, é compra física.</li>
+              </ul>
+            </div>
+            <div class="side" style="background: var(--inteli-lilac-soft);">
+              <h3>Cloud</h3>
+              <p><strong>Infra como serviço, paga por uso.</strong></p>
+              <ul>
+                <li>Elasticidade quase instantânea.</li>
+                <li>Modelo opex, custos variáveis.</li>
+                <li>Automação nativa, APIs tudo.</li>
+                <li>Depende de provedor, requer FinOps.</li>
+              </ul>
+            </div>
+            <div class="side">
+              <h3>Híbrido</h3>
+              <p><strong>Mistura das duas, com intenção.</strong></p>
+              <ul>
+                <li>Dados sensíveis on-prem, carga elástica na cloud.</li>
+                <li>Integra com regulação local.</li>
+                <li>Complexidade operacional maior.</li>
+                <li>Pede governança forte.</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="hint-caption" style="margin-top: 10px;">Na Jacto Drones, os três cenários convivem: firmware roda no drone (edge), plataforma de serviços na cloud e BI pode ter partes on-prem em fazendas com conectividade ruim.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, Modelos de serviço (analogia da pizza) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Modelos de serviço, a analogia da pizza</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin-top: 0;">Dentro de cloud, o que você opera e o que o provedor opera muda conforme o modelo. Quanto mais o provedor entrega pronto, menos gente sua precisa se preocupar com a infra. A comparação com pizza deixa essa fronteira clara.</p>
+
+          <div class="pizza-grid">
+            <div class="pizza-card">
+              <div class="pizza-icon">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                  <rect x="6" y="24" width="36" height="16" rx="2" fill="#90a5e5"/>
+                  <rect x="10" y="12" width="28" height="12" rx="2" fill="#2e2640"/>
+                  <rect x="22" y="8" width="4" height="4" fill="#2e2640"/>
+                  <rect x="14" y="30" width="4" height="4" fill="#ff4545"/>
+                  <rect x="22" y="30" width="4" height="4" fill="#ff4545"/>
+                  <rect x="30" y="30" width="4" height="4" fill="#ff4545"/>
+                </svg>
+              </div>
+              <div class="pizza-label">ON-PREMISES</div>
+              <div class="pizza-title">Pizza feita em casa</div>
+              <div class="pizza-analogy">Você faz tudo do zero</div>
+              <ul>
+                <li>Massa, molho, queijo</li>
+                <li>Forno próprio</li>
+                <li>Mesa e bebida</li>
+                <li>Você assa, serve, lava</li>
+              </ul>
+            </div>
+            <div class="pizza-card">
+              <div class="pizza-icon">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                  <path d="M8 16 L24 8 L40 16 L40 38 L24 44 L8 38 Z" fill="#ff4545"/>
+                  <path d="M8 16 L24 24 L40 16" stroke="#2e2640" stroke-width="1.5" fill="none"/>
+                  <path d="M24 24 L24 44" stroke="#2e2640" stroke-width="1.5" fill="none"/>
+                  <rect x="18" y="18" width="12" height="2" fill="#2e2640"/>
+                </svg>
+              </div>
+              <div class="pizza-label">IaaS</div>
+              <div class="pizza-title">Pizza congelada</div>
+              <div class="pizza-analogy">Vem pronta para assar</div>
+              <ul>
+                <li>Provedor: massa e recheio</li>
+                <li>Você: forno, mesa, bebida</li>
+                <li>AWS EC2, Azure VM, GCP Compute</li>
+              </ul>
+            </div>
+            <div class="pizza-card">
+              <div class="pizza-icon">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                  <rect x="4" y="18" width="18" height="14" rx="2" fill="#90a5e5"/>
+                  <rect x="22" y="22" width="16" height="10" rx="2" fill="#2e2640"/>
+                  <rect x="26" y="16" width="8" height="6" fill="#2e2640"/>
+                  <circle cx="12" cy="36" r="4" fill="#2e2640"/>
+                  <circle cx="30" cy="36" r="4" fill="#2e2640"/>
+                  <circle cx="12" cy="36" r="1.5" fill="#fff"/>
+                  <circle cx="30" cy="36" r="1.5" fill="#fff"/>
+                </svg>
+              </div>
+              <div class="pizza-label">PaaS</div>
+              <div class="pizza-title">Delivery em casa</div>
+              <div class="pizza-analogy">Chega assada na porta</div>
+              <ul>
+                <li>Provedor: pizza pronta</li>
+                <li>Você: mesa e bebida</li>
+                <li>Heroku, App Engine, Vercel</li>
+              </ul>
+            </div>
+            <div class="pizza-card pizza-saas">
+              <div class="pizza-icon">
+                <svg viewBox="0 0 48 48" aria-hidden="true">
+                  <rect x="4" y="30" width="40" height="4" fill="#2e2640"/>
+                  <circle cx="14" cy="22" r="7" fill="#ff4545"/>
+                  <circle cx="14" cy="22" r="4" fill="#fff"/>
+                  <rect x="26" y="12" width="3" height="18" fill="#2e2640"/>
+                  <rect x="22" y="10" width="11" height="3" fill="#2e2640"/>
+                  <rect x="36" y="12" width="3" height="18" fill="#2e2640"/>
+                  <circle cx="37.5" cy="16" r="3" fill="#2e2640"/>
+                </svg>
+              </div>
+              <div class="pizza-label">SaaS</div>
+              <div class="pizza-title">Jantar na pizzaria</div>
+              <div class="pizza-analogy">Só sentar e comer</div>
+              <ul>
+                <li>Provedor: tudo</li>
+                <li>Você: consumir e pagar</li>
+                <li>Gmail, Salesforce, Notion</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="hint-caption" style="margin-top: 10px;">Analogia atribuída a Albert Barron (IBM) e popularizada no Brasil por Igor Dsiaducki. Na prática, um mesmo produto usa os quatro modelos ao mesmo tempo: banco de dados no on-prem, APIs em IaaS, frontend em PaaS e Auth0 como SaaS de identidade.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, Containers -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Containers, leves, portáveis, reproduzíveis</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Um <strong>container</strong> empacota código e tudo de que ele depende (bibliotecas, binários, variáveis) em uma unidade que roda igual no laptop do dev e em produção. Leva junto o pedaço de SO que precisa, sem arrastar um sistema inteiro.</p>
+
+          <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; align-items: start; margin-top: 4px;">
+            <div class="container-compare" style="gap: 10px;">
+              <div class="stack-block" style="padding: 8px;">
+                <h4 style="font-size: 0.72em; margin-bottom: 5px;">Máquina virtual</h4>
+                <div class="stack-layer app">App A</div>
+                <div class="stack-layer runtime">Bins e libs</div>
+                <div class="stack-layer" style="background: #dfe5f8;">SO convidado</div>
+                <div class="stack-layer kernel">Hypervisor</div>
+                <div class="stack-layer" style="background: #dfe5f8;">Host OS</div>
+                <div class="stack-layer" style="background: #b5b5b5;">Infraestrutura</div>
+              </div>
+              <div class="stack-block" style="padding: 8px;">
+                <h4 style="font-size: 0.72em; margin-bottom: 5px;">Container</h4>
+                <div class="stack-layer app">App A</div>
+                <div class="stack-layer runtime">Bins e libs</div>
+                <div class="stack-layer kernel">Runtime (containerd)</div>
+                <div class="stack-layer" style="background: #dfe5f8;">Host OS (kernel compartilhado)</div>
+                <div class="stack-layer" style="background: #b5b5b5;">Infraestrutura</div>
+                <div class="stack-layer" style="background: transparent; color: transparent;">.</div>
+              </div>
+            </div>
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px;">
+              <h3 style="font-size: 0.82em; margin-bottom: 4px;">Por que importa</h3>
+              <ul style="font-size: 0.62em; margin: 0; padding-left: 16px; line-height: 1.35;">
+                <li><strong>Leveza,</strong> imagens de megabytes sobem em segundos.</li>
+                <li><strong>Isolamento,</strong> cada container tem processos e arquivos próprios.</li>
+                <li><strong>Portabilidade,</strong> mesma imagem em qualquer cloud.</li>
+                <li><strong>Consistência,</strong> some o "na minha máquina funcionava".</li>
+              </ul>
+              <h3 style="font-size: 0.82em; margin: 10px 0 4px;">O que vem junto</h3>
+              <p style="font-size: 0.62em; margin: 0; line-height: 1.35;"><strong>Dockerfile</strong> (receita), <strong>registry</strong> (Docker Hub, GHCR, Harbor), <strong>runtime</strong> (containerd, Podman) e o padrão aberto <strong>OCI</strong>, que evita lock-in.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 18, Kubernetes -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>E quando são milhares de containers?</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Rodar dois ou três containers no laptop é simples. O problema começa em produção, quando cada microserviço tem várias réplicas ligadas 24 por 7 em mais de uma região.</p>
+
+          <div class="k8s-scale">
+            <div class="scale-step">
+              <div class="scale-count">dezenas</div>
+              <div class="scale-dots">&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;</div>
+              <div class="scale-label">docker compose resolve, um script sobe a stack em poucos hosts.</div>
+            </div>
+            <div class="scale-step">
+              <div class="scale-count">centenas</div>
+              <div class="scale-dots">&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;<br/>&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;</div>
+              <div class="scale-label">quem cuida de healthcheck, rolling update, autoscaling, rede?</div>
+            </div>
+            <div class="scale-step critical">
+              <div class="scale-count">milhares</div>
+              <div class="scale-dots" style="font-size: 0.55em; letter-spacing: -2px;">&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;<br/>&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;&#11044;</div>
+              <div class="scale-label">impossível na mão. É preciso um orquestrador.</div>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 10px 14px;">
+            <h4 style="margin: 0 0 3px;">Kubernetes (k8s), o piloto automático dos containers</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Projeto open source da CNCF, nascido do sistema interno do Google. Você declara o estado desejado (quantas réplicas, qual imagem, quais recursos) e ele mantém o cluster nesse estado: distribui pods pelos nós, reinicia quando algum cai, escala quando a carga sobe e troca de versão sem parar o serviço. Aulas 05 e 06 do módulo aprofundam.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 19, Governança e workloads -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Governança, mapear workloads antes de escalar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Kubernetes resolve o "como rodar". Falta responder quais workloads rodam, quem é responsável, quem paga a conta e quais políticas cada um precisa respeitar. Isso é governança.</p>
+
+          <div class="workload-def" style="padding: 10px 16px; margin: 0 0 10px;">
+            <h4 style="margin: 0 0 3px;">Workload</h4>
+            <p style="font-size: 0.7em;">Carga de trabalho que roda no ambiente computacional para entregar uma função de negócio. Pode ser uma API, um job, um worker de fila ou um batch noturno. Cada workload tem um dono, um SLA, um custo mensal e um conjunto de políticas de segurança associadas.</p>
+          </div>
+
+          <div class="side-by-side" style="margin-top: 0;">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 10px 14px;">
+              <h3 style="font-size: 0.85em; margin-bottom: 4px;">Mapear é descobrir</h3>
+              <ul style="font-size: 0.64em; margin: 0; padding-left: 16px; line-height: 1.35;">
+                <li>Quantos workloads existem e quem é responsável.</li>
+                <li>Quais precisam de alta disponibilidade.</li>
+                <li>Quais têm dado sensível (LGPD, PCI).</li>
+                <li>Quanto cada um custa por mês.</li>
+              </ul>
+            </div>
+            <div class="side" style="padding: 10px 14px;">
+              <h3 style="font-size: 0.85em; margin-bottom: 4px;">Governar é aplicar</h3>
+              <ul style="font-size: 0.64em; margin: 0; padding-left: 16px; line-height: 1.35;">
+                <li>Políticas de acesso e segredos.</li>
+                <li>Padrões de deploy, observabilidade e backup.</li>
+                <li>Revisão de mudanças e auditoria.</li>
+                <li>Ciclo de vida, da criação ao desligamento.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Do caos ao catálogo</h4>
+            <p style="font-size: 0.64em; margin: 0; line-height: 1.35;">Em empresas maduras, uma Internal Developer Platform (IDP) trata esse catálogo como produto interno. O dev vê o que existe, pede um novo workload a partir de um template e a plataforma aplica as políticas sozinha. É a ponte para o próximo slide, OpenChoreo.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 20, OpenChoreo como IDP -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>OpenChoreo, uma IDP para governar workloads</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;"><strong>OpenChoreo</strong> é uma Internal Developer Platform (IDP) open source construída sobre Kubernetes. Materializa o catálogo de workloads que acabamos de ver. Mantida pela WSO2, é a base do serviço gerenciado Choreo.</p>
+
+          <div class="side-by-side">
+            <div>
+              <div class="tool-card" style="padding: 10px 14px; margin-bottom: 8px;">
+                <h4 style="font-size: 0.85em; margin: 0 0 3px;">O que ela entrega</h4>
+                <p style="font-size: 0.64em; line-height: 1.4;">Abstrações de alto nível (Service, Web Application, Scheduled Task, API). O dev declara o workload e a plataforma resolve build, deploy, rede, observabilidade e segredos. Segue o modelo de Platform Engineering da CNCF.</p>
+              </div>
+              <div class="tool-card" style="padding: 10px 14px; margin-bottom: 0;">
+                <h4 style="font-size: 0.85em; margin: 0 0 3px;">Onde encaixa no ciclo</h4>
+                <p style="font-size: 0.64em; line-height: 1.4;">Cobre do commit ao runtime: organiza pipelines de CI e CD, promove entre ambientes, aplica políticas da organização e publica APIs no marketplace interno.</p>
+              </div>
+            </div>
+            <div>
+              <div class="tool-card" style="padding: 10px 14px; margin-bottom: 8px;">
+                <h4 style="font-size: 0.85em; margin: 0 0 3px;">De onde vem</h4>
+                <p style="font-size: 0.64em; line-height: 1.4;"><strong>WSO2</strong> é a empresa por trás (API Manager, Identity Server). <strong>Choreo</strong> é o SaaS operado pela WSO2. <strong>OpenChoreo</strong> é o mesmo produto aberto, para rodar onde a empresa quiser.</p>
+              </div>
+              <div class="tool-card" style="padding: 10px 14px; margin-bottom: 0;">
+                <h4 style="font-size: 0.85em; margin: 0 0 3px;">Padrão, não ferramenta única</h4>
+                <p style="font-size: 0.64em; line-height: 1.4;">Backstage, Platform.sh, AWS Proton, Port e Humanitec seguem a mesma ideia de IDP. Reconhecer o padrão vale mais do que decorar a marca.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 35 min</span>
+        <h2>Caso Jacto Drones</h2>
+        <p class="section-description">Firmware, plataforma de serviços e inteligência de negócios: três frentes sem processo comum. Como resolver?</p>
+      </section>
+
+      <!-- 22, Exercício -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Hands-on, em grupos de 4</span>
+        <h2>Desenhe um processo para a Jacto Drones</h2>
+        <ol class="exercise-steps">
+          <li>Liste as três frentes da Jacto Drones e 1 risco específico de cada uma quando operam sem processo compartilhado.</li>
+          <li>Proponha um SDLC comum com pelo menos 5 fases nomeadas. Decidam juntos: cascata, ágil ou híbrido?</li>
+          <li>Em cada fase, indique quem faz (firmware, plataforma, BI), o que entrega e como as três frentes se integram.</li>
+          <li>Marque 2 pontos do ciclo onde ALM ajuda a reduzir ruído entre as frentes.</li>
+          <li>Apresente em 2 min: o que muda quando existe processo unificado?</li>
+        </ol>
+      </section>
+
+      <!-- 23, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida, 1 de 3</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Qual afirmação descreve melhor a relação entre SDLC, ALM e SCM?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">SCM engloba o ALM, que é apenas uma técnica de desenvolvimento clássico.</li>
+            <li data-correct="false">Os três termos se equivalem, muda só o fornecedor que usa cada sigla.</li>
+            <li data-correct="true">ALM cobre o ciclo da aplicação, contém o SDLC e inclui o SCM como disciplina.</li>
+            <li data-correct="false">SDLC pertence ao ágil, ALM à cascata, e SCM é ferramenta de build.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. ALM é o guarda-chuva, SDLC é o ciclo de engenharia e SCM cuida da configuração dos artefatos."
+               data-incorrect-msg="Ainda não. ALM é o guarda-chuva que engloba o SDLC, e o SCM é uma disciplina dentro do ALM."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida, 2 de 3</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">O que diferencia Integração Contínua (CI) de Entrega Contínua (CD) em um pipeline?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">CI e CD descrevem a mesma prática, muda só o nome que cada fornecedor usa.</li>
+            <li data-correct="true">CI valida o commit em build e testes, CD leva o artefato aprovado a ambientes.</li>
+            <li data-correct="false">CI roda apenas em produção e CD roda em homologação, ambos pedem aprovação humana.</li>
+            <li data-correct="false">CI gera binários para Windows e CD gera para Linux, cada um em seu pipeline.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. CI garante que cada commit é integrável, CD garante que o artefato pode ir para o próximo ambiente."
+               data-incorrect-msg="Reveja. CI cuida de build e testes por commit, CD cuida da promoção do artefato entre ambientes."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">24</div>
+        </div>
+      </section>
+
+      <!-- 25, Quiz 3 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida, 3 de 3</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Por que Kubernetes, e não só containers, virou padrão em produção de escala?</p>
+          <ul class="quiz-options">
+            <li data-correct="true">Ele orquestra muitos containers, cuida de escala, reinício e rede sem script.</li>
+            <li data-correct="false">Kubernetes substitui o container e dispensa a imagem Docker no deploy.</li>
+            <li data-correct="false">Sem Kubernetes, containers só rodam em notebook e não funcionam em Linux.</li>
+            <li data-correct="false">Kubernetes criptografa o código e atua como ferramenta de segurança.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Kubernetes resolve o problema de operar dezenas, centenas ou milhares de containers juntos."
+               data-incorrect-msg="Pense de novo. Containers cuidam do empacotamento, Kubernetes cuida da operação em escala."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, Auto-estudo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a próxima</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder, aguardando lista oficial dos auto-estudos da Aula 02.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Leitura</h4><p>Capítulo introdutório sobre SCM e controle de versão distribuído.</p></div>
+            <div class="concept-card"><h4>Vídeo</h4><p>Vídeo curto comparando GitFlow, Trunk-Based e GitHub Flow.</p></div>
+            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo da Aula 02.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 01, Ciclo de vida de software, Sprint 1</div>
+          <div class="footer-page">26</div>
+        </div>
+      </section>
+
+      <!-- 27, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Até a próxima</h2>
+        <p>Aula 02, Gestão de configuração (SCM), 27/04</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Pasta de imagens
+
+Adicione aqui os ativos visuais oficiais do Inteli quando estiverem disponíveis:
+
+- logo-inteli-color.png
+- logo-inteli-white.png
+- logo-inteli-simple.svg
+
+Enquanto os arquivos não estiverem disponíveis, o tema usa a wordmark textual
+`inteli.` definida em `assets/css/inteli-theme.css`.

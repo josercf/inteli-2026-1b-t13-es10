@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 06, CI parte 2: SAST no pipeline, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 02, Qualidade e CI</span>
+          <h1>CI parte 2: SAST no pipeline</h1>
+          <p class="subtitle">Shift-left de segurança: análise estática no pipeline com SonarQube, Semgrep e CodeQL.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>06 de 14</span>
+            <strong>Data</strong><span>13 de maio de 2026, quarta-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>José Romualdo da Costa Filho</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
+            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
+          </p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
+              <tr><td>10h15, Fundamentos</td><td>SAST, DAST, SCA e o lugar de cada um no ciclo</td><td>55 min</td></tr>
+              <tr><td>11h10, Prática</td><td>Adicionar SonarQube ou Semgrep ao pipeline do grupo</td><td>40 min</td></tr>
+              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily Time -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos de aprendizagem -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Compreender</h4><p>Explicar o que é SAST e onde ele encaixa no ciclo de CI.</p></div>
+            <div class="concept-card"><h4>Comparar</h4><p>Diferenciar SAST, DAST e SCA com critérios de uso.</p></div>
+            <div class="concept-card"><h4>Aplicar</h4><p>Configurar análise estática no pipeline e interpretar resultados.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 55 min</span>
+        <h2>Segurança no pipeline</h2>
+        <p class="section-description">Conceitos de SAST, DAST, SCA e shift-left de segurança.</p>
+      </section>
+
+      <!-- 06, Conteúdo (placeholder) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Conteúdo, a preencher</h2>
+        </div>
+        <div class="slide-body">
+          <div class="callout">
+            <h4>Placeholder de conteúdo</h4>
+            <p>SAST, DAST, SCA, OWASP Top 10 como pano de fundo, ferramentas como SonarQube, Semgrep e CodeQL, e critérios para escolher uma delas.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-page">06</div>
+        </div>
+      </section>
+
+      <!-- 07, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 40 min</span>
+        <h2>Prática com SAST</h2>
+        <p class="section-description">Configurar uma ferramenta no pipeline do projeto.</p>
+      </section>
+
+      <!-- 08, Exercício hands-on -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Hands-on, em grupos</span>
+        <h2>Plugue SAST no seu pipeline</h2>
+        <ol class="exercise-steps">
+          <li><em>Placeholder:</em> escolher SonarQube, Semgrep ou CodeQL e justificar.</li>
+          <li>Adicionar a etapa no pipeline do GitHub Actions ou GitLab CI.</li>
+          <li>Rodar o pipeline e revisar pelo menos 3 achados.</li>
+          <li>Classificar cada achado: falso positivo, aceito ou a corrigir.</li>
+          <li>Abrir issues no board para os achados a corrigir.</li>
+        </ol>
+      </section>
+
+      <!-- 09, Quiz -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question"><em>Placeholder:</em> qual a principal diferença entre SAST e SCA?</p>
+          <ul class="quiz-options">
+            <li data-correct="true">SAST analisa código-fonte e SCA analisa dependências</li>
+            <li data-correct="false">SAST é dinâmico e SCA é estático</li>
+            <li data-correct="false">SAST e SCA são sinônimos</li>
+            <li data-correct="false">SAST roda em produção e SCA no pipeline</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Certo. SAST vasculha código-fonte, SCA cuida das dependências e suas vulnerabilidades."
+               data-incorrect-msg="Ainda não. SAST olha para o código-fonte, SCA olha para as dependências declaradas."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 10, Auto-estudo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a próxima</h2>
+        </div>
+        <div class="slide-body">
+          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
+          <div class="concept-cards">
+            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
+            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
+            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Até a próxima</h2>
+        <p>Aula 07, Hello World, Continuous Deployment, 19/05</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>
