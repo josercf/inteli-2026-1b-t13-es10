@@ -18,6 +18,375 @@
 
   <link rel="stylesheet" href="assets/css/inteli-theme.css" />
   <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Layout local da Aula 02 */
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Slide da Atividade Ponderada */
+    .ponderada-slide {
+      background: var(--inteli-bg-soft);
+      padding: 34px 60px 38px;
+    }
+    .ponderada-slide .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--inteli-coral) 0%, var(--inteli-purple) 100%);
+    }
+    .ponderada-slide .ponderada-tag {
+      display: inline-block;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.72em;
+      color: #fff;
+      background: var(--inteli-coral);
+      padding: 6px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .ponderada-slide h2 {
+      color: var(--inteli-purple-deep);
+      font-size: 1.55em;
+      margin: 0 0 6px 0;
+    }
+    .ponderada-slide .ponderada-subtitle {
+      font-size: 0.78em;
+      color: var(--inteli-purple);
+      margin: 0 0 12px 0;
+      max-width: 90%;
+      line-height: 1.4;
+    }
+    .ponderada-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 20px;
+      margin-top: 6px;
+    }
+    .ponderada-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 16px;
+      border-left: 4px solid var(--inteli-coral);
+    }
+    .ponderada-card h4 {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.7em;
+      color: var(--inteli-coral);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 6px 0;
+    }
+    .ponderada-card p {
+      font-size: 0.72em;
+      margin: 0;
+      line-height: 1.45;
+      color: var(--inteli-purple-deep);
+    }
+    .ponderada-card ul {
+      font-size: 0.7em;
+      margin: 4px 0 0 0;
+      padding-left: 18px;
+      line-height: 1.45;
+      color: var(--inteli-purple-deep);
+    }
+    .ponderada-rubric {
+      background: var(--inteli-purple);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 10px;
+    }
+    .ponderada-rubric h4 {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.68em;
+      color: var(--inteli-green);
+      letter-spacing: 0.08em;
+      margin: 0 0 6px 0;
+      text-transform: uppercase;
+    }
+    .ponderada-rubric table,
+    .ponderada-rubric tbody,
+    .ponderada-rubric tr {
+      background: transparent !important;
+    }
+    .ponderada-rubric table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.65em;
+      background: transparent;
+    }
+    .ponderada-rubric tr:nth-child(even),
+    .ponderada-rubric tr:nth-child(odd) {
+      background: transparent !important;
+    }
+    .ponderada-rubric th,
+    .ponderada-rubric td {
+      text-align: left;
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      color: #fff !important;
+      background: transparent !important;
+    }
+    .ponderada-rubric th {
+      color: var(--inteli-green) !important;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-weight: 700;
+    }
+
+    /* Camadas do SCM */
+    .scm-layers {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .scm-layer {
+      background: #fff;
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .scm-layer.highlight {
+      border-color: var(--inteli-coral);
+      background: var(--inteli-bg-soft);
+    }
+    .scm-layer .layer-num {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.55em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .scm-layer h4 {
+      font-size: 0.82em;
+      color: var(--inteli-purple);
+      margin: 2px 0 4px;
+    }
+    .scm-layer p {
+      font-size: 0.62em;
+      margin: 0;
+      line-height: 1.35;
+      color: var(--inteli-purple-deep);
+    }
+    .scm-layer .layer-tools {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.55em;
+      color: var(--inteli-dark-green);
+      line-height: 1.3;
+    }
+
+    /* Cards de branching */
+    .branching-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 10px 0;
+    }
+    .branch-card {
+      background: #fff;
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+    .branch-card h4 {
+      color: var(--inteli-purple);
+      font-size: 0.9em;
+      margin: 0 0 2px 0;
+    }
+    .branch-card .branch-origin {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.58em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+    .branch-card ul {
+      font-size: 0.65em;
+      margin: 4px 0 0 0;
+      padding-left: 16px;
+      line-height: 1.35;
+    }
+    .branch-card .branch-good {
+      color: var(--inteli-dark-green);
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.6em;
+      font-weight: 700;
+      margin-top: 8px;
+      display: block;
+    }
+
+    /* C4 Levels */
+    .c4-levels {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .c4-level {
+      background: #fff;
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      position: relative;
+    }
+    .c4-level.focus {
+      border-color: var(--inteli-coral);
+      background: var(--inteli-bg-soft);
+    }
+    .c4-level .c4-num {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 1.1em;
+      font-weight: 700;
+      color: var(--inteli-coral);
+    }
+    .c4-level h4 {
+      color: var(--inteli-purple);
+      font-size: 0.78em;
+      margin: 2px 0 4px;
+    }
+    .c4-level p {
+      font-size: 0.62em;
+      margin: 0;
+      line-height: 1.35;
+      color: var(--inteli-purple-deep);
+    }
+    .c4-level .c4-audience {
+      margin-top: 6px;
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
+      font-style: italic;
+    }
+
+    /* Dockerfile como contrato */
+    .dockerfile-demo {
+      background: var(--inteli-purple-deep);
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      line-height: 1.5;
+    }
+    .dockerfile-demo .df-kw { color: var(--inteli-coral); font-weight: 700; }
+    .dockerfile-demo .df-val { color: #89cea5; }
+    .dockerfile-demo .df-note { color: #90a5e5; font-style: italic; }
+
+    /* Kubernetes blocos */
+    .k8s-blocks {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .k8s-block {
+      background: #fff;
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .k8s-block .k8s-kind {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.58em;
+      color: var(--inteli-coral);
+      letter-spacing: 0.05em;
+    }
+    .k8s-block h4 {
+      color: var(--inteli-purple);
+      font-size: 0.82em;
+      margin: 2px 0 4px;
+    }
+    .k8s-block p {
+      font-size: 0.62em;
+      margin: 0;
+      line-height: 1.35;
+      color: var(--inteli-purple-deep);
+    }
+
+    /* OpenChoreo conceitos em camadas */
+    .openchoreo-layers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 8px 0 10px;
+    }
+    .oc-layer {
+      background: #fff;
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .oc-layer h4 {
+      color: var(--inteli-purple);
+      font-size: 0.85em;
+      margin: 0 0 4px;
+    }
+    .oc-layer .oc-kind {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.58em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .oc-layer p {
+      font-size: 0.65em;
+      margin: 4px 0 0;
+      line-height: 1.4;
+      color: var(--inteli-purple-deep);
+    }
+    .oc-layer .oc-items {
+      font-size: 0.6em;
+      margin: 6px 0 0;
+      padding-left: 16px;
+      line-height: 1.4;
+    }
+
+    /* Variantes da ponderada */
+    .variant-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    .variant-card {
+      background: #fff;
+      border: 2px solid var(--inteli-lilac-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .variant-card .variant-num {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.6em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+    }
+    .variant-card h4 {
+      color: var(--inteli-purple);
+      font-size: 0.76em;
+      margin: 2px 0 4px;
+      line-height: 1.2;
+    }
+    .variant-card p {
+      font-size: 0.58em;
+      margin: 0;
+      line-height: 1.35;
+      color: var(--inteli-purple-deep);
+    }
+  </style>
 </head>
 <body>
   <div class="reveal">
@@ -29,11 +398,12 @@
         <div class="cover-content">
           <span class="sprint-tag">Sprint 01, Fundamentos do processo</span>
           <h1>Gestão de configuração (SCM)</h1>
-          <p class="subtitle">Versionamento, branches, repositórios e rastreabilidade: o chão comum sobre o qual DevOps roda.</p>
+          <p class="subtitle">Versionar código, dependências, configuração e ambiente: o chão comum que faz o resto do DevOps funcionar.</p>
           <div class="cover-meta">
             <strong>Aula</strong><span>02 de 14</span>
             <strong>Data</strong><span>27 de abril de 2026, segunda-feira, 10h00 às 12h00</span>
             <strong>Professor</strong><span>José Romualdo da Costa Filho</span>
+            <strong>Convidado</strong><span>Arquiteto WSO2, hands-on de OpenChoreo</span>
             <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
           </div>
         </div>
@@ -49,18 +419,18 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
-            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
-          </p>
           <table>
             <thead>
-              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+              <tr><th style="width: 26%;">Bloco</th><th style="width: 54%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Fundamentos</td><td>Conceitos de SCM, controle de versão e estratégias de branching</td><td>55 min</td></tr>
-              <tr><td>11h10, Prática</td><td>Hands-on: configurar repositório e fluxo de branches do projeto</td><td>40 min</td></tr>
-              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min, status rápido por grupo</td><td>15 min</td></tr>
+              <tr><td>10h15, Ponderada</td><td>Briefing da atividade ponderada da sprint e alinhamento da rubrica</td><td>5 min</td></tr>
+              <tr><td>10h20, Ativação</td><td>Recuperação dos auto-estudos, três quizzes rápidos em plenário</td><td>15 min</td></tr>
+              <tr><td>10h35, SCM na prática</td><td>O que SCM versiona, estratégias de branching, commits e configuração</td><td>30 min</td></tr>
+              <tr><td>11h05, C4 e reprodutibilidade</td><td>C4 Model como linguagem comum, Docker e Kubernetes essenciais</td><td>20 min</td></tr>
+              <tr><td>11h25, OpenChoreo ao vivo</td><td>Sessão com o arquiteto da WSO2, conceitos e demo coletiva</td><td>25 min</td></tr>
+              <tr><td>11h50, Síntese</td><td>Quizzes de fechamento, homework e ponte para Aula 03</td><td>10 min</td></tr>
             </tbody>
           </table>
         </div>
@@ -75,7 +445,7 @@
         <span class="daily-tag">Daily, 15 min</span>
         <h2>Daily Time</h2>
         <p class="daily-subtitle">
-          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+          Alinhamento rápido de cada grupo: o que avançou desde a última aula, o que trava e qual é a próxima meta.
         </p>
         <div class="inteli-timer" data-minutes="15">
           <div class="inteli-timer-display">15:00</div>
@@ -87,7 +457,50 @@
         </div>
       </section>
 
-      <!-- 04, Objetivos de aprendizagem -->
+      <!-- 04, Atividade Ponderada, JactoDesk -->
+      <section class="ponderada-slide">
+        <div class="top-bar"></div>
+        <span class="ponderada-tag">Ponderada, Sprint 02, individual, 4 horas</span>
+        <h2>JactoDesk: suba três Components no OpenChoreo</h2>
+        <p class="ponderada-subtitle">
+          Um mesmo minimundo para toda a turma. Você parte de um repositório-semente que roda, mas esconde vários problemas ligados ao que vimos hoje. Sua missão é achá-los, arrumá-los e implantar três Components (Service, Web Application e Scheduled Task) no OpenChoreo do arquiteto da WSO2.
+        </p>
+
+        <div class="ponderada-grid">
+          <div>
+            <div class="ponderada-card">
+              <h4>Repositório-semente</h4>
+              <p style="font-size: 0.66em; line-height: 1.4;"><code style="font-size: 0.82em;">github.com/josercf/<br>inteli-2026-1B-T13-ES10-Ponderada-S2</code></p>
+              <p style="font-size: 0.66em; margin-top: 4px; line-height: 1.4;">Clone, crie um projeto no seu GitLab e dê push lá. É nele que seus commits, pipeline e correções vão viver.</p>
+            </div>
+            <div class="ponderada-card" style="margin-top: 6px;">
+              <h4>Como começar</h4>
+              <p style="font-size: 0.66em; line-height: 1.4;">Leia o README, rode local, observe os comentários no código, acompanhe o pipeline do GitLab. O que falhar é pista. Descobrir o que precisa ser arrumado faz parte do exercício.</p>
+            </div>
+          </div>
+          <div>
+            <div class="ponderada-card">
+              <h4>O que entregar</h4>
+              <ul style="font-size: 0.66em; line-height: 1.4; margin: 0; padding-left: 16px;">
+                <li>Link do seu repositório no GitLab com as correções em commits bem feitos e pipeline verde.</li>
+                <li>Vídeo de até 5 minutos descrevendo o que você corrigiu e por quê.</li>
+                <li>Demo do OpenChoreo com os três Components rodando em dev.</li>
+              </ul>
+            </div>
+            <div class="ponderada-card" style="margin-top: 6px;">
+              <h4>O que contar no vídeo</h4>
+              <p style="font-size: 0.66em; line-height: 1.4;">Escolha os dois ou três problemas mais interessantes que você encontrou, mostre o commit que arrumou cada um e termine com a tela do OpenChoreo. Sem roteiro engessado, mas sem demo sem voz.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Objetivos -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
@@ -96,85 +509,97 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
           <div class="concept-cards">
-            <div class="concept-card"><h4>Compreender</h4><p>Identificar o papel da Gestão de Configuração no ciclo de engenharia.</p></div>
-            <div class="concept-card"><h4>Comparar</h4><p>Distinguir estratégias de branching (GitFlow, Trunk-Based, GitHub Flow).</p></div>
-            <div class="concept-card"><h4>Aplicar</h4><p>Configurar o repositório do módulo com padrões de commit, tags e proteção de branches.</p></div>
+            <div class="concept-card"><h4>Compreender</h4><p>Reconhecer que SCM cuida de código, dependências, configuração e infraestrutura, não só de Git.</p></div>
+            <div class="concept-card"><h4>Comparar</h4><p>Distinguir GitFlow, Trunk-Based e GitHub Flow e saber quando cada um cabe.</p></div>
+            <div class="concept-card"><h4>Modelar</h4><p>Usar o C4 Model para descrever arquitetura em níveis de zoom apropriados.</p></div>
+            <div class="concept-card"><h4>Aplicar</h4><p>Implantar uma aplicação no OpenChoreo e explicar, na defesa, cada decisão que vocês tomaram.</p></div>
           </div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
-          <div class="footer-page">04</div>
+          <div class="footer-page">05</div>
         </div>
       </section>
 
-      <!-- 05, Separador Bloco 1 -->
+      <!-- 06, Separador Bloco 1 -->
       <section class="section-slide">
-        <span class="section-number">Bloco 1, 55 min</span>
-        <h2>Fundamentos de SCM</h2>
-        <p class="section-description">Conceitos, histórico e o que é rastreabilidade de artefatos.</p>
+        <span class="section-number">Bloco 1, 15 min</span>
+        <h2>Do que vocês leram</h2>
+        <p class="section-description">Ativação dos auto-estudos em três quizzes rápidos. Cada um vale uma discussão curta em plenário.</p>
       </section>
 
-      <!-- 06, Conteúdo (placeholder) -->
-      <section class="content-slide">
-        <div class="top-bar"></div>
-        <span class="inteli-logo-header inteli-wordmark">inteli</span>
-        <div class="slide-title-area">
-          <div class="accent-bar"></div>
-          <h2>Conteúdo, a preencher</h2>
-        </div>
-        <div class="slide-body">
-          <div class="callout">
-            <h4>Placeholder de conteúdo</h4>
-            <p>Conceitos de SCM segundo ISO/IEC 12207, controle de versão distribuído, estratégias de branching, PR/MR e rastreabilidade.</p>
-          </div>
-        </div>
-        <div class="slide-footer">
-          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
-          <div class="footer-page">06</div>
-        </div>
-      </section>
-
-      <!-- 07, Separador Bloco 2 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 2, 40 min</span>
-        <h2>Prática com Git</h2>
-        <p class="section-description">Estruturar o repositório do grupo seguindo um fluxo escolhido.</p>
-      </section>
-
-      <!-- 08, Exercício hands-on -->
-      <section class="exercise-slide">
-        <span class="exercise-tag">Hands-on, em grupos</span>
-        <h2>Defina o fluxo de SCM do seu projeto</h2>
-        <ol class="exercise-steps">
-          <li><em>Placeholder:</em> escolher entre GitFlow, Trunk-Based ou GitHub Flow e justificar.</li>
-          <li>Documentar no README a convenção de commits adotada.</li>
-          <li>Configurar branch protection rules na main.</li>
-          <li>Abrir uma issue, um branch e uma primeira MR de exemplo.</li>
-          <li>Compartilhar a escolha com a turma em 1 minuto.</li>
-        </ol>
-      </section>
-
-      <!-- 09, Quiz -->
+      <!-- 07, Quiz ativação 1, SCM -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem rápida</h2>
+          <h2>Ativação, 1 de 3, SCM</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question"><em>Placeholder:</em> em qual fluxo a main deve sempre refletir um estado publicável, com integrações pequenas e frequentes?</p>
+          <p class="quiz-question">Dos itens abaixo, qual <strong>não</strong> é tradicionalmente objeto da Gestão de Configuração de Software?</p>
           <ul class="quiz-options">
-            <li data-correct="false">GitFlow</li>
-            <li data-correct="true">Trunk-Based Development</li>
-            <li data-correct="false">Forking Workflow</li>
-            <li data-correct="false">Cascata</li>
+            <li data-correct="false">O código-fonte versionado com histórico de quem alterou cada linha.</li>
+            <li data-correct="false">As dependências externas com versões travadas em lockfile.</li>
+            <li data-correct="true">O salário dos desenvolvedores que trabalham no repositório.</li>
+            <li data-correct="false">Os arquivos de configuração de cada ambiente onde a aplicação roda.</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Isso. Trunk-Based pressupõe main sempre verde e integrações curtas."
-               data-incorrect-msg="Ainda não. Trunk-Based é o fluxo que pressupõe main sempre publicável."></div>
+               data-correct-msg="Correto. SCM cuida de código, dependências, configuração e artefatos. Folha de pagamento fica a cargo de RH."
+               data-incorrect-msg="Volte ao vídeo do auto-estudo. SCM cobre artefatos técnicos da aplicação, não temas de pessoal."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Quiz ativação 2, Configuração -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ativação, 2 de 3, Configuração</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Por que o artigo da Red Hat sobre gestão de configuração recomenda manter os parâmetros de ambiente <em>fora</em> do artefato final da aplicação?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Porque a aplicação só aceita configuração em tempo de compilação.</li>
+            <li data-correct="true">Para que a mesma imagem rode em dev, homologação e produção sem ser recompilada.</li>
+            <li data-correct="false">Porque variáveis de ambiente consomem mais memória que arquivos.</li>
+            <li data-correct="false">Porque a LGPD obriga configuração dentro do container.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Separar build de configuração é o que permite promover o mesmo artefato entre ambientes com segurança."
+               data-incorrect-msg="Reveja o artigo. A ideia central é promover o mesmo artefato entre ambientes, trocando só a configuração."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 09, Quiz ativação 3, C4 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ativação, 3 de 3, C4 Model</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">No C4 Model de Simon Brown, qual é o nível que mostra <strong>quais serviços da aplicação se comunicam entre si</strong>, sem descer no código?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Contexto (Nível 1)</li>
+            <li data-correct="true">Container (Nível 2)</li>
+            <li data-correct="false">Componente (Nível 3)</li>
+            <li data-correct="false">Código (Nível 4)</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. Container, no C4, é onde aparecem as aplicações que rodam em processos separados e como elas se conversam."
+               data-incorrect-msg="Reveja o artigo. Contexto mostra o sistema por fora, Container mostra os serviços por dentro, Componente abre um serviço."></div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
@@ -182,29 +607,886 @@
         </div>
       </section>
 
-      <!-- 10, Auto-estudo -->
+      <!-- 10, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 30 min</span>
+        <h2>SCM para além do Git</h2>
+        <p class="section-description">Git é a ponta do iceberg. Versionar de verdade envolve código, dependências, configuração e ambiente inteiro.</p>
+      </section>
+
+      <!-- 11, Quatro camadas do SCM -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Auto-estudo para a próxima</h2>
+          <h2>O que SCM versiona de verdade</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
-          <div class="concept-cards">
-            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
-            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
-            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          <p style="font-size: 0.75em; margin: 0 0 6px;">Muita gente reduz SCM a Git. Na prática, são quatro camadas que precisam ser versionadas juntas. Deixar qualquer uma de fora cria aquele deploy que "rodava na minha máquina" e some em produção.</p>
+          <div class="scm-layers">
+            <div class="scm-layer">
+              <div class="layer-num">01</div>
+              <h4>Código</h4>
+              <p>O que o desenvolvedor escreve. Arquivos-fonte, testes, scripts de build.</p>
+              <span class="layer-tools">Git, branches, tags</span>
+            </div>
+            <div class="scm-layer">
+              <div class="layer-num">02</div>
+              <h4>Dependências</h4>
+              <p>Bibliotecas externas com versões travadas. Sem lockfile, build de ontem não reproduz hoje.</p>
+              <span class="layer-tools">package-lock.json, poetry.lock</span>
+            </div>
+            <div class="scm-layer highlight">
+              <div class="layer-num">03</div>
+              <h4>Configuração</h4>
+              <p>O que muda entre ambientes. Variáveis, feature flags, endpoints. Fora do código, mas versionada.</p>
+              <span class="layer-tools">ConfigMap, Secret, .env.example</span>
+            </div>
+            <div class="scm-layer">
+              <div class="layer-num">04</div>
+              <h4>Ambiente</h4>
+              <p>O SO, o runtime, a infra. Virou código: Dockerfile, manifesto Kubernetes, Terraform.</p>
+              <span class="layer-tools">Dockerfile, IaC, Helm</span>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 8px; padding: 10px 14px;">
+            <h4 style="margin: 0 0 3px;">A regra prática</h4>
+            <p style="font-size: 0.68em; margin: 0; line-height: 1.4;">Se algo que só existe no seu laptop impede um colega de rodar a aplicação, esse algo deveria estar versionado. Segredos são a única exceção: nunca vão para o repositório, mas o <em>nome</em> do segredo e o <em>formato</em> esperado vão.</p>
           </div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
-          <div class="footer-page">10</div>
+          <div class="footer-page">11</div>
         </div>
       </section>
 
-      <!-- 11, Encerramento -->
+      <!-- 12, Estratégias de branching -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Estratégias de branching, três modelos clássicos</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Como o time usa branches é uma das decisões mais visíveis do SCM. Três modelos dominam hoje. Cada um pressupõe um ritmo de entrega diferente.</p>
+          <div class="branching-grid">
+            <div class="branch-card">
+              <div class="branch-origin">2010, Vincent Driessen</div>
+              <h4>GitFlow</h4>
+              <ul>
+                <li><strong>main</strong> guarda versões liberadas.</li>
+                <li><strong>develop</strong> integra novo código.</li>
+                <li>Branches auxiliares: feature, release, hotfix.</li>
+                <li>Release passa por merge formal antes de virar tag.</li>
+              </ul>
+              <span class="branch-good">Bom para: produtos com versões numeradas, janelas de release, suporte a múltiplas versões em paralelo.</span>
+            </div>
+            <div class="branch-card">
+              <div class="branch-origin">2011, Scott Chacon</div>
+              <h4>GitHub Flow</h4>
+              <ul>
+                <li><strong>main</strong> sempre publicável.</li>
+                <li>Feature branches curtas, merge via PR.</li>
+                <li>Deploy pode acontecer em qualquer merge.</li>
+                <li>Não existe develop, hotfix é mais uma PR.</li>
+              </ul>
+              <span class="branch-good">Bom para: produtos web que entregam continuamente, times pequenos, SaaS.</span>
+            </div>
+            <div class="branch-card">
+              <div class="branch-origin">Anos 2000, Google, Meta</div>
+              <h4>Trunk-Based</h4>
+              <ul>
+                <li>Todos commitam direto em <strong>main</strong> (trunk).</li>
+                <li>Branches vivem horas, não dias.</li>
+                <li>Feature flags controlam o que está exposto.</li>
+                <li>Pipeline de CI com cobertura alta é pré-requisito.</li>
+              </ul>
+              <span class="branch-good">Bom para: monorepos, equipes grandes, deploy contínuo com alta automação.</span>
+            </div>
+          </div>
+          <p class="hint-caption">A escolha costuma refletir o ritmo do negócio. GitFlow protege contra release acidental, Trunk-Based remove atrito, GitHub Flow fica no meio.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, FLIP A, Qual fluxo para qual projeto -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 3 min em duplas</span>
+        <h2>Qual fluxo para qual projeto?</h2>
+        <p class="flip-prompt">Para cada cenário, decidam em dupla: <strong>GitFlow, GitHub Flow ou Trunk-Based</strong>, e escrevam a razão em uma frase.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Sistema embarcado de caixa eletrônico</h4>
+            <p>Versões 4.2, 4.3 e 5.0 convivem em bancos diferentes. Cada banco atualiza no seu ritmo, todas precisam de patch de segurança.</p>
+            <span class="flip-hint">O que pesa: múltiplas versões vivas em paralelo.</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, SaaS de gestão para dentistas</h4>
+            <p>Time de 6 desenvolvedores, deploy 2 vezes por semana, clientes usam sempre a versão mais recente, sem opção de ficar atrás.</p>
+            <span class="flip-hint">O que pesa: uma versão só, entrega frequente.</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Monorepo com 80 devs</h4>
+            <p>Vários times, build caro, dependências cruzadas. Branches longos viram pesadelo de merge, a automação cobre testes e segurança.</p>
+            <span class="flip-hint">O que pesa: escala do time e atrito de merge.</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, App mobile com review na loja</h4>
+            <p>Cada versão esperando aprovação da Apple. Paralelo a isso, o time continua codando a próxima, e às vezes precisa corrigir a versão em revisão.</p>
+            <span class="flip-hint">O que pesa: release bloqueado por terceiro.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Duas duplas apresentam. <strong>Justifiquem pela restrição do negócio, não pelo hábito do time.</strong></span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, Commits como contrato -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Commits e tags como contrato</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Branch é onde o código cresce. Commit é o registro de uma mudança. Tag é o ponto que diz "esta versão exata foi publicada". Juntos, eles formam o contrato mínimo de rastreabilidade.</p>
+
+          <div class="side-by-side">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">Conventional Commits</h3>
+              <p style="font-size: 0.7em; line-height: 1.4; margin: 0 0 6px;">Prefixo que classifica o tipo da mudança. Deixa o changelog legível e permite automação.</p>
+              <div class="dockerfile-demo" style="padding: 8px 12px; font-size: 0.58em;">
+                <span class="df-kw">feat</span>(auth): adicionar login por biometria<br>
+                <span class="df-kw">fix</span>(pagamentos): tratar timeout do gateway<br>
+                <span class="df-kw">chore</span>(deps): atualizar react para 19.1<br>
+                <span class="df-note"># Breaking: BREAKING CHANGE no corpo</span>
+              </div>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">Proteção de main e tags</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li><strong>Branch protection:</strong> PR obrigatório, pelo menos 1 revisor, status checks verdes.</li>
+                <li><strong>Signed commits:</strong> commits assinados com chave GPG ou SSH comprovam autoria.</li>
+                <li><strong>Semantic versioning:</strong> tag MAJOR.MINOR.PATCH. Breaking muda MAJOR.</li>
+                <li><strong>CODEOWNERS:</strong> define quem revisa cada pasta automaticamente.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O teste do incidente</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Às 3h da manhã produção quebra. Você consegue, em menos de 5 minutos, identificar a tag que foi publicada, encontrar o commit responsável, abrir a PR que o mergeou e saber quem aprovou? Se sim, seu SCM está saudável.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 15, Commits semânticos (NOVO) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Conventional Commits, o padrão que a ponderada cobra</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">A spec está em <code>conventionalcommits.org/v1.0.0</code>. Cada commit vira um dado legível por máquina, que alimenta changelog, semantic release e auditoria.</p>
+
+          <div class="side-by-side">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">Formato</h3>
+              <div class="dockerfile-demo" style="padding: 10px 14px; font-size: 0.62em;">
+                <span class="df-kw">&lt;tipo&gt;</span>(<span class="df-note">&lt;escopo&gt;</span>)<span class="df-kw">!</span>: descrição<br>
+                <br>
+                [corpo opcional]<br>
+                <br>
+                [rodapé opcional, BREAKING CHANGE]
+              </div>
+              <p style="font-size: 0.64em; line-height: 1.4; margin: 6px 0 0;">Tipos aceitos no repo da ponderada: <code>feat, fix, docs, style, refactor, test, chore, ci, build, perf, revert</code>.</p>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">Como o repo cobra</h3>
+              <ul style="font-size: 0.66em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li><strong>Local:</strong> Husky instala um hook <code>commit-msg</code> que chama o commitlint. Mensagem fora do padrão, commit bloqueado.</li>
+                <li><strong>CI:</strong> o job <code>lint:commits</code> roda em cada MR. Se um commit antigo passou pelo Husky mas não está no padrão, a MR falha e não merge.</li>
+                <li><strong>Revisão:</strong> o avaliador dá <code>git log --oneline</code> e sabe em trinta segundos o que você mexeu.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Boas mensagens, de forma geral</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">
+              Prefixo claro (<code>fix</code>, <code>feat</code>, <code>chore</code>), escopo identificando qual parte do sistema foi tocada, descrição curta no imperativo, corpo opcional com o porquê. Um commit por mudança lógica, não um commitão com tudo.
+            </p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, Configuração versionada (12-factor) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Configuração: dentro ou fora do código?</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">O <strong>12-factor app</strong> (Heroku, 2011) virou referência. O fator 3 é claro: <em>config fica no ambiente, nunca no código</em>. Mas nem toda configuração é igual.</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4>Versionar no repo</h4>
+              <p style="font-size: 0.66em;">Defaults seguros (<em>.env.example</em>), schemas de configuração, feature flags estáticas, ConfigMap de Kubernetes de dev.</p>
+            </div>
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4>Injetar no ambiente</h4>
+              <p style="font-size: 0.66em;">Endpoints por ambiente, credenciais de serviços, flags dinâmicas, tamanhos de pool. Mesma imagem para todos, valores diferentes.</p>
+            </div>
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4>Nunca no repo</h4>
+              <p style="font-size: 0.66em;">Senhas, tokens de API, chaves privadas, certificados. Vão para cofres (Vault, Secrets Manager, Sealed Secrets) e a aplicação os lê pelo ambiente.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que isso existe</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Sem essa separação, promover uma imagem de dev para produção exigiria rebuild. Com ela, <em>a mesma imagem</em> aprovada em staging é a que vai para produção, e só a configuração muda. Isso é o que permite que a Aula 03 fale de métricas como lead time e deployment frequency com alguma base.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, Credenciais, nunca no código (NOVO, TruffleHog) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Segredos comitados: detectar e reagir</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">O erro vai acontecer: alguém cola uma chave no código para destravar o dev na sexta, esquece de tirar no domingo, e comita na segunda. O que separa o time que aprendeu do time que repete o mesmo erro é o que vem depois. <strong>Apagar o commit não resolve</strong>, a chave já foi pública.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4>Detectar, TruffleHog</h4>
+              <p style="font-size: 0.66em; line-height: 1.45;">
+                Ferramenta open source que varre o histórico do git procurando credenciais por padrão e por entropia. Roda como container, não precisa de instalação nativa.
+              </p>
+              <div class="dockerfile-demo" style="padding: 8px 12px; font-size: 0.6em; margin-top: 6px;">
+                docker run --rm -v "$PWD":/src \<br>
+                &nbsp;&nbsp;trufflesecurity/trufflehog:latest \<br>
+                &nbsp;&nbsp;git file:///src --fail
+              </div>
+            </div>
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4>Reagir, rotacionar</h4>
+              <ul style="font-size: 0.66em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Rotacione a credencial no provedor. A chave comprometida morre.</li>
+                <li>Só depois, decida se vale reescrever o histórico. Às vezes não compensa.</li>
+                <li>Mova a leitura para variável de ambiente, entregue como Secret no OpenChoreo.</li>
+                <li>Adicione o padrão ao pre-commit local e ao CI, para não repetir.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Se o pipeline da sua MR derrubar por TruffleHog</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">
+              Não basta apagar a linha no próximo commit. Rotacione primeiro (no provedor, ou simulado se for um laboratório), mova a leitura para variável de ambiente, configure o Secret no OpenChoreo, e aí sim reabra a MR. Documente a rotação na descrição da MR para o revisor confiar.
+            </p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 18, Testes como gate de commit (NOVO, Husky + CI) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Testes e hooks: dois gates, um antes do push, um antes do merge</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Histórico limpo e chave rotacionada resolvem o problema antigo. Falta saber se o código continua fazendo o que deveria depois de cada mudança. Dois gates, um quando você comita e outro quando você abre a MR, te protegem disso sem custo quase nenhum.</p>
+
+          <div class="side-by-side">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">Gate 1, local (Husky pre-commit)</h3>
+              <ul style="font-size: 0.66em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Roda TruffleHog no diff staged.</li>
+                <li>Roda <code>npm test</code> no orders-api.</li>
+                <li>Falha rápido, feedback em segundos.</li>
+                <li>Pode ser pulado com <code>--no-verify</code>, mas aí o gate 2 pega.</li>
+              </ul>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">Gate 2, CI (GitLab)</h3>
+              <ul style="font-size: 0.66em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li><code>lint:commits</code>, valida Conventional Commits do range da MR.</li>
+                <li><code>scan:secrets</code>, TruffleHog no histórico inteiro.</li>
+                <li><code>test:api</code>, testes do orders-api em imagem limpa.</li>
+                <li>Gate obrigatório para merge na <code>main</code>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que dois gates</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">
+              O hook local é conveniência para quem está codando, o CI é a garantia formal de que <em>nada</em> merge sem passar. Se o hook falha mas o CI não, você tem um hook mal configurado. Se o hook passa mas o CI falha, você tem diferença de ambiente. Os dois precisam contar a mesma história.
+            </p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 19, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 20 min</span>
+        <h2>C4 e reprodutibilidade</h2>
+        <p class="section-description">Linguagem comum para arquitetura e o par Docker + Kubernetes como contrato de execução.</p>
+      </section>
+
+      <!-- 20, C4 Model níveis -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>C4 Model, quatro níveis de zoom</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Proposto por Simon Brown em 2018, o C4 trata diagrama de arquitetura como mapa de zoom: a mesma cidade vista em escalas diferentes. Cada nível responde a uma pergunta diferente e fala com gente diferente.</p>
+          <div class="c4-levels">
+            <div class="c4-level">
+              <div class="c4-num">1</div>
+              <h4>Contexto</h4>
+              <p>Caixa preta do sistema. Quem usa, com que outros sistemas conversa.</p>
+              <span class="c4-audience">Stakeholders não técnicos</span>
+            </div>
+            <div class="c4-level focus">
+              <div class="c4-num">2</div>
+              <h4>Container</h4>
+              <p>Unidades que rodam em processos separados: APIs, bancos, filas, jobs.</p>
+              <span class="c4-audience">Arquitetos e times técnicos</span>
+            </div>
+            <div class="c4-level">
+              <div class="c4-num">3</div>
+              <h4>Componente</h4>
+              <p>Abre um container. Módulos, responsabilidades internas, pontos de extensão.</p>
+              <span class="c4-audience">Desenvolvedores do serviço</span>
+            </div>
+            <div class="c4-level">
+              <div class="c4-num">4</div>
+              <h4>Código</h4>
+              <p>Classes, funções, estruturas. Útil em pedaços críticos, raro fora deles.</p>
+              <span class="c4-audience">Quem vai mexer naquele trecho</span>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 8px; padding: 10px 14px;">
+            <h4 style="margin: 0 0 3px;">Na sua ponderada, o Container é o foco</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">É nele que aparecem os Components do OpenChoreo. Um bom C4 Container não tem caixa sem função, cada seta mostra um protocolo e cada container diz qual runtime roda dentro.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Docker Dockerfile como contrato -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Dockerfile, contrato de reprodutibilidade</h2>
+        </div>
+        <div class="slide-body" style="display: grid; grid-template-columns: 1.05fr 1fr; gap: 18px; align-items: start;">
+          <div>
+            <p style="font-size: 0.72em; margin: 0 0 6px;">Um Dockerfile é a receita que transforma código em imagem. Ler o Dockerfile de um projeto mostra, em 20 linhas, que runtime ele usa, quais dependências instala, como o build acontece e como a aplicação sobe.</p>
+            <div class="dockerfile-demo">
+              <span class="df-note"># Imagem base pinada para reprodutibilidade</span><br>
+              <span class="df-kw">FROM</span> <span class="df-val">node:20.11-alpine</span><br><br>
+              <span class="df-kw">WORKDIR</span> <span class="df-val">/app</span><br><br>
+              <span class="df-note"># Lockfile entra antes do código para cache</span><br>
+              <span class="df-kw">COPY</span> <span class="df-val">package*.json ./</span><br>
+              <span class="df-kw">RUN</span> <span class="df-val">npm ci</span><br><br>
+              <span class="df-kw">COPY</span> <span class="df-val">. .</span><br>
+              <span class="df-kw">RUN</span> <span class="df-val">npm run build</span><br><br>
+              <span class="df-kw">EXPOSE</span> <span class="df-val">3000</span><br>
+              <span class="df-kw">CMD</span> <span class="df-val">["node", "dist/server.js"]</span>
+            </div>
+          </div>
+          <div>
+            <div class="concept-card" style="padding: 10px 14px; margin-bottom: 8px;">
+              <h4>Boas práticas essenciais</h4>
+              <p style="font-size: 0.66em;">Imagens base pinadas (nunca <em>latest</em>), multi-stage para imagens finais enxutas, usuário não-root, healthcheck explícito.</p>
+            </div>
+            <div class="concept-card" style="padding: 10px 14px; margin-bottom: 8px;">
+              <h4>O que fica de fora</h4>
+              <p style="font-size: 0.66em;">Segredos, credenciais, arquivos locais do dev. Um <em>.dockerignore</em> bem feito evita vazamento acidental.</p>
+            </div>
+            <div class="concept-card" style="padding: 10px 14px; margin-bottom: 0;">
+              <h4>Por que isso importa para SCM</h4>
+              <p style="font-size: 0.66em;">A imagem construída é um artefato versionável. O par <em>commit + imagem + tag</em> é o que permite reproduzir exatamente o que rodou em produção no dia X.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Kubernetes essencial -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Kubernetes essencial, quatro objetos para conversar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O Kubernetes tem dezenas de recursos. Para a Aula 02, basta entender quatro. Eles são a base de tudo o que o OpenChoreo abstrai. Quando o arquiteto falar de <em>Component</em>, vocês vão reconhecer o que está abaixo.</p>
+          <div class="k8s-blocks">
+            <div class="k8s-block">
+              <div class="k8s-kind">kind: Pod</div>
+              <h4>Pod</h4>
+              <p>Menor unidade executável. Um ou mais containers que compartilham rede e armazenamento. Efêmero por design.</p>
+            </div>
+            <div class="k8s-block">
+              <div class="k8s-kind">kind: Deployment</div>
+              <h4>Deployment</h4>
+              <p>Mantém N réplicas de um Pod rodando. Cuida de rolling update e rollback. É o que você declara no dia a dia.</p>
+            </div>
+            <div class="k8s-block">
+              <div class="k8s-kind">kind: Service</div>
+              <h4>Service</h4>
+              <p>Endereço estável que aponta para os Pods. Sem ele, como cada Pod tem IP próprio e volátil, ninguém se acha.</p>
+            </div>
+            <div class="k8s-block">
+              <div class="k8s-kind">kind: ConfigMap / Secret</div>
+              <h4>ConfigMap e Secret</h4>
+              <p>Configuração e segredos externos ao Pod. Montados como variável de ambiente ou arquivo. Fator 3 do 12-factor, na prática.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A ideia por trás de tudo: estado declarado</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Você escreve o estado desejado num YAML (o <em>manifesto</em>), envia ao cluster, e o Kubernetes trabalha para que a realidade bata com o manifesto. Isso é o que torna possível rodar milhares de Pods sem script e sem plantão manual. O OpenChoreo esconde a maior parte desse YAML, mas o modelo mental é esse.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, FLIP B, imagem vs config -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 3 min individual</span>
+        <h2>Imagem ou configuração?</h2>
+        <p class="flip-prompt">Vou mostrar uma aplicação e cinco itens dela. Individualmente, marquem cada item como <strong>IMAGEM</strong> (vai no Dockerfile), <strong>CONFIG</strong> (injetada pelo ambiente) ou <strong>FORA</strong> (fica em cofre de segredos).</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Versão do Node que roda a app</h4>
+            <p>A aplicação foi escrita em Node 20 e precisa exatamente dessa versão para funcionar.</p>
+            <span class="flip-hint">Muda entre ambientes? Precisa rebuild se trocar?</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, URL do banco de dados</h4>
+            <p>Em dev é <em>localhost</em>, em staging é <em>db-stg.internal</em>, em produção é <em>db-prd.internal</em>.</p>
+            <span class="flip-hint">Mesma imagem, valor diferente por ambiente.</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Chave da API do Stripe</h4>
+            <p>Token secreto que autoriza a aplicação a cobrar cartão do cliente.</p>
+            <span class="flip-hint">Pode estar no git? E numa variável de ambiente no repo?</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Feature flag "novo checkout"</h4>
+            <p>Liga ou desliga uma tela nova sem precisar subir versão. Muda no meio do dia.</p>
+            <span class="flip-hint">Mudança em runtime, não precisa rebuild.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Dois alunos apresentam. <strong>Se houver divergência, discutimos por que uma escolha é mais resiliente.</strong></span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Separador Bloco 4 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 4, 25 min</span>
+        <h2>OpenChoreo com a WSO2</h2>
+        <p class="section-description">Arquiteto da WSO2 conduz a sessão. Conceitos da plataforma, demo coletiva e ponte para a ponderada individual.</p>
+      </section>
+
+      <!-- 25, OpenChoreo recap -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>OpenChoreo, recap e o que ele absorve</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Na Aula 01 vimos que OpenChoreo é uma Internal Developer Platform (IDP) open source sobre Kubernetes, mantida pela WSO2. Hoje vamos usá-la de verdade. Antes de abrir o console, vale fixar o que a plataforma faz por você <em>e</em> o que ela exige de você.</p>
+
+          <div class="side-by-side">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 14px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">O que a plataforma absorve</h3>
+              <ul style="font-size: 0.66em; line-height: 1.4; margin: 0; padding-left: 16px;">
+                <li>Geração do manifesto Kubernetes, você não escreve YAML baixo nível.</li>
+                <li>Pipeline de build e deploy entre ambientes, sem Jenkinsfile.</li>
+                <li>Rede entre serviços, autenticação, rate limiting, observabilidade básica.</li>
+                <li>Governança da organização, políticas da plataforma aplicam por padrão.</li>
+              </ul>
+            </div>
+            <div class="side" style="padding: 12px 14px;">
+              <h3 style="font-size: 0.88em; margin-bottom: 4px;">O que ela exige de você</h3>
+              <ul style="font-size: 0.66em; line-height: 1.4; margin: 0; padding-left: 16px;">
+                <li>Uma aplicação que respeite o 12-factor (configuração externa).</li>
+                <li>Um Dockerfile (ou um buildpack) que produza imagem rodável.</li>
+                <li>Declaração do tipo do componente (Service, Web App, Task).</li>
+                <li>Pensar nas fronteiras: o que é um componente, o que é dependência.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Como isso se liga à sua ponderada</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Na defesa em vídeo, vocês vão responder: <em>"o que o OpenChoreo fez por mim e o que eu tive que decidir?"</em>. A resposta sai daqui, deste slide, não do marketing da plataforma.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, Conceitos OpenChoreo, Components, Projects, Environments -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três conceitos, uma hierarquia</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">OpenChoreo organiza o que é implantado em três níveis. Se vocês não fixarem essa hierarquia agora, a primeira hora no console vai ser de dúvida pura.</p>
+          <div class="openchoreo-layers">
+            <div class="oc-layer">
+              <div class="oc-kind">kind: Project</div>
+              <h4>Project</h4>
+              <p>Agrupa componentes que formam um produto ou subsistema. Fronteira de domínio. Tem quota, donos e políticas próprias.</p>
+              <ul class="oc-items">
+                <li>Exemplo: <em>Pagamentos</em></li>
+                <li>Isola custo e acesso</li>
+                <li>Mapeia um time</li>
+              </ul>
+            </div>
+            <div class="oc-layer">
+              <div class="oc-kind">kind: Component</div>
+              <h4>Component</h4>
+              <p>Unidade de código implantável. Vem com um tipo: Service, Web Application, Scheduled Task, Manual Task, API Proxy.</p>
+              <ul class="oc-items">
+                <li>Exemplo: <em>api-cobranca</em></li>
+                <li>1 repositório, 1 componente</li>
+                <li>Build e deploy próprios</li>
+              </ul>
+            </div>
+            <div class="oc-layer">
+              <div class="oc-kind">kind: Environment</div>
+              <h4>Environment</h4>
+              <p>Onde o componente roda. Dev, staging, produção. Cada ambiente tem sua configuração, seus segredos e seu cluster-alvo.</p>
+              <ul class="oc-items">
+                <li>Exemplo: <em>dev, staging, prod</em></li>
+                <li>Promoção controlada</li>
+                <li>Config por ambiente</li>
+              </ul>
+            </div>
+          </div>
+          <p class="hint-caption">Na prática: um Project contém vários Components, e cada Component é promovido por Environments distintos. A analogia com K8s: Project é Namespace, Component é Deployment, Environment é cluster.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">26</div>
+        </div>
+      </section>
+
+      <!-- 27, Deployment Tracks, Managed Auth, Cells -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três recursos que aparecem na demo</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Antes da demo, mais três conceitos que vão aparecer na tela. Eles transformam Kubernetes cru em plataforma, e são os que costumam confundir quem vê OpenChoreo pela primeira vez.</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
+            <div class="concept-card" style="padding: 12px 14px;">
+              <h4>Deployment Track</h4>
+              <p style="font-size: 0.66em;">Caminho estável de entrega. Cada Component pode ter múltiplos tracks (ex: <em>main</em>, <em>beta</em>). Permite v1 e v2 convivendo sem que uma atropele a outra.</p>
+            </div>
+            <div class="concept-card" style="padding: 12px 14px;">
+              <h4>Managed Authentication</h4>
+              <p style="font-size: 0.66em;">Autenticação provida pela plataforma. O Component declara que precisa de usuário autenticado, OpenChoreo resolve com OIDC sem escrever código.</p>
+            </div>
+            <div class="concept-card" style="padding: 12px 14px;">
+              <h4>Cell</h4>
+              <p style="font-size: 0.66em;">Fronteira lógica que agrupa componentes relacionados e aplica política de rede entre eles. É como o OpenChoreo desenha limites de segurança sem precisar de service mesh manual.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">No vídeo da ponderada</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se sua variante exigir login (API pública, por exemplo), o vídeo deve mostrar como Managed Auth foi configurado. Se sua variante tiver duas versões em paralelo, precisa mostrar os Deployment Tracks. A plataforma faz muito, mas você precisa saber explicar <em>o quê</em> ela está fazendo.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">27</div>
+        </div>
+      </section>
+
+      <!-- 28, Demo com arquiteto -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Demo coletiva, com o arquiteto da WSO2</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Agora sai do slide e entra no console. A turma inteira acompanha a implantação de uma <strong>aplicação A</strong> passo a passo, com o arquiteto conduzindo. O roteiro abaixo guia o que prestar atenção.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div class="concept-card" style="padding: 12px 14px;">
+              <h4>O que vai acontecer na tela</h4>
+              <ol style="font-size: 0.66em; padding-left: 18px; line-height: 1.45; margin: 4px 0 0;">
+                <li>Criar um Project para agrupar os Components.</li>
+                <li>Conectar o repositório de código ao OpenChoreo.</li>
+                <li>Registrar o primeiro Component (tipo Service).</li>
+                <li>Configurar build e primeiro deploy em Environment de dev.</li>
+                <li>Expor o Component e validar o endpoint.</li>
+              </ol>
+            </div>
+            <div class="concept-card" style="padding: 12px 14px;">
+              <h4>O que anotar para sua ponderada</h4>
+              <ul style="font-size: 0.66em; padding-left: 18px; line-height: 1.45; margin: 4px 0 0;">
+                <li>Em que tela apareceu cada conceito (Project, Component, Environment).</li>
+                <li>O que foi gerado sozinho e o que o arquiteto precisou preencher.</li>
+                <li>Como o diagrama que aparece no console se relaciona com o C4 Container.</li>
+                <li>Quais decisões arquiteturais não foram feitas pela plataforma.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Perguntas, agora ou nunca</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Essa é a hora. O arquiteto está aqui, a plataforma está aberta. Na ponderada, quem não fez pergunta hoje vai gastar horas lendo documentação depois. Use o tempo.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">28</div>
+        </div>
+      </section>
+
+      <!-- 29, FLIP C, Mapear C4 do que foi implantado -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 4 min em trios</span>
+        <h2>Desenhe o C4 Container do que acabamos de implantar</h2>
+        <p class="flip-prompt">Com a aplicação A ainda aberta no console, em trios, rascunhem o <strong>C4 Container</strong> dela. Não precisa ser bonito, precisa ser fiel. Quatro perguntas guiam o rascunho.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Quantos containers?</h4>
+            <p>Quantos Components apareceram no OpenChoreo? Cada um é um Container no C4? Tem banco ou fila junto?</p>
+            <span class="flip-hint">Um Component não é sempre um Container único.</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Como conversam?</h4>
+            <p>Que protocolo liga cada par de containers? HTTP, gRPC, fila, webhook? Marque nas setas.</p>
+            <span class="flip-hint">Seta sem rótulo esconde decisão.</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Quem entra de fora?</h4>
+            <p>Quem é usuário? Quem é sistema externo? O que é interno ao seu Project?</p>
+            <span class="flip-hint">Fronteira do sistema precisa aparecer.</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Onde mora a configuração?</h4>
+            <p>Quais ConfigMaps e Secrets existem? Ficam no diagrama como containers ou como notas?</p>
+            <span class="flip-hint">C4 tem espaço para configuração como anotação.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Um trio mostra o rascunho na tela e explica. <strong>Arquiteto faz uma crítica construtiva em 30 segundos.</strong></span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">29</div>
+        </div>
+      </section>
+
+      <!-- 30, Separador Bloco 5 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 5, 10 min</span>
+        <h2>Síntese e homework</h2>
+        <p class="section-description">Três checagens rápidas, lembrete da ponderada e ponte para Aula 03.</p>
+      </section>
+
+      <!-- 31, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida, 1 de 3</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Em um time de 6 devs que entrega SaaS 2 vezes por semana, sem clientes usando versões antigas, qual estratégia de branching reduz mais o atrito?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">GitFlow, porque separa develop de main e força release formal.</li>
+            <li data-correct="true">GitHub Flow ou Trunk-Based, porque main vive sempre publicável e branches são curtas.</li>
+            <li data-correct="false">Forking Workflow, porque cada dev tem seu fork e a integração acontece no fim.</li>
+            <li data-correct="false">Qualquer uma, a escolha é estética e não afeta entrega.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Com uma versão só em produção e entrega frequente, a simplicidade do GitHub Flow ou Trunk-Based paga."
+               data-incorrect-msg="Pense de novo. GitFlow brilha quando você precisa manter múltiplas versões vivas. Não é este caso."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">31</div>
+        </div>
+      </section>
+
+      <!-- 32, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida, 2 de 3</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Qual afirmação sobre C4 Model e SCM está correta?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">O nível Contexto do C4 mostra classes e métodos, e vive no repositório como código.</li>
+            <li data-correct="true">O nível Container do C4 mostra serviços em processos separados e deve bater com os Components que aparecem no OpenChoreo.</li>
+            <li data-correct="false">Diagramas C4 dispensam versionamento, pois valem para qualquer versão do software.</li>
+            <li data-correct="false">O C4 Model substitui o Dockerfile, por descrever melhor as dependências da aplicação.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Container é o nível que conecta a modelagem com a implantação real, e deve ser checável contra a plataforma."
+               data-incorrect-msg="Volte ao slide do C4. Contexto é a caixa preta, Container abre o sistema e Componente abre cada container."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">32</div>
+        </div>
+      </section>
+
+      <!-- 33, Quiz 3 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem rápida, 3 de 3</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">No OpenChoreo, a hierarquia correta, do mais amplo para o mais estreito, é:</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Environment, Project, Component, Cell.</li>
+            <li data-correct="true">Project agrupa Components, cada Component é implantado em um ou mais Environments.</li>
+            <li data-correct="false">Component agrupa Projects, que são promovidos por Environments.</li>
+            <li data-correct="false">Environment contém Projects, que contêm Cells, que contêm Components.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Project é o guarda-chuva de produto, Component é a unidade de código, Environment é o lugar onde roda."
+               data-incorrect-msg="Volte ao slide dos três conceitos. Project agrupa Components, Environments recebem promoções."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">33</div>
+        </div>
+      </section>
+
+      <!-- 34, Auto-estudo Aula 03 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 03</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Aula 03 é sobre <strong>métricas de software</strong>. Antes dela, três leituras curtas e um exercício de olhar o próprio repositório com outros olhos.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, DORA metrics</h4>
+              <p>Artigo da Google Cloud sobre os 4 indicadores DORA: lead time, deployment frequency, change failure rate, time to restore.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, métricas que enganam</h4>
+              <p>Palestra curta sobre vanity metrics no desenvolvimento de software (linhas de código, pontos de história).</p>
+            </div>
+            <div class="concept-card">
+              <h4>Exercício, olhe seu repo</h4>
+              <p>Antes da aula, meça uma coisa no seu repositório de projeto: lead time da sua última PR. Tempo entre abrir e mergear.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Lembrete da ponderada</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Variantes serão sorteadas e enviadas por e-mail ainda hoje. Prazo no AdaLove é o fim da Sprint 01. Para quem não teve tempo de perguntar ao arquiteto, o canal da turma fica aberto.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 02, Gestão de configuração (SCM), Sprint 01</div>
+          <div class="footer-page">34</div>
+        </div>
+      </section>
+
+      <!-- 35, Encerramento -->
       <section class="end-slide">
         <span class="inteli-wordmark light">inteli</span>
         <h2>Até a próxima</h2>

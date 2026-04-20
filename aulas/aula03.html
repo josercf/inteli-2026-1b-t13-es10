@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1280, initial-scale=1.0" />
-  <title>Aula 03, Métricas de software: processo, produto e DORA, Inteli T13</title>
+  <title>Aula 03, Métricas de processo de software, Inteli T13</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,6 +18,120 @@
 
   <link rel="stylesheet" href="assets/css/inteli-theme.css" />
   <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Layout local da Aula 03 */
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Painel DORA comparativo (FLIP A) */
+    .dora-panel {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      border-top: 4px solid var(--inteli-lilac);
+      box-shadow: var(--inteli-shadow-soft);
+    }
+    .dora-panel.alt {
+      border-top-color: var(--inteli-purple-deep);
+    }
+    .dora-panel h4 {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.72em;
+      color: var(--inteli-purple);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 0 0 8px 0;
+    }
+    .dora-panel.alt h4 {
+      color: var(--inteli-purple-deep);
+    }
+    .dora-panel .dora-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68em;
+      line-height: 1.4;
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--inteli-gray-light);
+    }
+    .dora-panel .dora-row:last-child {
+      border-bottom: none;
+    }
+    .dora-panel .dora-metric {
+      color: var(--inteli-purple-deep);
+      font-weight: 600;
+    }
+    .dora-panel .dora-value {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      color: var(--inteli-purple);
+    }
+    .dora-panel.alt .dora-value {
+      color: var(--inteli-purple);
+    }
+
+    /* Cards de métrica DORA com número em destaque */
+    .dora-key {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .dora-key .dora-num {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.66em;
+      color: var(--inteli-lilac);
+      letter-spacing: 0.08em;
+    }
+    .dora-key h4 {
+      font-size: 0.82em;
+      margin: 2px 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .dora-key p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.4;
+      color: var(--inteli-purple);
+    }
+
+    /* Grid de 4 colunas para as chaves DORA */
+    .dora-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    /* Card de citação */
+    .quote-card {
+      background: var(--inteli-purple);
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin: 10px auto 0;
+      max-width: 85%;
+      text-align: center;
+    }
+    .quote-card p {
+      font-size: 0.8em;
+      font-style: italic;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .quote-card cite {
+      display: block;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-green);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+      font-style: normal;
+    }
+  </style>
 </head>
 <body>
   <div class="reveal">
@@ -28,8 +142,8 @@
         <div class="top-bar"></div>
         <div class="cover-content">
           <span class="sprint-tag">Sprint 01, Fundamentos do processo</span>
-          <h1>Métricas de software: processo, produto e DORA</h1>
-          <p class="subtitle">O que medir, por que medir e como métricas guiam decisões em engenharia e em DevOps.</p>
+          <h1>Métricas de processo de software</h1>
+          <p class="subtitle">Se você não mede, está chutando. Hoje a gente aprende a medir com menos teatro e mais consequência: DORA, SLOs, observabilidade, e as armadilhas clássicas.</p>
           <div class="cover-meta">
             <strong>Aula</strong><span>03 de 14</span>
             <strong>Data</strong><span>28 de abril de 2026, terça-feira, 10h00 às 12h00</span>
@@ -49,23 +163,24 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
-            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
-          </p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A aula é quase toda em sala de aula invertida. Pouco slide expositivo, muita discussão em dupla, em grupo e em plenário. Vocês vão ler, interpretar, criar e criticar métricas. No papel e com voz.</p>
           <table>
             <thead>
-              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+              <tr><th style="width: 26%;">Bloco</th><th style="width: 54%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Fundamentos</td><td>Métricas de processo, de produto e as 4 chaves DORA</td><td>55 min</td></tr>
-              <tr><td>11h10, Prática</td><td>Instrumentar métricas DORA no projeto do grupo</td><td>40 min</td></tr>
-              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min, status rápido por grupo</td><td>15 min</td></tr>
+              <tr><td>10h15, Ativação</td><td>Três quizzes sobre o auto-estudo, DORA, vanity e observabilidade</td><td>15 min</td></tr>
+              <tr><td>10h30, Síntese</td><td>Consolidar DORA, SLI/SLO/SLA e os três pilares</td><td>15 min</td></tr>
+              <tr><td>10h45, Interpretação</td><td>Três FLIPs em dupla, ler painéis, achar Goodhart, escolher pilar</td><td>30 min</td></tr>
+              <tr><td>11h15, Criação</td><td>Cada grupo projeta três métricas para o próprio projeto</td><td>15 min</td></tr>
+              <tr><td>11h30, Defesa cruzada</td><td>Pitch de 1 minuto por grupo, crítica obrigatória dos pares</td><td>15 min</td></tr>
+              <tr><td>11h45, Síntese</td><td>Goodhart e Campbell, ponte TAP Jacto e auto-estudo</td><td>15 min</td></tr>
             </tbody>
           </table>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
           <div class="footer-page">02</div>
         </div>
       </section>
@@ -75,7 +190,7 @@
         <span class="daily-tag">Daily, 15 min</span>
         <h2>Daily Time</h2>
         <p class="daily-subtitle">
-          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+          Status de cada grupo: o que avançou desde ontem, o que trava, qual é a próxima meta. Objetivo, não narração.
         </p>
         <div class="inteli-timer" data-minutes="15">
           <div class="inteli-timer-display">15:00</div>
@@ -96,115 +211,840 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <p style="font-size: 0.74em; margin: 0 0 10px;">A aula gira em torno de quatro verbos. A ideia não é decorar definições, é sair daqui sabendo ler um painel, montar um conjunto de métricas para o seu projeto e desconfiar do que você acabou de montar.</p>
           <div class="concept-cards">
-            <div class="concept-card"><h4>Compreender</h4><p>Identificar famílias de métricas em engenharia de software e seus propósitos.</p></div>
-            <div class="concept-card"><h4>Comparar</h4><p>Diferenciar métricas de processo, de produto e as métricas DORA.</p></div>
-            <div class="concept-card"><h4>Aplicar</h4><p>Desenhar um painel inicial de métricas para o projeto do módulo.</p></div>
+            <div class="concept-card">
+              <h4>Interpretar</h4>
+              <p>Ler um painel DORA e não confundir alta atividade com alto resultado.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Comparar</h4>
+              <p>Distinguir DORA, SLI/SLO/SLA e métricas de qualidade, cada uma no seu lugar.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Criar</h4>
+              <p>Projetar um conjunto mínimo de métricas para o seu projeto, com fórmula e fonte.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Criticar</h4>
+              <p>Aplicar Goodhart, Campbell e o teste de vaidade em qualquer métrica, inclusive nas suas.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Sala de aula invertida</h4>
+            <p style="font-size: 0.68em; margin: 0; line-height: 1.4;">A maior parte do tempo é vocês trabalhando. Eu puxo o ritmo, sintetizo o que sair das discussões e seguro o tempo. Quem não lê o auto-estudo não consegue responder os quizzes de ativação nem defender em plenário. Isso é sentido.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
           <div class="footer-page">04</div>
         </div>
       </section>
 
-      <!-- 05, Separador Bloco 1 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 1, 55 min</span>
-        <h2>Famílias de métricas</h2>
-        <p class="section-description">Processo, produto, qualidade e métricas DORA do livro Accelerate.</p>
-      </section>
-
-      <!-- 06, Conteúdo (placeholder) -->
+      <!-- 05, Gancho, "se não mede, chuta" -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Conteúdo, a preencher</h2>
+          <h2>"Se não mede, está chutando"</h2>
         </div>
         <div class="slide-body">
-          <div class="callout">
-            <h4>Placeholder de conteúdo</h4>
-            <p>Métricas de processo (lead time, WIP), métricas de produto (acoplamento, complexidade, cobertura) e métricas DORA (deploy frequency, lead time for changes, MTTR, change failure rate).</p>
+          <p style="font-size: 0.76em; margin: 0 0 8px;">A frase é velha e aparece em todo workshop de gestão. O problema é o que vem depois: a maioria dos times começa a medir <em>alguma coisa</em> e chuta com mais confiança. Velocity de sprint, número de commits, linhas de código. Métrica boa é a que muda uma decisão. Métrica ruim é a que dá conforto.</p>
+          <div class="side-by-side" style="margin-top: 4px;">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Medir atividade</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Quantos commits por dev.</li>
+                <li>Quantos story points o time fechou.</li>
+                <li>Quantas horas ficaram no código.</li>
+                <li>Respondem "o time está ocupado?".</li>
+              </ul>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Medir resultado</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Quanto tempo de commit até produção.</li>
+                <li>Quantas entregas precisam de rollback.</li>
+                <li>Quanto tempo o serviço fica fora do ar.</li>
+                <li>Respondem "o time está entregando valor estável?".</li>
+              </ul>
+            </div>
+          </div>
+          <div class="quote-card" style="margin-top: 10px;">
+            <p>"What gets measured gets managed. Even things that shouldn't be."</p>
+            <cite>Atribuído a Peter Drucker, com ressalvas</cite>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
-          <div class="footer-page">06</div>
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">05</div>
         </div>
       </section>
 
-      <!-- 07, Separador Bloco 2 -->
+      <!-- 06, Separador Bloco 1, Ativação -->
       <section class="section-slide">
-        <span class="section-number">Bloco 2, 40 min</span>
-        <h2>Prática de medição</h2>
-        <p class="section-description">Escolher e instrumentar métricas com dados que o time já tem.</p>
+        <span class="section-number">Bloco 1, 30 min</span>
+        <h2>Ativação e síntese</h2>
+        <p class="section-description">Três quizzes testam o que ficou do auto-estudo. Depois, três mini-sínteses amarram DORA, SLO e observabilidade.</p>
       </section>
 
-      <!-- 08, Exercício hands-on -->
-      <section class="exercise-slide">
-        <span class="exercise-tag">Hands-on, em grupos</span>
-        <h2>Monte o painel inicial de métricas</h2>
-        <ol class="exercise-steps">
-          <li><em>Placeholder:</em> escolher 1 métrica de processo, 1 de produto e 1 DORA que o grupo quer acompanhar.</li>
-          <li>Descrever a fórmula e a fonte de dados de cada uma.</li>
-          <li>Definir a meta inicial e o intervalo de medição.</li>
-          <li>Desenhar um mini dashboard (papel ou Miro).</li>
-          <li>Justificar em 1 minuto por que essas três, e não outras.</li>
-        </ol>
-      </section>
-
-      <!-- 09, Quiz -->
+      <!-- 07, Quiz ativação 1, DORA -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem rápida</h2>
+          <h2>Ativação, 1 de 3, DORA</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question"><em>Placeholder:</em> qual destas NÃO é uma das quatro chaves DORA?</p>
+          <p class="quiz-question">O guia oficial da DORA lista quatro chaves. Qual par abaixo traz <strong>apenas</strong> métricas DORA?</p>
           <ul class="quiz-options">
-            <li data-correct="false">Deploy Frequency</li>
-            <li data-correct="false">Lead Time for Changes</li>
-            <li data-correct="false">Change Failure Rate</li>
-            <li data-correct="true">Cobertura de testes unitários</li>
+            <li data-correct="true">Lead Time for Changes e Deployment Frequency</li>
+            <li data-correct="false">Velocity de sprint e Cobertura de testes</li>
+            <li data-correct="false">Lines of Code e Deployment Frequency</li>
+            <li data-correct="false">Tempo de code review e Número de bugs abertos</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Correto. Cobertura é uma métrica de produto, não faz parte das chaves DORA."
-               data-incorrect-msg="Ainda não. As quatro chaves DORA são Deploy Frequency, Lead Time, MTTR e Change Failure Rate."></div>
+               data-correct-msg="Isso. As quatro chaves DORA são Deployment Frequency, Lead Time for Changes, Change Failure Rate e Time to Restore Service. Velocity e cobertura medem outra coisa."
+               data-incorrect-msg="Volte ao guia da DORA. As quatro chaves são indicadores de entrega contínua, não métricas de produtividade individual nem de qualidade estática."></div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Quiz ativação 2, Vanity metrics -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ativação, 2 de 3, Métricas que enganam</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Por que "linhas de código commitadas por dev" é o exemplo clássico de <strong>métrica-problema</strong>?</p>
+          <ul class="quiz-options">
+            <li data-correct="true">Porque incentiva escrever mais e apagar menos, mesmo quando apagar era o certo.</li>
+            <li data-correct="false">Porque dá muito trabalho computacional calcular.</li>
+            <li data-correct="false">Porque o valor varia demais entre linguagens diferentes.</li>
+            <li data-correct="false">Porque não existe ferramenta confiável que colete.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. A métrica recompensa escrever, não resolver. Apagar código duplicado derruba seu número, logo ninguém apaga. Goodhart em ação."
+               data-incorrect-msg="Volte ao artigo. O problema não é técnico, é de incentivo. A métrica premia comportamento contrário ao que o time precisa."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 09, Quiz ativação 3, Observabilidade -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ativação, 3 de 3, Três pilares</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Qual é a diferença <strong>essencial</strong> entre logs, métricas e traces?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Logs são texto, métricas são JSON, traces são binário.</li>
+            <li data-correct="false">Logs ficam em disco, métricas em banco, traces em cache.</li>
+            <li data-correct="true">Logs contam eventos, métricas medem grandezas ao longo do tempo, traces seguem uma requisição entre serviços.</li>
+            <li data-correct="false">Logs servem para dev, métricas para produção, traces para DevOps.</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Certo. Cada pilar responde uma pergunta diferente, o que aconteceu (log), quanto e quando (métrica), por onde passou (trace)."
+               data-incorrect-msg="Volte ao artigo da Azure. A diferença entre os três não é de formato nem de armazenamento, é do tipo de pergunta que cada um responde."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
           <div class="footer-page">09</div>
         </div>
       </section>
 
-      <!-- 10, Auto-estudo -->
+      <!-- 10, Síntese DORA -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Auto-estudo para a próxima</h2>
+          <h2>As quatro chaves DORA, em uma tela</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
-          <div class="concept-cards">
-            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
-            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
-            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O livro <em>Accelerate</em>, de Nicole Forsgren e a equipe DORA, fechou em quatro indicadores depois de anos olhando times de software do mundo inteiro. Os quatro combinam dois eixos: velocidade e estabilidade. Não é teoria, é o resultado da pesquisa deles.</p>
+          <div class="dora-grid">
+            <div class="dora-key">
+              <span class="dora-num">01</span>
+              <h4>Deployment Frequency</h4>
+              <p>Com que frequência o time libera em produção? Elite faz múltiplas vezes por dia. Baixa performance opera em ciclos mensais.</p>
+            </div>
+            <div class="dora-key">
+              <span class="dora-num">02</span>
+              <h4>Lead Time for Changes</h4>
+              <p>Quanto tempo leva do commit em <code>main</code> até a mudança rodar em produção? Mede o atrito do pipeline inteiro.</p>
+            </div>
+            <div class="dora-key">
+              <span class="dora-num">03</span>
+              <h4>Change Failure Rate</h4>
+              <p>Qual percentual de entregas exige hotfix, rollback ou correção urgente? Abaixo de 15% é ótimo, acima de 30% é perigoso.</p>
+            </div>
+            <div class="dora-key">
+              <span class="dora-num">04</span>
+              <h4>Time to Restore Service</h4>
+              <p>Do incidente detectado até o serviço de volta, quanto passa? Elite responde em minutos, baixa performance em dias.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Velocidade e estabilidade juntas</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">A pesquisa mostra que times de alto desempenho são rápidos <em>e</em> estáveis. Não existe troca, não é um ou outro. Entregar mais e quebrar menos caminham junto quando a engenharia é forte. Frequência de deploy sozinha não diz nada se o CFR está em 40%.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 03, Métricas de software: processo, produto e DORA, Sprint 01</div>
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
           <div class="footer-page">10</div>
         </div>
       </section>
 
-      <!-- 11, Encerramento -->
+      <!-- 11, Síntese SLI/SLO/SLA -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SLI, SLO, SLA, três siglas que não são sinônimos</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">DORA mede o processo de entrega. SLI/SLO/SLA medem o comportamento do serviço rodando. São responsáveis diferentes, documentos diferentes e consequências diferentes. Trocar as siglas vira piada de engenharia.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>SLI, indicador</h4>
+              <p>O número que você mede. Ex.: percentual de requisições com latência abaixo de 300 ms na última hora.</p>
+            </div>
+            <div class="concept-card">
+              <h4>SLO, objetivo</h4>
+              <p>A meta interna. Ex.: 99,9% das requisições abaixo de 300 ms no mês. É promessa do time para si mesmo.</p>
+            </div>
+            <div class="concept-card">
+              <h4>SLA, acordo</h4>
+              <p>Contrato com o cliente, com cláusula de crédito ou multa. Sempre mais frouxo que o SLO interno.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Error budget, a ideia do SRE</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se o SLO é 99,9% no mês, você tem 0,1% de falha permitido. Isso vira orçamento para fazer deploy arriscado. Quando o orçamento acaba, o time pausa feature nova e foca em estabilidade até o mês virar. Sem error budget, SLO vira mero discurso.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Síntese Observabilidade -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três pilares, três perguntas</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Observabilidade é a capacidade de responder perguntas sobre o sistema sem precisar mexer no código dele. Os três pilares cobrem tipos de pergunta diferentes. O truque é saber qual pilar consultar primeiro em cada situação.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Logs, o que aconteceu</h4>
+              <p>Evento com timestamp e contexto. Bom para debug pontual, post-mortem, rastrear uma requisição específica depois.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Métricas, quanto e quando</h4>
+              <p>Números agregados ao longo do tempo. Bom para dashboards, alertas, ver tendência. A fonte dos SLIs.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Traces, por onde passou</h4>
+              <p>Caminho da requisição entre serviços, com tempo em cada salto. Bom para gargalos em arquitetura distribuída.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Monitoramento não é observabilidade</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Monitoramento responde perguntas que você já sabia que ia fazer. A CPU está alta? A fila cresceu? Observabilidade é conseguir responder perguntas que você não sabia que ia fazer. Quando alguém reclama que "só na terça a tela demora", bom monitoramento falha, boa observabilidade salva.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, Separador Bloco 2, Interpretação -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 30 min</span>
+        <h2>Interpretação em sala</h2>
+        <p class="section-description">Três FLIPs. Em dupla, vocês leem cenários e métricas, decidem em voz alta, defendem em plenário.</p>
+      </section>
+
+      <!-- 14, Debrief, racional do Bloco 1 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Por que passamos por ativação e síntese?</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O Bloco 1 não foi só aquecimento. Os quizzes testaram se vocês chegaram na aula com as definições na mão. A síntese amarrou DORA, SLO e observabilidade em um vocabulário comum, porque sem ele a próxima hora vira debate de achismo. Agora vocês entram no Bloco 2 com base firme para <strong>interpretar</strong> painéis reais.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Ativação, quizzes</h4>
+              <p>Cada quiz puxou um conceito do auto-estudo. Se alguém errou, a confusão aparece logo, não lá no exercício final.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Síntese, três telas</h4>
+              <p>DORA, SLI/SLO/SLA e três pilares. Cada um no seu escopo. Não é vocabulário decorativo, vamos usar tudo daqui em diante.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Ponte, interpretação</h4>
+              <p>Saber o que é DORA é fácil. Olhar dois painéis e decidir qual time está melhor é outra coisa. É o que vem agora.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que muda no Bloco 2</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">A partir daqui a responsabilidade vira de vocês. Em dupla, vão ler cenários, decidir em voz alta, discordar, defender a escolha. Quem só leu o auto-estudo sem refletir vai sentir no primeiro FLIP. É de propósito.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 15, DORA em detalhe, Deployment Frequency -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>DORA 01, Deployment Frequency</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Com que frequência o time coloca código em produção. É o indicador de velocidade mais simples de capturar e o mais fácil de ser mal interpretado se olhado sozinho.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Definição</h4>
+              <p>Número médio de deploys em produção por unidade de tempo (dia, semana, mês). Elite faz várias vezes ao dia. Low performer opera em meses.</p>
+            </div>
+            <div class="concept-card">
+              <h4>No mercado</h4>
+              <p>Amazon ficou famosa por relatar deploys em ambientes internos a cada poucos segundos. Bancos e saúde têm janelas trimestrais por regulação. O comparável é o próprio time, mês a mês.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Como medir</h4>
+              <p>Conte eventos de deploy bem-sucedidos no pipeline de CD. No GitLab, um job de deploy em produção rodado a partir do <code>main</code>. Datadog, New Relic e plugins do Jira capturam automaticamente.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Cuidado</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Frequência alta sem qualidade vira caos. Só faz sentido acompanhar Deployment Frequency <em>em par</em> com Change Failure Rate. Time que fatia deploy artificialmente para inflar o número está gameando.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, DORA em detalhe, Lead Time for Changes -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>DORA 02, Lead Time for Changes</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O tempo entre o commit entrar no <code>main</code> e a mudança estar rodando em produção. Mede o atrito do pipeline inteiro, não só a velocidade de programação.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Definição</h4>
+              <p>Mediana do intervalo entre commit e deploy desse mesmo commit em produção. Elite entrega em menos de 1 dia. Low performer leva de 1 a 6 meses.</p>
+            </div>
+            <div class="concept-card">
+              <h4>No mercado</h4>
+              <p>Times de entrega contínua em fintechs europeias relatam medianas de poucas horas. Empresas com aprovação manual de compliance passam de 30 dias. O alvo depende do contexto, a tendência ao longo de meses é o sinal honesto.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Como medir</h4>
+              <p>Timestamp do commit (Git) menos timestamp do deploy (pipeline de CD). GitHub Actions, GitLab CI e Jenkins expõem isso. LinearB e Swarmia calculam nativamente.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que o número esconde</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Lead Time baixo pode vir de commits muito pequenos ou de testes ausentes. Olhe em conjunto com Change Failure Rate e cobertura de testes. A métrica isolada é enganada por commits cosméticos.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, DORA em detalhe, Change Failure Rate -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>DORA 03, Change Failure Rate</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Qual porcentagem das entregas exige hotfix, rollback ou correção emergencial. É o contraponto direto de Deployment Frequency, equilibra velocidade com estabilidade.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Definição</h4>
+              <p>Fórmula, deploys com incidente em produção dividido por total de deploys, vezes 100. Elite fica abaixo de 15%. Acima de 45% é sinal de problema sério.</p>
+            </div>
+            <div class="concept-card">
+              <h4>No mercado</h4>
+              <p>Gigantes de streaming e SaaS que publicam dados DORA reportam CFR de dígito único em serviços críticos. Times iniciando medição costumam descobrir CFR acima de 30%. O movimento em 3 meses importa mais que o número bruto.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Como medir</h4>
+              <p>Marque cada deploy que gerou rollback, hotfix ou incidente de severidade alta. Dá para cruzar com PagerDuty, Sentry ou tag de commit de hotfix. Exige disciplina do time em rotular.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Armadilha clássica</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se só o tech lead classifica o que é falha, o número baixa por conveniência. Tenha critério escrito ("qualquer deploy que dispare paging é falha") e revisão cruzada. Sem isso, CFR vira ficção.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 18, DORA em detalhe, Time to Restore Service -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>DORA 04, Time to Restore Service</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Do momento em que o incidente aparece até o serviço voltar a funcionar, quanto tempo passa. Mede a capacidade do time de reagir, não a capacidade de evitar que falhe.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Definição</h4>
+              <p>Mediana do intervalo entre detecção do incidente em produção e retorno ao comportamento esperado. Elite fecha em menos de 1 hora. Low performer pode ficar dias.</p>
+            </div>
+            <div class="concept-card">
+              <h4>No mercado</h4>
+              <p>SREs de big techs operam janelas de 15 min em serviços críticos. Empresas de menor maturidade medem em horas. O que separa elite do resto é <em>runbook</em> pronto e observabilidade decente.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Como medir</h4>
+              <p>Timestamp de abertura do incidente (PagerDuty, Opsgenie, Jira ITSM) até timestamp de resolução. A tag "post-mortem publicado" ajuda a separar incidente real de alerta barulhento.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que essa é a métrica mais honesta</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Falha vai acontecer. Medir só prevenção vende ilusão. Time que aceita que falha vai ocorrer e se organiza para reagir rápido tende a ser mais maduro que time que jura que nunca vai falhar. Rollback automático, feature flag e deploy canário nascem aqui.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 19, FLIP A, Qual time está melhor -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 4 min em dupla</span>
+        <h2>Qual time está melhor?</h2>
+        <p class="flip-prompt">Dois painéis DORA de times diferentes. Em dupla, decidam: <strong>qual time está melhor? Por quê?</strong> Olhem as quatro chaves juntas, não uma de cada vez.</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px;">
+          <div class="dora-panel">
+            <h4>Time A</h4>
+            <div class="dora-row"><span class="dora-metric">Deployment Frequency</span><span class="dora-value">3x por dia</span></div>
+            <div class="dora-row"><span class="dora-metric">Lead Time for Changes</span><span class="dora-value">8 horas</span></div>
+            <div class="dora-row"><span class="dora-metric">Change Failure Rate</span><span class="dora-value">28%</span></div>
+            <div class="dora-row"><span class="dora-metric">Time to Restore</span><span class="dora-value">15 min</span></div>
+          </div>
+          <div class="dora-panel alt">
+            <h4>Time B</h4>
+            <div class="dora-row"><span class="dora-metric">Deployment Frequency</span><span class="dora-value">1x por mês</span></div>
+            <div class="dora-row"><span class="dora-metric">Lead Time for Changes</span><span class="dora-value">2 semanas</span></div>
+            <div class="dora-row"><span class="dora-metric">Change Failure Rate</span><span class="dora-value">4%</span></div>
+            <div class="dora-row"><span class="dora-metric">Time to Restore</span><span class="dora-value">4 horas</span></div>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Chamo dois pares com escolhas opostas para defender em plenário. <strong>A pegadinha</strong>: Time A é rápido e quebra, Time B é estável e demora a reagir. Resposta única não existe.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 20, FLIP B, Gamear a métrica -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 4 min em dupla</span>
+        <h2>Como gamear a métrica sem agregar valor?</h2>
+        <p class="flip-prompt">Cada dupla recebe uma métrica. Em quatro minutos, respondam: <strong>como atingir o número sem realmente melhorar o produto?</strong> Seja criativo e honesto.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Deployment Frequency</h4>
+            <p>O CEO quer "deploy diário". Você é o tech lead pressionado a mostrar isso no painel até sexta.</p>
+            <span class="flip-hint">Deploy precisa entregar algo de novo?</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Code Review Time</h4>
+            <p>A meta do time é aprovar PRs em menos de 2 horas. Todo mundo está sendo medido por isso.</p>
+            <span class="flip-hint">Aprovar rápido é ler rápido?</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Test Coverage</h4>
+            <p>A política da empresa exige 80% de cobertura. Sem isso, PR não passa no CI.</p>
+            <span class="flip-hint">Cobrir qualquer linha conta?</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Cycle Time do Kanban</h4>
+            <p>O gerente cobra ciclo menor que 3 dias. Todo card antigo aparece em relatório vermelho.</p>
+            <span class="flip-hint">Fechar ticket é o mesmo que terminar o trabalho?</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Cada dupla conta em 30 segundos como gameou. <strong>Se a métrica é fácil de gamear, ela sozinha não serve.</strong> Precisa vir acompanhada de contramedida ou de outra métrica que equilibra.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, FLIP C, Qual pilar pega cada problema -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Sala de aula invertida, 3 min individual</span>
+        <h2>Qual pilar pega cada problema?</h2>
+        <p class="flip-prompt">Para cada situação, marquem no caderno: <strong>LOG</strong>, <strong>MÉTRICA</strong>, <strong>TRACE</strong>, ou combinação. Sem consultar. Plenário compara no fim.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, A tela só demora na terça à tarde</h4>
+            <p>O cliente reclama que a tela de pedidos fica lenta, mas só na segunda metade da terça-feira. Fora disso, tudo normal.</p>
+            <span class="flip-hint">Quer tendência ao longo do tempo ou evento isolado?</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Serviço reiniciando a cada 3 min</h4>
+            <p>Um microsserviço estoura memória, é reiniciado pelo orquestrador, e isso repete ciclicamente desde o deploy da noite passada.</p>
+            <span class="flip-hint">O padrão aparece bem no gráfico, mas a causa?</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Checkout subiu 300ms desde ontem</h4>
+            <p>A latência total do checkout piorou. Não se sabe se é o serviço de pagamento, de estoque, de cálculo de frete ou o banco.</p>
+            <span class="flip-hint">Precisa seguir a requisição inteira?</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Um usuário só reclamou que travou</h4>
+            <p>Um ticket do suporte com o ID da requisição. Só aquele caso, ninguém mais reportou nada parecido.</p>
+            <span class="flip-hint">Evento pontual precisa de contexto detalhado.</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Plenário</span>
+          <span>Depois dos 3 minutos, cada dupla escolhe um cenário e defende sua escolha em voz alta. Nos próximos slides a gente desce cenário por cenário, com a resposta esperada e o papel de cada pilar.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Resposta FLIP C, Cenário 1 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Resposta Cenário 1, a tela só demora na terça</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O sintoma é cíclico e só aparece em uma janela da semana. A investigação pede os três pilares em sequência, cada um responde uma pergunta diferente.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>1. Métrica</h4>
+              <p>Gráfico de latência p95 no eixo tempo mostra o padrão. Se a terça à tarde aparece como pico consistente, a hipótese está confirmada sem debate.</p>
+            </div>
+            <div class="concept-card">
+              <h4>2. Trace</h4>
+              <p>Pegue uma requisição lenta na janela crítica e veja em qual serviço ou banco ela trava. Isola onde o tempo está sendo gasto.</p>
+            </div>
+            <div class="concept-card">
+              <h4>3. Log</h4>
+              <p>No serviço identificado pelo trace, veja os logs da janela. Costuma aparecer job batch, relatório semanal ou backup competindo por recurso.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que os três</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Só métrica: você confirma o problema mas não sabe onde. Só log: ruído demais sem filtro temporal. Só trace: acha um caso, não confirma o padrão. A ordem métrica, trace, log economiza tempo em incidente cíclico.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Resposta FLIP C, Cenário 2 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Resposta Cenário 2, serviço reiniciando a cada 3 min</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O padrão é forte e regular. Métrica confirma em segundos, log revela a causa. Trace ajuda pouco aqui, porque o problema é o próprio processo caindo antes de completar as requisições.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>1. Métrica</h4>
+              <p>Memória do pod, número de reinícios por minuto, uso de CPU. Um gráfico denuncia o loop de crash em poucos segundos.</p>
+            </div>
+            <div class="concept-card">
+              <h4>2. Log</h4>
+              <p>Log da aplicação antes do crash traz o stack trace, o OOMKilled ou o panic. Log do orquestrador (Kubernetes events) confirma o motivo do restart.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Trace?</h4>
+              <p>Pouco útil aqui. O processo morre antes de terminar a requisição. Pode ajudar a ver qual endpoint costuma estar em voo quando o crash acontece.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Leitura da pista</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">"Desde o deploy da noite passada" é dado de ouro. Faça diff entre o commit deployado e o anterior. Combine com métrica de memória para comparar antes e depois. O culpado costuma aparecer em cache crescendo, vazamento de conexão ou loop em estrutura de dados.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Resposta FLIP C, Cenário 3 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Resposta Cenário 3, checkout +300ms desde ontem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Esse é o caso de manual de trace distribuído. A latência total subiu, mas o checkout chama pagamento, estoque, frete, antifraude. Sem trace, vira adivinhação entre equipes.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Trace, protagonista</h4>
+              <p>Uma requisição completa de checkout vira um waterfall. Cada serviço aparece com seu tempo. O que aumentou fica visível em um olhar.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Métrica, apoio</h4>
+              <p>Depois de identificar o serviço suspeito, olhe a métrica específica dele (latência de query, tamanho de fila) para confirmar o regime novo.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Log, último recurso</h4>
+              <p>Se o trace mostrou um serviço lento mas não diz por quê, os logs do serviço na janela recente explicam. Cache frio? Query nova? Deploy?</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que trace primeiro</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Arquitetura distribuída sem observabilidade distribuída é caça às bruxas. Já vi time perder 2 dias trocando suposição entre equipes porque ninguém tinha trace, e cada serviço parecia estar bem isoladamente. O trace resolve em minutos.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">24</div>
+        </div>
+      </section>
+
+      <!-- 25, Resposta FLIP C, Cenário 4 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Resposta Cenário 4, um usuário só reclamou que travou</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Evento pontual, sem padrão. Métrica agregada não ajuda, a amostra é um caso em milhões. Se o suporte trouxe o ID da requisição, tudo gira em torno de log com contexto.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Log, protagonista</h4>
+              <p>Busque pelo <code>request_id</code>, <code>user_id</code> ou timestamp exato. Um log estruturado bem montado devolve a história completa daquela execução em segundos.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Trace, se tiver sampling</h4>
+              <p>Se o sistema tem tail sampling para erro, a chance de achar o trace exato existe. Em sampling probabilístico, raramente.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Métrica, não ajuda</h4>
+              <p>Um caso isolado some no agregado. Métrica é para padrão, não para anedota. Se aparecerem muitos casos parecidos, aí vira padrão e volta a ser útil.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Lição estrutural</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Para cenários assim, a arquitetura precisa ter <strong>log estruturado com ID de correlação</strong> desde o início. Se o time precisa correr atrás do <code>request_id</code> na hora do incidente, já era. É decisão de dia zero, não de crise.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, Separador Bloco 3, Criação -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 30 min</span>
+        <h2>Criação e crítica cruzada</h2>
+        <p class="section-description">Cada grupo projeta três métricas para o próprio projeto do módulo. Depois, os outros grupos criticam em plenário.</p>
+      </section>
+
+      <!-- 27, Exercise parte 1, Projetar -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Hands-on, em grupo, 15 min</span>
+        <h2>Projete três métricas para o seu sistema</h2>
+        <ol class="exercise-steps">
+          <li>Em grupo, escolham <strong>três métricas</strong> que vocês querem acompanhar no projeto do módulo. Uma da família DORA, uma de produto ou experiência do usuário, e uma terceira livre.</li>
+          <li>Para cada métrica, escrevam em um cartão (papel ou Miro): <em>nome, fórmula, fonte de dados, meta inicial, frequência de coleta</em>.</li>
+          <li>Guardem no bolso: <strong>como alguém poderia gamear essa métrica?</strong> Essa pergunta vai voltar na próxima parte.</li>
+          <li>Escolham um porta-voz. Pitch de 1 minuto em plenário. Cronômetro vai rodar, o professor não prolonga.</li>
+        </ol>
+      </section>
+
+      <!-- 28, Exercise parte 2, Crítica cruzada -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Crítica cruzada, em plenário, 15 min</span>
+        <h2>Pitch de 1 min e crítica obrigatória dos pares</h2>
+        <ol class="exercise-steps">
+          <li>Cada grupo apresenta os três cartões em até 1 minuto, <em>por grupo, não por cartão</em>. O cronômetro é implacável.</li>
+          <li>Após o pitch, o próximo grupo faz uma de três perguntas obrigatórias, escolhe qual: <strong>"como se gameia?"</strong>, <strong>"o que essa métrica esconde?"</strong>, <strong>"qual efeito colateral?"</strong>.</li>
+          <li>O grupo apresentador <strong>defende</strong> ou <strong>aceita</strong> a crítica. Sem resposta genérica, precisa ser específica para a métrica em discussão.</li>
+          <li>Ao final, cada cartão fica marcado com "aceita" ou "defende". O conjunto vai para o professor como entrega da aula.</li>
+        </ol>
+      </section>
+
+      <!-- 29, Goodhart e Campbell -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Goodhart, Campbell e o risco de medir</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">O exercício que vocês acabaram de fazer não foi truque retórico. Dois pensadores antigos já formalizaram o problema. Ler Goodhart e Campbell te dá linguagem para defender suas escolhas quando um gestor vier pedir "uma métrica única de produtividade".</p>
+          <div class="side-by-side">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Lei de Goodhart, 1975</h3>
+              <p style="font-size: 0.7em; line-height: 1.45; margin: 0 0 6px;">"Quando uma medida se torna meta, ela deixa de ser uma boa medida."</p>
+              <p style="font-size: 0.66em; line-height: 1.45; color: var(--inteli-gray-dark); margin: 0;">Charles Goodhart, economista britânico. Originalmente sobre política monetária, virou verdade para qualquer sistema em que a métrica vira alvo de pressão.</p>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Campbell's Law, 1976</h3>
+              <p style="font-size: 0.7em; line-height: 1.45; margin: 0 0 6px;">"Quanto mais uma métrica quantitativa é usada em decisões sociais, mais sujeita ela fica a corrupção."</p>
+              <p style="font-size: 0.66em; line-height: 1.45; color: var(--inteli-gray-dark); margin: 0;">Donald Campbell, psicólogo. Estudou avaliação de políticas públicas. A ideia se aplica igual quando RH mede engenheiro.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Vanity metrics, o teste rápido</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se a métrica sobe e a vida do usuário (ou do cliente, ou do time) não melhora, é vaidade. Total de downloads sem engajamento, horas trabalhadas, lines of code. Antes de publicar um painel, pergunte: esse número vai mudar alguma decisão? Se não, corte.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">29</div>
+        </div>
+      </section>
+
+      <!-- 30, Ponte TAP Jacto -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Por que isso aparece no TAP da Jacto</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O TAP da Jacto cita três indicadores de processo que o sistema de vocês precisa monitorar: <strong>cycle time, throughput e backlog health</strong>. Cada um mede uma coisa diferente, e juntos cobrem o fluxo de trabalho do time. Entender o conceito é a parte fácil. Instrumentar no código é o trabalho.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Cycle time</h4>
+              <p>Tempo médio entre iniciar e concluir uma tarefa. Mede o quão rápido algo flui do "to do" ao "done".</p>
+            </div>
+            <div class="concept-card">
+              <h4>Throughput</h4>
+              <p>Quantidade de itens concluídos por período (sprint, semana, dia). Mede volume de saída.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Backlog health</h4>
+              <p>Idade dos itens, variância de tamanho, taxa de crescimento. Indica se o backlog ainda é útil ou virou cemitério.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Da sala para o projeto</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Na Sprint 02, vocês vão decidir como coletar, armazenar e expor esses três indicadores. Quem registra cada transição de card? Onde isso vira gráfico? Como o painel vira decisão na retrospectiva? A conversa de hoje te dá o vocabulário. A implementação é com vocês.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">30</div>
+        </div>
+      </section>
+
+      <!-- 31, Auto-estudo Aula 04 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 04</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">A Aula 04 é sobre <strong>qualidade de software e IA</strong>. Três provocações antes dela.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, ISO 25010</h4>
+              <p>Artigo que apresenta as oito famílias de qualidade, manutenibilidade, confiabilidade, performance, segurança, entre outras.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, code review com IA</h4>
+              <p>Palestra curta sobre onde o assistente de IA ajuda no code review e onde ele atrapalha. Quando o humano precisa voltar.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Exercício, olhe seu repo</h4>
+              <p>Rode uma análise estática no seu projeto (SonarQube, ESLint com regra strict, Ruff, conforme a linguagem) e guarde o número de warnings.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega da aula de hoje</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Os três cartões de métrica do seu grupo, marcados com "aceita" ou "defende" após a crítica cruzada, vão para o AdaLove como evidência do hands-on. Não é entrega de nota, é diagnóstico para a Sprint 02.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 03, Métricas de processo de software, Sprint 01</div>
+          <div class="footer-page">31</div>
+        </div>
+      </section>
+
+      <!-- 32, Encerramento -->
       <section class="end-slide">
         <span class="inteli-wordmark light">inteli</span>
         <h2>Até a próxima</h2>
