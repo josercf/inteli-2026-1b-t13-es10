@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1280, initial-scale=1.0" />
-  <title>Aula 06, CI parte 2: SAST no pipeline, Inteli T13</title>
+  <title>Aula 06, CI parte 2: SAST e DAST no pipeline, Inteli T13</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,6 +18,295 @@
 
   <link rel="stylesheet" href="assets/css/inteli-theme.css" />
   <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Layout local da Aula 06 */
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Tabela comparativa 2 colunas */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li {
+      margin-bottom: 3px;
+    }
+
+    /* Grid 3 cards (padrão da Aula 05) */
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+    .three-cards .card code {
+      font-size: 0.88em;
+    }
+
+    /* Grid 4 cards (para ferramentas SAST) */
+    .four-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .four-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--inteli-lilac);
+    }
+    .four-cards .card h4 {
+      font-size: 0.78em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      line-height: 1.15;
+    }
+    .four-cards .card .tag {
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .four-cards .card p {
+      font-size: 0.62em;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* OWASP Top 10 destaque */
+    .owasp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .owasp-card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-top: 3px solid var(--inteli-coral);
+    }
+    .owasp-card .owasp-id {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-coral);
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .owasp-card h4 {
+      font-size: 0.76em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .owasp-card p {
+      font-size: 0.6em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Gráfico simples de custo do defeito */
+    .cost-chart {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+      align-items: end;
+    }
+    .cost-bar {
+      background: var(--inteli-bg-soft);
+      border-radius: 8px 8px 0 0;
+      padding: 6px 10px 8px;
+      text-align: center;
+      position: relative;
+    }
+    .cost-bar .bar-fill {
+      background: linear-gradient(to top, var(--inteli-coral), var(--inteli-lilac));
+      border-radius: 4px;
+      margin: 0 auto 4px;
+      width: 24px;
+    }
+    .cost-bar.s1 .bar-fill { height: 14px; }
+    .cost-bar.s2 .bar-fill { height: 32px; }
+    .cost-bar.s3 .bar-fill { height: 60px; }
+    .cost-bar.s4 .bar-fill { height: 95px; }
+    .cost-bar h4 {
+      font-size: 0.68em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .cost-bar .cost-value {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-coral);
+      font-weight: 700;
+    }
+    .cost-bar p {
+      font-size: 0.56em;
+      margin: 3px 0 0;
+      color: var(--inteli-gray-dark);
+      line-height: 1.3;
+    }
+
+    /* Output de SAST simulado */
+    .sast-output {
+      background: #1d1829;
+      color: #e6eaeb;
+      font-family: var(--inteli-mono, monospace);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.54em;
+      line-height: 1.4;
+      margin-top: 6px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .sast-output .sev-crit { color: #ff7a7a; font-weight: 700; }
+    .sast-output .sev-high { color: #ffb347; font-weight: 700; }
+    .sast-output .sev-med  { color: #ffd580; }
+    .sast-output .sev-low  { color: #89cea5; }
+    .sast-output .sev-head { color: var(--inteli-lilac); font-weight: 700; }
+    .sast-output .file     { color: #9cdcfe; }
+    .sast-output .rule     { color: #c586c0; }
+
+    /* Stack SAST + DAST em camadas */
+    .layer-defense {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 10px;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .defense-layer {
+      background: var(--inteli-bg-soft);
+      border-radius: 8px;
+      padding: 8px 16px;
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 14px;
+      align-items: center;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .defense-layer.sast { border-left-color: var(--inteli-coral); }
+    .defense-layer.dast { border-left-color: var(--inteli-dark-green); }
+    .defense-layer.sca  { border-left-color: var(--inteli-purple); }
+    .defense-layer h4 {
+      font-size: 0.78em;
+      margin: 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .defense-layer p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* Bloco YAML de pipeline */
+    .pipeline-block {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .pipeline-block pre {
+      margin: 0;
+      font-size: 0.58em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .pipeline-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.4;
+    }
+    .pipeline-block .annot ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .pipeline-block .annot li {
+      margin-bottom: 2px;
+    }
+    .pipeline-block .annot strong {
+      color: var(--inteli-coral);
+    }
+
+    /* Compact exercise */
+    .exercise-slide.compact {
+      padding: 48px 60px 40px 60px;
+    }
+    .exercise-slide.compact h2 {
+      font-size: 1.4em;
+      margin: 0 0 10px 0;
+    }
+    .exercise-slide.compact .exercise-tag {
+      margin-bottom: 8px;
+    }
+    .exercise-slide.compact .exercise-steps li {
+      padding: 7px 10px 7px 46px;
+      margin-bottom: 6px;
+      font-size: 0.66em;
+      line-height: 1.45;
+    }
+    .exercise-slide.compact .exercise-steps li::before {
+      width: 24px; height: 24px;
+      top: 7px; left: 12px;
+      font-size: 0.8em;
+    }
+    .exercise-slide.compact .hint-caption {
+      font-size: 0.62em;
+      margin-top: 10px !important;
+    }
+  </style>
 </head>
 <body>
   <div class="reveal">
@@ -28,8 +317,8 @@
         <div class="top-bar"></div>
         <div class="cover-content">
           <span class="sprint-tag">Sprint 02, Qualidade e CI</span>
-          <h1>CI parte 2: SAST no pipeline</h1>
-          <p class="subtitle">Shift-left de segurança: análise estática no pipeline com SonarQube, Semgrep e CodeQL.</p>
+          <h1>CI parte 2, SAST e DAST no pipeline</h1>
+          <p class="subtitle">O hook local pega o óbvio. O pipeline enxerga o resto. Análise estática de código, análise dinâmica da aplicação viva.</p>
           <div class="cover-meta">
             <strong>Aula</strong><span>06 de 14</span>
             <strong>Data</strong><span>13 de maio de 2026, quarta-feira, 10h00 às 12h00</span>
@@ -49,23 +338,22 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
-            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
-          </p>
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Vocês leram os 4 auto-estudos (CI da Atlassian, SAST do GitLab, OWASP Top 10, Semgrep). A aula de hoje pega tudo isso e joga no pipeline de verdade. Três blocos, um hands-on grande, fechamento em 10 minutos.</p>
           <table>
             <thead>
               <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Fundamentos</td><td>SAST, DAST, SCA e o lugar de cada um no ciclo</td><td>55 min</td></tr>
-              <tr><td>11h10, Prática</td><td>Adicionar SonarQube ou Semgrep ao pipeline do grupo</td><td>40 min</td></tr>
-              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+              <tr><td>10h00, Daily Time</td><td>Check-in da sprint, cronômetro de 15 min</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>SAST, fundamentos, shift-left, OWASP Top 10</td><td>25 min</td></tr>
+              <tr><td>10h40, Bloco 2</td><td>Ferramentas SAST, SonarQube, Semgrep, GitLab SAST, hands-on</td><td>50 min</td></tr>
+              <tr><td>11h30, Bloco 3</td><td>DAST como complemento, ZAP, defesa em camadas</td><td>20 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo da Aula 07</td><td>10 min</td></tr>
             </tbody>
           </table>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
           <div class="footer-page">02</div>
         </div>
       </section>
@@ -75,7 +363,7 @@
         <span class="daily-tag">Daily, 15 min</span>
         <h2>Daily Time</h2>
         <p class="daily-subtitle">
-          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+          Como saiu o dever de casa da Aula 05? Hook barrou o secret? Imagem buildou? CVE mais sério que o Trivy apontou? Uma volta rápida, uma frase por grupo. Quem ficou travado fala.
         </p>
         <div class="inteli-timer" data-minutes="15">
           <div class="inteli-timer-display">15:00</div>
@@ -96,115 +384,817 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim da aula, cada grupo sai com SAST rodando no pipeline do próprio projeto, pelo menos um achado triado com justificativa e a cabeça calibrada para DAST. Quatro verbos, quatro entregas.</p>
           <div class="concept-cards">
-            <div class="concept-card"><h4>Compreender</h4><p>Explicar o que é SAST e onde ele encaixa no ciclo de CI.</p></div>
-            <div class="concept-card"><h4>Comparar</h4><p>Diferenciar SAST, DAST e SCA com critérios de uso.</p></div>
-            <div class="concept-card"><h4>Aplicar</h4><p>Configurar análise estática no pipeline e interpretar resultados.</p></div>
+            <div class="concept-card">
+              <h4>Diferenciar</h4>
+              <p>Separar SAST, DAST e SCA por superfície analisada, momento de execução e tipo de vulnerabilidade detectável.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Configurar</h4>
+              <p>Adicionar uma etapa de SAST ao pipeline do grupo (SonarQube, Semgrep ou GitLab SAST) com critério de severidade que bloqueia merge.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Triar</h4>
+              <p>Ler a saída do scanner, classificar cada achado como fix, aceitar ou suppress, justificando a decisão em uma linha.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Planejar</h4>
+              <p>Posicionar DAST no ciclo e identificar qual tipo de falha ele pega que o SAST deixa passar.</p>
+            </div>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
           <div class="footer-page">04</div>
         </div>
       </section>
 
-      <!-- 05, Separador Bloco 1 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 1, 55 min</span>
-        <h2>Segurança no pipeline</h2>
-        <p class="section-description">Conceitos de SAST, DAST, SCA e shift-left de segurança.</p>
-      </section>
-
-      <!-- 06, Conteúdo (placeholder) -->
+      <!-- 05, Ponte com Aula 05 -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Conteúdo, a preencher</h2>
+          <h2>Do laptop para o pipeline, o que muda de verdade</h2>
         </div>
         <div class="slide-body">
-          <div class="callout">
-            <h4>Placeholder de conteúdo</h4>
-            <p>SAST, DAST, SCA, OWASP Top 10 como pano de fundo, ferramentas como SonarQube, Semgrep e CodeQL, e critérios para escolher uma delas.</p>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Na Aula 05 a gente montou três barreiras no laptop: hook de commit, scanner de secret, build em container. Todas dependem da disciplina do dev. Um <code>git commit --no-verify</code> pula tudo. A Aula 06 move essas mesmas validações para um lugar que ninguém consegue pular.</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Aula 05, no laptop</h4>
+              <ul>
+                <li>Hook pre-commit com ESLint</li>
+                <li>TruffleHog varre o diff</li>
+                <li><code>docker build</code> local</li>
+                <li>Disciplina do dev como garantia</li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>Aula 06, no pipeline</h4>
+              <ul>
+                <li>SAST como job obrigatório do CI</li>
+                <li>Scanner de secret no runner</li>
+                <li>Trivy varre a imagem antes do push para registry</li>
+                <li>Política de merge exige build verde</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que duas camadas e não uma</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Laptop é rápido, feedback em segundos. Pipeline é confiável, sem bypass. Um não substitui o outro. A barreira local salva o tempo do dev, a do pipeline salva a empresa.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, SAST, DAST, SCA: as três vistas de segurança -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SAST, DAST, SCA, três vistas da mesma aplicação</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Segurança de aplicação é uma sigla que esconde três técnicas distintas. Cada uma olha para um pedaço diferente e ignora o resto. A matriz abaixo é a bússola do resto da aula.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>SAST</h4>
+              <p>Analisa o <strong>código-fonte</strong> sem executar. Acha injection, uso inseguro de API, hardcoded credentials. Cobertura alta, falso positivo alto.</p>
+            </div>
+            <div class="card">
+              <h4>DAST</h4>
+              <p>Ataca a aplicação <strong>rodando</strong>, de fora para dentro, como um cliente. Acha config de runtime, falha de auth, header faltando. Cobertura restrita ao que a app expõe.</p>
+            </div>
+            <div class="card">
+              <h4>SCA</h4>
+              <p>Lê o <strong>manifest de dependências</strong> e casa com base de CVE. Acha lib vulnerável (log4shell, CVE em express). Barata, precisa de atualização constante.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Relação com a Aula 05</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Trivy da aula passada é SCA aplicado em imagem de container. Hoje a gente adiciona SAST no pipeline. DAST entra como tema de fechamento. As três camadas, juntas, formam o que o mercado chama de shift-left completo.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
           <div class="footer-page">06</div>
         </div>
       </section>
 
-      <!-- 07, Separador Bloco 2 -->
+      <!-- 07, Separador Bloco 1 -->
       <section class="section-slide">
-        <span class="section-number">Bloco 2, 40 min</span>
-        <h2>Prática com SAST</h2>
-        <p class="section-description">Configurar uma ferramenta no pipeline do projeto.</p>
+        <span class="section-number">Bloco 1, 25 min</span>
+        <h2>SAST, fundamentos e por que shift-left importa</h2>
+        <p class="section-description">O que o scanner enxerga, o que ele não enxerga, custo por tempo de detecção e o papel do OWASP Top 10.</p>
       </section>
 
-      <!-- 08, Exercício hands-on -->
-      <section class="exercise-slide">
-        <span class="exercise-tag">Hands-on, em grupos</span>
-        <h2>Plugue SAST no seu pipeline</h2>
+      <!-- 08, O que é SAST -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O que é SAST, na real</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Static Application Security Testing. O scanner abre seu código, monta uma árvore sintática (AST), aplica um conjunto de regras e devolve uma lista de trechos suspeitos. Tudo sem executar nada. Funciona em cima do texto, parecido com o que o ESLint faz para style, mas com regras focadas em segurança.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Como ele enxerga</h4>
+              <p>Parser monta AST, taint analysis rastreia dado sujo (input do usuário) até um sink perigoso (query SQL, <code>eval</code>, exec). Regras descrevem padrões problemáticos.</p>
+            </div>
+            <div class="card">
+              <h4>O que ele acha bem</h4>
+              <p>SQL injection clássico, XSS em string concatenada, hardcoded API key, uso de criptografia fraca (MD5, DES), <code>eval</code> com variável, <code>dangerouslySetInnerHTML</code>.</p>
+            </div>
+            <div class="card">
+              <h4>O que ele não acha</h4>
+              <p>Falha de config em produção, header de segurança ausente, auth quebrada em runtime, race condition que só aparece com carga. Essas ficam para DAST.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O limite fundamental</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">SAST analisa o que está escrito, não o que vai acontecer. Se uma variável vem de fonte externa que ele não consegue seguir (banco, env, arquivo), a análise de taint se perde. Por isso falso negativo existe. Ferramenta nenhuma substitui revisão de segurança humana em código crítico.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 09, Shift-left e custo do defeito -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Shift-left, a matemática do custo</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A palavra virou jargão e perdeu o sentido. No fundo é só aritmética: quanto mais tarde o defeito é achado, mais caro para corrigir. O gráfico abaixo é uma estimativa clássica do IBM System Sciences Institute, arredondada para a realidade de 2026.</p>
+          <div class="cost-chart">
+            <div class="cost-bar s1">
+              <div class="bar-fill"></div>
+              <h4>Dev local</h4>
+              <span class="cost-value">1x</span>
+              <p>Lint, hook, SAST no IDE</p>
+            </div>
+            <div class="cost-bar s2">
+              <div class="bar-fill"></div>
+              <h4>Pipeline</h4>
+              <span class="cost-value">~5x</span>
+              <p>CI falha, MR trava</p>
+            </div>
+            <div class="cost-bar s3">
+              <div class="bar-fill"></div>
+              <h4>Homologação</h4>
+              <span class="cost-value">~15x</span>
+              <p>QA reabre issue, dev trocou de tarefa</p>
+            </div>
+            <div class="cost-bar s4">
+              <div class="bar-fill"></div>
+              <h4>Produção</h4>
+              <span class="cost-value">~100x</span>
+              <p>Incidente, rollback, cliente, imprensa</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 12px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que isso significa no dia a dia</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">SAST no pipeline custa 5x mais que no IDE, mas 20x menos que na homologação. Quem pula a camada fica com CVE em produção, e aí a conta explode. Colocar o scanner cedo não é ideologia, é economia de engenharia.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 10, OWASP Top 10 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>OWASP Top 10, o catálogo que todo scanner carrega</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">OWASP Top 10 é lista consensual das dez classes de vulnerabilidade mais presentes em aplicação web. Edição 2021, ainda em vigor no começo de 2026. Qualquer ferramenta SAST mapeia suas regras para esse catálogo. Três categorias concentram a maioria dos achados reais.</p>
+          <div class="owasp-grid">
+            <div class="owasp-card">
+              <span class="owasp-id">A01:2021</span>
+              <h4>Broken Access Control</h4>
+              <p>Usuário acessa rota que não deveria, manipula ID no path, escala privilégio por flag. Líder do ranking por três edições seguidas.</p>
+            </div>
+            <div class="owasp-card">
+              <span class="owasp-id">A03:2021</span>
+              <h4>Injection</h4>
+              <p>SQL injection, command injection, LDAP injection. Dado do usuário concatenado em query. Clássico, continua aparecendo em scanner.</p>
+            </div>
+            <div class="owasp-card">
+              <span class="owasp-id">A05:2021</span>
+              <h4>Security Misconfiguration</h4>
+              <p>Header ausente, debug ligado em produção, S3 aberto, senha padrão. SAST pega parte, DAST pega o resto.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 12px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Usar como filtro de priorização</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Quando o scanner joga 200 achados, um critério pragmático: atacar primeiro A01, A03 e A05. Se sua aplicação tem dado de usuário e formulário de login, essas três classes respondem pela maior parte do risco real. Os outros sete entram na fila, não no bloqueio de merge.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 11, Falsos positivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Falsos positivos, a parte que dói</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Todo SAST gera falso positivo. Regra casou mas o contexto do seu código faz a vulnerabilidade não existir. Ignorar é péssimo, corrigir o que não é problema também. O trabalho real é triar com método, não perseguir zero achado.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Por que aparecem</h4>
+              <p>Regra é genérica, sua aplicação tem proteção que o scanner não enxerga. Ex: você sanitiza input antes da query, mas ele não consegue seguir a função de sanitização.</p>
+            </div>
+            <div class="card">
+              <h4>Como triar</h4>
+              <p>Três rótulos: <strong>fix</strong>, <strong>aceitar</strong>, <strong>suppress</strong>. Fix muda código. Aceitar documenta o risco residual. Suppress marca regra com justificativa no código.</p>
+            </div>
+            <div class="card">
+              <h4>Regra de ouro</h4>
+              <p>Suppress sem justificativa é dívida técnica. Toda supressão tem comentário explicando por que não é real. Revisor do MR lê e bate o olho antes de aprovar.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A armadilha clássica</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Turma nova tende a desligar a regra inteira quando dá muito falso positivo. Ruim. A regra detecta algo real, só está mal tunada. Suppress pontual com justificativa é o caminho. Desligar regra deixa porta aberta para o problema de verdade quando ele aparecer.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 12, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 50 min</span>
+        <h2>Ferramentas SAST no pipeline</h2>
+        <p class="section-description">Quatro opções do mercado, critérios de escolha, hands-on para plugar uma delas no pipeline do grupo.</p>
+      </section>
+
+      <!-- 13, Quatro ferramentas dominantes -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Quatro ferramentas que dominam o mercado</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Existem dezenas. No mundo real, quatro concentram a adoção. Diferem em modelo de regra, licença, profundidade de análise e quanto amigam com pipeline. Nenhuma é a melhor em tudo.</p>
+          <div class="four-cards">
+            <div class="card">
+              <span class="tag">Multi-linguagem</span>
+              <h4>SonarQube</h4>
+              <p>Server self-hosted, quality gate configurável. Comunidade grande, muita regra. Exige instância rodando.</p>
+            </div>
+            <div class="card">
+              <span class="tag">Regras em YAML</span>
+              <h4>Semgrep</h4>
+              <p>CLI simples, regras legíveis em YAML, registry público com milhares de rules. Roda direto no runner.</p>
+            </div>
+            <div class="card">
+              <span class="tag">GitLab nativo</span>
+              <h4>GitLab SAST</h4>
+              <p>Analyzers prontos por linguagem. Incluído no GitLab Ultimate, resultado aparece no MR. Setup mínimo.</p>
+            </div>
+            <div class="card">
+              <span class="tag">Query semântica</span>
+              <h4>CodeQL</h4>
+              <p>Da GitHub, trata código como banco de dados. Query em QL poderosa, uso intenso por security research. Integrado ao GitHub Actions.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Como escolher para a Sprint</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Repo no GitLab da Inteli, time começando, linguagem JavaScript/TypeScript: GitLab SAST resolve. Quer controle fino sobre regra, sem server: Semgrep. Precisa de dashboard histórico com métricas: SonarQube. CodeQL brilha em projeto maduro com budget para tuning.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 14, SonarQube detalhado -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SonarQube, quality gate como contrato</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">SonarQube vai além de SAST puro. Faz também detecção de code smell, duplicação, cobertura. Para segurança, foca em Security Hotspot (ponto a revisar) e Vulnerability (risco confirmado). Quem manda na build é o quality gate, um conjunto de regras que decide se a MR fica "verde" ou "vermelho".</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Quality gate típico</h4>
+              <ul>
+                <li>Zero nova vulnerabilidade na MR</li>
+                <li>Zero security hotspot não revisado</li>
+                <li>Cobertura de novo código maior que 80%</li>
+                <li>Duplicação em novo código menor que 3%</li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-dark-green);">
+              <h4>Como integra no CI</h4>
+              <ul>
+                <li>Job roda <code>sonar-scanner</code> no runner</li>
+                <li>Manda resultado para o server</li>
+                <li>Server calcula quality gate</li>
+                <li>Step seguinte quebra se gate falhar</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Pegadinha do gate</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Gate padrão olha só <em>código novo</em>, não histórico inteiro. Faz sentido: não dá pra forçar time a arrumar toda dívida técnica de uma vez. Mas aluno tende a achar que gate verde significa projeto impecável. Não significa. Significa que a entrega de hoje não piorou a média.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 15, Semgrep detalhado -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Semgrep, regra legível como o código</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">O Semgrep parte de uma ideia teimosa: se regra de SAST for mais difícil de escrever do que o código que ela vigia, ninguém vai escrever. Aí a sintaxe virou YAML, o pattern se parece com o trecho procurado, com variáveis no lugar dos nomes. Para grupo que começa, é a menor curva de aprendizado.</p>
+          <div class="pipeline-block">
+            <pre><code class="language-yaml"># semgrep rule, exemplo
+rules:
+  - id: hardcoded-api-key
+    message: API key parece hardcoded
+    severity: ERROR
+    languages: [javascript, typescript]
+    pattern: |
+      const $KEY = "..."
+    metadata:
+      owasp: A05-Security-Misconfiguration
+      cwe: CWE-798</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700;">Como lê na prática</p>
+              <ol>
+                <li><strong>id</strong>: nome da regra no relatório</li>
+                <li><strong>pattern</strong>: o que procurar no código</li>
+                <li><strong>$KEY</strong>: variável que casa qualquer nome</li>
+                <li><strong>metadata</strong>: liga ao OWASP e CWE</li>
+                <li><strong>severity</strong>: ERROR bloqueia, WARNING avisa</li>
+              </ol>
+              <p style="font-size: 0.92em; margin: 6px 0 0; color: var(--inteli-gray-dark);">Registry público tem mais de 2000 regras prontas. <code>semgrep --config auto</code> detecta a linguagem e aplica o conjunto recomendado.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 16, GitLab SAST nativo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>GitLab SAST, a opção mais barata de começar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Vocês estão no GitLab da Inteli. Essa é a ferramenta que sai mais barata de ligar: incluir um template no <code>.gitlab-ci.yml</code> e o pipeline ganha um job de SAST. Por baixo do capô, GitLab roda analyzers específicos por linguagem (Semgrep para JavaScript, Bandit para Python, etc).</p>
+          <div class="pipeline-block">
+            <pre><code class="language-yaml"># .gitlab-ci.yml
+include:
+  - template: Security/SAST.gitlab-ci.yml
+
+sast:
+  stage: test
+  rules:
+    - if: $CI_COMMIT_BRANCH
+
+# Opcional: quebrar pipeline em severidade HIGH
+variables:
+  SAST_EXCLUDED_ANALYZERS: ""
+  SAST_EXCLUDED_PATHS: "spec, test, tests"</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700;">O que acontece ao merge</p>
+              <ol>
+                <li>Pipeline dispara job <code>sast</code></li>
+                <li>Analyzer roda no código da branch</li>
+                <li>Achados viram widget na página do MR</li>
+                <li>Revisor vê severidade e trecho afetado</li>
+                <li>Política de merge pode exigir zero HIGH</li>
+              </ol>
+              <p style="font-size: 0.92em; margin: 6px 0 0; color: var(--inteli-gray-dark);">Documentação oficial no auto-estudo. Leitura de 30 min que vocês já fizeram. Hoje a gente aplica.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 17, Exercício C hands-on -->
+      <section class="exercise-slide compact">
+        <div class="top-bar"></div>
+        <span class="exercise-tag">Hands-on C, em grupo, 25 min</span>
+        <h2>Plugue SAST no pipeline do seu projeto</h2>
         <ol class="exercise-steps">
-          <li><em>Placeholder:</em> escolher SonarQube, Semgrep ou CodeQL e justificar.</li>
-          <li>Adicionar a etapa no pipeline do GitHub Actions ou GitLab CI.</li>
-          <li>Rodar o pipeline e revisar pelo menos 3 achados.</li>
-          <li>Classificar cada achado: falso positivo, aceito ou a corrigir.</li>
-          <li>Abrir issues no board para os achados a corrigir.</li>
+          <li>Em grupo, escolham uma ferramenta: GitLab SAST (padrão), Semgrep (CLI) ou SonarQube (se já tem instância). Justifiquem em uma frase.</li>
+          <li>Abram o <code>.gitlab-ci.yml</code> do repositório da Sprint e adicionem o job de SAST. Commit direto numa branch <code>feat/sast-pipeline</code>.</li>
+          <li>Abram MR para <code>main</code> e esperem o pipeline rodar. Tirem print do widget de segurança com os achados.</li>
+          <li>Escolham <strong>um</strong> achado. Leiam o trecho de código apontado e classifiquem como fix, aceitar ou suppress. Uma linha de justificativa.</li>
+          <li>Se classificaram como fix, mandem o patch no mesmo MR. Se foi aceitar ou suppress, abram issue com a justificativa linkada.</li>
         </ol>
+        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 14px;">Se a ferramenta não achar nada, o repo está limpo ou o job não rodou. Confiram no log do runner antes de comemorar. Turma do semestre passado levou 10 min para perceber que o include do template estava fora do lugar.</p>
       </section>
 
-      <!-- 09, Quiz -->
+      <!-- 18, Debrief C -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Debrief C, o que sempre aparece na primeira rodada</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Três padrões se repetem em toda turma que roda SAST pela primeira vez. Mapeio aqui para vocês não gastarem energia redescobrindo o óbvio. Quem pulou o auto-estudo da OWASP vai cair pelo menos em um destes.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>1, Enxurrada de HIGH</h4>
+              <p>Primeira rodada vem com 50 achados. Normal. Ferramenta analisa código legado que nunca viu scanner. Triagem começa por A01, A03, A05. Resto entra em fila.</p>
+            </div>
+            <div class="card">
+              <h4>2, Falso positivo em teste</h4>
+              <p>Scanner reclama de <code>eval</code> em <code>tests/</code>. Exclua a pasta no config. Código de teste tem padrão permissivo por natureza.</p>
+            </div>
+            <div class="card">
+              <h4>3, Merge bloqueado por regra boba</h4>
+              <p>Regra de severity MEDIUM travando pipeline toda hora. Ajuste política: bloqueia em HIGH e CRITICAL, avisa em MEDIUM, ignora LOW.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A pergunta que fica</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se o scanner sempre pega os mesmos 50 achados, ele vira ruído. Time para de olhar. A saída é baseline: marcar o estado atual como aceito e monitorar só o novo. Fica a mesma lógica do SonarQube quality gate em código novo.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 19, Como ler um achado -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Como ler um achado, exemplo real</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Saída típica do Semgrep num projeto Node da Sprint. Três informações para procurar sempre: trecho de código, regra que disparou e severidade. A sequência é sempre a mesma: entender, decidir, documentar.</p>
+          <div class="sast-output"><span class="sev-head">semgrep scan, academic-tracker</span>
+=============================================
+<span class="file">src/controllers/student.js:42</span>
+  rule: <span class="rule">javascript.express.security.injection.tainted-sql-string</span>
+  severity: <span class="sev-high">HIGH</span>
+
+    40 | router.get('/search', (req, res) =&gt; {
+    41 |   const name = req.query.name
+  <span class="sev-high">42 |   const sql = `SELECT * FROM students WHERE name = '${name}'`</span>
+    43 |   db.query(sql, (err, rows) =&gt; res.json(rows))
+    44 | })
+
+  <span class="sev-high">⚠</span>  Input do usuário concatenado em query SQL. Use parameterização.
+  OWASP: A03:2021 Injection | CWE-89
+
+Total: 1 (HIGH: 1)</div>
+          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Três passos para qualquer achado</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;"><strong>1) Ler o trecho</strong>, o input mesmo chega sem sanitização? <strong>2) Decidir</strong>, fix com query parametrizada é trivial aqui. <strong>3) Documentar</strong>, commit com mensagem <code>fix(security): parameterize student search query</code>, link para OWASP A03 na descrição. Ninguém esquece por que mudou.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 20, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 20 min</span>
+        <h2>DAST, o complemento dinâmico</h2>
+        <p class="section-description">O que o SAST deixa passar, ferramentas, onde rodar no pipeline e por que não dá para viver só com uma das duas.</p>
+      </section>
+
+      <!-- 21, O que é DAST -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O que DAST enxerga que SAST não vê</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Dynamic Application Security Testing. A ferramenta fica do lado de fora, fala HTTP, manda payload, observa resposta. Não precisa do código-fonte. Por isso ela acha coisa que o SAST é cego: config de runtime, comportamento em produção, diferença entre o que o código diz e o que o servidor realmente responde.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Como funciona</h4>
+              <p>Crawler descobre endpoints, fuzzer testa payload malicioso em cada um, analyzer interpreta respostas. Assinatura de vuln vem do mesmo OWASP Top 10.</p>
+            </div>
+            <div class="card">
+              <h4>O que acha bem</h4>
+              <p>Header de segurança faltando (CSP, HSTS), cookie sem Secure, CORS aberto, endpoint exposto sem auth, redirecionamento aberto, XSS refletido.</p>
+            </div>
+            <div class="card">
+              <h4>O que não acha</h4>
+              <p>Lógica de negócio (escalar privilégio por regra quebrada), SQL injection em endpoint que o crawler não descobriu, criptografia fraca em dado em repouso.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Trade-off crítico</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">DAST precisa da aplicação rodando. Isso significa ambiente de preview, seed de dados, tempo de scan (minutos, às vezes hora). SAST roda em segundos sem nada disso. Por isso SAST fica em toda MR, DAST entra em job noturno ou em ambiente de homologação.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 22, Ferramentas DAST -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três DAST que o mercado usa</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Menos fragmentado que SAST. Três nomes resolvem 95% dos casos. Cada um com um papel um pouco diferente na cadeia.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>OWASP ZAP</h4>
+              <p>Open source, mantido pela OWASP. Roda CLI em pipeline via <code>zap-baseline.py</code>. Relatório HTML. Escolha default para quem começa e não quer licença.</p>
+            </div>
+            <div class="card">
+              <h4>Burp Suite</h4>
+              <p>Proxy interativo com versão paga robusta. Favorito de pentester. Para pipeline tem Burp Enterprise. Caro, mas profundo em achado de lógica.</p>
+            </div>
+            <div class="card">
+              <h4>StackHawk</h4>
+              <p>Filha do ZAP, feita para CI. Integra com GitHub Actions, pipeline de config simples, foco em app moderna com API. Modelo SaaS.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Para a Sprint do módulo</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">ZAP é a escolha óbvia: gratuito, roda em container, relatório fácil de anexar em MR. Não vamos aplicar hoje, mas fica como conhecimento para quando a equipe tiver ambiente de preview no projeto da Sprint 03.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 23, Onde rodar DAST no pipeline -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Onde plugar DAST, sem travar o fluxo do time</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O erro comum é colar DAST na MR como se fosse SAST. Aí o pipeline demora meia hora, o time para de rodar o scan, o valor evapora. Três posições fazem sentido na vida real.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>1, Preview env por MR</h4>
+              <p>Cada MR sobe ambiente efêmero. ZAP baseline roda em 3 min, pega só o óbvio (header, cookie, endpoint sem auth). Feedback rápido, não bloqueia merge.</p>
+            </div>
+            <div class="card">
+              <h4>2, Scan noturno em staging</h4>
+              <p>ZAP full scan roda contra staging toda noite. Demora 30 min a 2 h, relatório vai para o time de segurança. Pega o que baseline ignora.</p>
+            </div>
+            <div class="card">
+              <h4>3, Scan antes de release</h4>
+              <p>Pré-deploy de produção, DAST contra candidato. Gate manual, time lê achado, decide se sobe. Não automatiza, não deveria.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Regra de maturidade</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Time novo começa só com posição 1 ou 2. Posição 3 exige alguém que saiba ler saída de DAST e separar ruído de ameaça. Tentar ter os três antes da hora gera dashboard que ninguém lê, que é pior que não ter dashboard nenhum.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 24, SAST + DAST em camadas -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Defesa em profundidade, SAST, DAST, SCA juntos</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Nenhuma ferramenta pega tudo. A ideia é sobrepor vistas: uma olha código, outra olha dependência, outra olha comportamento. A matriz a seguir é o retrato de um pipeline de CI maduro, o que a Sprint 03 deveria ter como alvo.</p>
+          <div class="layer-defense">
+            <div class="defense-layer sast">
+              <h4>SAST</h4>
+              <p>Roda em cada MR. Analisa código novo, bloqueia merge em severity HIGH. Feedback em minutos. Tempo de scan: 2 a 5 min.</p>
+            </div>
+            <div class="defense-layer sca">
+              <h4>SCA</h4>
+              <p>Roda em cada MR e em schedule. Analisa dependências (Trivy em imagem, Dependabot no <code>package.json</code>). Alerta em CVE CRITICAL, abre MR automática de atualização.</p>
+            </div>
+            <div class="defense-layer dast">
+              <h4>DAST</h4>
+              <p>Roda em preview env da MR (baseline 3 min) e em staging toda noite (full scan). Não bloqueia merge, gera issue priorizada. Exige app rodando.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 12px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O cenário ideal em uma frase</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">SAST impede código ruim de entrar. SCA impede dependência ruim de ficar. DAST impede config ruim de sair. A sobreposição das três forma o que se chama de defesa em profundidade. Tirar qualquer uma deixa um ponto cego proporcional.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 25, Separador Fechamento -->
+      <section class="section-slide">
+        <span class="section-number">Fechamento, 10 min</span>
+        <h2>Checagem, checklist, próxima aula</h2>
+        <p class="section-description">Duas perguntas, uma checklist de cinco linhas, três provocações para a Aula 07.</p>
+      </section>
+
+      <!-- 26, Quiz 1 -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem rápida</h2>
+          <h2>Checagem 1 de 2, SAST</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question"><em>Placeholder:</em> qual a principal diferença entre SAST e SCA?</p>
+          <p class="quiz-question">Seu SAST apontou 50 achados numa base que nunca passou por scanner antes. Qual é a primeira ação mais sensata?</p>
           <ul class="quiz-options">
-            <li data-correct="true">SAST analisa código-fonte e SCA analisa dependências</li>
-            <li data-correct="false">SAST é dinâmico e SCA é estático</li>
-            <li data-correct="false">SAST e SCA são sinônimos</li>
-            <li data-correct="false">SAST roda em produção e SCA no pipeline</li>
+            <li data-correct="false">Desligar todas as regras que geraram falso positivo, reduzir ruído</li>
+            <li data-correct="true">Estabelecer baseline com o estado atual e configurar o gate para monitorar só código novo</li>
+            <li data-correct="false">Bloquear todos os merges até que os 50 sejam corrigidos</li>
+            <li data-correct="false">Apagar as regras de severity HIGH, começar pelas LOW</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Certo. SAST vasculha código-fonte, SCA cuida das dependências e suas vulnerabilidades."
-               data-incorrect-msg="Ainda não. SAST olha para o código-fonte, SCA olha para as dependências declaradas."></div>
+               data-correct-msg="Certo. Baseline aceita o passado como dívida e impede o novo de piorar. Desligar regra é violar a primeira lição, suppress é cirúrgico, não atacado."
+               data-incorrect-msg="Releia. Desligar regra deixa porta aberta no futuro. Bloquear tudo paralisa time. A saída profissional é baseline: aceita o estado, impede regressão."></div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
-          <div class="footer-page">09</div>
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">22</div>
         </div>
       </section>
 
-      <!-- 10, Auto-estudo -->
+      <!-- 27, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, SAST vs DAST</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Sua aplicação esqueceu o header <code>Content-Security-Policy</code> em produção. Qual ferramenta tem a melhor chance de detectar isso?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">SAST, porque analisa o código que configura o servidor</li>
+            <li data-correct="true">DAST, porque fala HTTP com a aplicação viva e inspeciona cada resposta</li>
+            <li data-correct="false">SCA, porque cheta as dependências de rede</li>
+            <li data-correct="false">Scanner de secrets, porque CSP é uma string sensível</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Config de runtime escapa do SAST. DAST faz o request, lê header, mostra o que está faltando. É exatamente o caso de uso típico do ZAP baseline."
+               data-incorrect-msg="Releia. Header é decisão de runtime. Código-fonte pode dizer que seta o header, mas só uma request ao servidor vivo confirma se ele saiu. Essa é a essência do DAST."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 28, Checklist de segurança no pipeline -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Auto-estudo para a próxima</h2>
+          <h2>Checklist de segurança no pipeline, para a Sprint</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
-          <div class="concept-cards">
-            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
-            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
-            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Cinco linhas que um pipeline de segurança minimamente decente tem. Não precisa implementar tudo hoje. Precisa saber qual está cobrindo e qual ficou de fora, com justificativa.</p>
+          <div class="three-cards" style="grid-template-columns: repeat(5, 1fr); gap: 8px;">
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">1, Hook</h4>
+              <p style="font-size: 0.58em;">pre-commit com lint e secret scanner local.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">2, SAST</h4>
+              <p style="font-size: 0.58em;">Job no pipeline, severidade HIGH bloqueia merge.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">3, Secret</h4>
+              <p style="font-size: 0.58em;">Segundo scanner no runner, TruffleHog ou Gitleaks.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">4, SCA</h4>
+              <p style="font-size: 0.58em;">Trivy em imagem, CVE CRITICAL quebra build.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">5, DAST</h4>
+              <p style="font-size: 0.58em;">ZAP baseline em preview env, scheduled full scan.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A regra do pipeline verde</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">"Build verde" em 2026 não é teste passando. É código sem vuln HIGH, sem secret no diff, sem CVE CRITICAL na imagem, sem header faltando em preview. Quem ainda trata build como "rodou o <code>npm test</code>" está fazendo CI de 2015. Sprint 03 vocês vão sentir essa mudança de definição na prática.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 06, CI parte 2: SAST no pipeline, Sprint 02</div>
-          <div class="footer-page">10</div>
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">24</div>
         </div>
       </section>
 
-      <!-- 11, Encerramento -->
+      <!-- 29, Auto-estudo para Aula 07 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 07</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">A Aula 07 fecha a Sprint 02 com o tema de Continuous Deployment. Pipeline verde, imagem limpa, já viram. Próxima pergunta: e o deploy em si? Três provocações para chegar pronto.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, Continuous Delivery vs Continuous Deployment</h4>
+              <p>Post curto da Atlassian, "Continuous integration vs delivery vs deployment". 10 min. Fique com a diferença entre as três palavras.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, Deployment strategies</h4>
+              <p>AWS Builders Library, "Achieving Rapid Safe Deployment". Foco em blue/green e canary. 20 min, vale cada minuto.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, GitHub Actions deploy</h4>
+              <p>Tutorial prático, 12 min, deploy automático de app Node pro Fly.io ou Vercel usando GitHub Actions. Serve de referência para o Hello World da Aula 07.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega desta aula, para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Um print do widget de segurança da MR com o SAST rodando. Uma linha dizendo qual foi o achado mais sério que o grupo triou e qual decisão tomou (fix, aceitar, suppress). Uma frase respondendo: se tivesse que incluir DAST na próxima sprint, onde plugaria no pipeline?</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 06, CI parte 2, SAST e DAST no pipeline, Sprint 02</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 30, Encerramento -->
       <section class="end-slide">
         <span class="inteli-wordmark light">inteli</span>
         <h2>Até a próxima</h2>
