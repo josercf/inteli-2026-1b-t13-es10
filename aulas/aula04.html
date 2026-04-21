@@ -18,6 +18,219 @@
 
   <link rel="stylesheet" href="assets/css/inteli-theme.css" />
   <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Layout local da Aula 04 */
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Card de citação */
+    .quote-card {
+      background: var(--inteli-purple);
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin: 10px auto 0;
+      max-width: 85%;
+      text-align: center;
+    }
+    .quote-card p {
+      font-size: 0.8em;
+      font-style: italic;
+      margin: 0;
+      line-height: 1.4;
+      color: #fff;
+    }
+    .quote-card cite {
+      display: block;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-green);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+      font-style: normal;
+    }
+
+    /* Painel de MR comparativo */
+    .mr-panel {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 16px;
+      border-top: 4px solid var(--inteli-lilac);
+      box-shadow: var(--inteli-shadow-soft);
+    }
+    .mr-panel.alt {
+      border-top-color: var(--inteli-purple-deep);
+    }
+    .mr-panel h4 {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.72em;
+      color: var(--inteli-purple);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 0 0 8px 0;
+    }
+    .mr-panel.alt h4 {
+      color: var(--inteli-purple-deep);
+    }
+    .mr-panel .mr-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68em;
+      line-height: 1.4;
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--inteli-gray-light);
+    }
+    .mr-panel .mr-row:last-child {
+      border-bottom: none;
+    }
+    .mr-panel .mr-label {
+      color: var(--inteli-purple-deep);
+      font-weight: 600;
+    }
+    .mr-panel .mr-value {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      color: var(--inteli-purple);
+    }
+
+    /* Rubrica de revisão, três categorias lado a lado */
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .rubric-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .rubric-card.block {
+      border-left-color: #c0392b;
+    }
+    .rubric-card.quest {
+      border-left-color: #d97706;
+    }
+    .rubric-card.nit {
+      border-left-color: #10b981;
+    }
+    .rubric-card .rubric-tag {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--inteli-gray-dark);
+    }
+    .rubric-card.block .rubric-tag { color: #c0392b; }
+    .rubric-card.quest .rubric-tag { color: #d97706; }
+    .rubric-card.nit .rubric-tag { color: #10b981; }
+    .rubric-card h4 {
+      font-size: 0.82em;
+      margin: 2px 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .rubric-card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.4;
+      color: var(--inteli-purple);
+    }
+
+    /* Tabela compacta de smells */
+    .smell-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.6em;
+      margin-top: 4px;
+    }
+    .smell-table th {
+      background: var(--inteli-bg-soft);
+      color: var(--inteli-purple-deep);
+      text-align: left;
+      padding: 3px 6px;
+      border-bottom: 2px solid var(--inteli-purple);
+      font-weight: 700;
+    }
+    .smell-table td {
+      padding: 3px 6px;
+      border-bottom: 1px dashed var(--inteli-gray-light);
+      color: var(--inteli-purple);
+    }
+    .smell-table td code {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.92em;
+      color: var(--inteli-purple-deep);
+    }
+    .smell-table .sev-block { color: #c0392b; font-weight: 700; }
+    .smell-table .sev-major { color: #d97706; font-weight: 700; }
+    .smell-table .sev-minor { color: #10b981; font-weight: 700; }
+
+    /* Três atores da qualidade */
+    .actors-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    /* Grid compacto 4x2 para a ISO 25010 */
+    .iso-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .iso-card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--inteli-lilac);
+    }
+    .iso-card.focus {
+      border: 2px solid var(--inteli-purple);
+      background: #fff;
+    }
+    .iso-card h4 {
+      font-size: 0.74em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+      line-height: 1.15;
+    }
+    .iso-card p {
+      font-size: 0.6em;
+      margin: 0;
+      line-height: 1.3;
+      color: var(--inteli-purple);
+    }
+    .actor-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border-top: 4px solid var(--inteli-purple);
+    }
+    .actor-card h4 {
+      font-size: 0.9em;
+      margin: 0 0 6px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .actor-card .actor-role {
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-lilac);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .actor-card p {
+      font-size: 0.68em;
+      margin: 4px 0 0 0;
+      line-height: 1.4;
+      color: var(--inteli-purple);
+    }
+  </style>
 </head>
 <body>
   <div class="reveal">
@@ -29,10 +242,10 @@
         <div class="cover-content">
           <span class="sprint-tag">Sprint 02, Qualidade e CI</span>
           <h1>Qualidade de software e IA no processo</h1>
-          <p class="subtitle">Qualidade como atributo mensurável (ISO/IEC 25010) e como a IA generativa se encaixa no ciclo de engenharia.</p>
+          <p class="subtitle">Hoje a aula é toda em torno de três exercícios em um repo real: abrir uma MR limpa, revisar uma MR com problemas plantados, triar apontamentos do Sonar. No fim, comparar com o que a IA vê no mesmo código. Pouco slide, muito teclado.</p>
           <div class="cover-meta">
             <strong>Aula</strong><span>04 de 14</span>
-            <strong>Data</strong><span>07 de maio de 2026, quinta-feira, 10h00 às 12h00</span>
+            <strong>Data</strong><span>07 de maio de 2026, quinta-feira, 10h00 às 12h30</span>
             <strong>Professor</strong><span>José Romualdo da Costa Filho</span>
             <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
           </div>
@@ -49,18 +262,20 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
-            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
-          </p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Sala invertida, 2h30, organizada em torno de um repo que vocês vão clonar e bater em cima. Quatro exercícios, três debriefs, um fechamento curto. Vocês escrevem mais MRs e mais comentários de revisão do que slides lidos.</p>
           <table>
             <thead>
               <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Fundamentos</td><td>ISO/IEC 25010 e o papel da IA no processo de engenharia</td><td>55 min</td></tr>
-              <tr><td>11h10, Prática</td><td>Aplicar critérios de qualidade e usar IA como par em uma tarefa real</td><td>40 min</td></tr>
-              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+              <tr><td>10h00, Check-in</td><td>Recap dos auto-estudos, alinhar vocabulário do dia</td><td>15 min</td></tr>
+              <tr><td>10h15, Exercício A</td><td>Em dupla, abrir MR pequena e bem descrita em <code>feat/student-status</code></td><td>35 min</td></tr>
+              <tr><td>10h50, Debrief A</td><td>Duas MRs no projetor, turma comenta em voz alta</td><td>10 min</td></tr>
+              <tr><td>11h00, Exercício B</td><td>Individual, revisar a MR suja em <code>feat/scholarship-check</code></td><td>30 min</td></tr>
+              <tr><td>11h30, Debrief B</td><td>Agregar achados em um quadro comum</td><td>15 min</td></tr>
+              <tr><td>11h45, Exercício C</td><td>Em dupla, triar apontamentos do SonarQube</td><td>30 min</td></tr>
+              <tr><td>12h15, Exercício D</td><td>Mesma MR do B, mas pedindo à IA para revisar</td><td>10 min</td></tr>
+              <tr><td>12h25, Fechamento</td><td>Pontos de atenção e bridge para a Aula 05</td><td>5 min</td></tr>
             </tbody>
           </table>
         </div>
@@ -70,12 +285,12 @@
         </div>
       </section>
 
-      <!-- 03, Daily Time -->
+      <!-- 03, Check-in time -->
       <section class="daily-slide">
-        <span class="daily-tag">Daily, 15 min</span>
-        <h2>Daily Time</h2>
+        <span class="daily-tag">Check-in, 15 min</span>
+        <h2>Check-in e recap dos auto-estudos</h2>
         <p class="daily-subtitle">
-          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+          Três perguntas, mão levantada rápida. Qual característica da ISO 25010 mais apareceu no seu projeto? O que te incomodou no Google Engineering Practices? A IA te ajudou ou atrapalhou na última MR que você abriu?
         </p>
         <div class="inteli-timer" data-minutes="15">
           <div class="inteli-timer-display">15:00</div>
@@ -96,11 +311,28 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Quatro verbos. A ideia não é sair sabendo o que é ISO 25010 de cor. É sair com o músculo de escrever uma MR que o revisor agradece, de ler código dos outros sem virar carimbeiro, de olhar o painel do Sonar sem pirar, e de saber onde a IA cobre bem e onde ainda engana.</p>
           <div class="concept-cards">
-            <div class="concept-card"><h4>Compreender</h4><p>Identificar as 8 características de qualidade da ISO/IEC 25010.</p></div>
-            <div class="concept-card"><h4>Comparar</h4><p>Diferenciar qualidade do produto e qualidade em uso, e onde IA se aplica.</p></div>
-            <div class="concept-card"><h4>Aplicar</h4><p>Usar IA generativa como copiloto para ampliar qualidade sem diluir senioridade.</p></div>
+            <div class="concept-card">
+              <h4>Abrir</h4>
+              <p>Montar uma MR pequena, com descrição que explica o porquê, teste que prova o caso e commit claro.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Revisar</h4>
+              <p>Ler um diff dos outros aplicando a rubrica blocker, question, nit. Sem ir para o pessoal.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Triar</h4>
+              <p>Olhar dez apontamentos do Sonar e decidir quais consertar agora, virar issue, ou justificar o descarte.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Comparar</h4>
+              <p>Colocar lado a lado o que o revisor humano pegou e o que a IA pegou, ver onde um cobre o outro.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A aula é invertida, e ela cobra isso</h4>
+            <p style="font-size: 0.68em; margin: 0; line-height: 1.4;">Quem pulou os artigos do Google e do GitHub vai sentir no exercício B. Não dá para improvisar rubrica de revisão no meio do exercício. Se perdeu o auto-estudo, pega a pessoa ao lado antes do bloco 2 começar.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -109,25 +341,94 @@
         </div>
       </section>
 
-      <!-- 05, Separador Bloco 1 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 1, 55 min</span>
-        <h2>Qualidade em engenharia</h2>
-        <p class="section-description">ISO/IEC 25010, Clean Code e a conversa entre atributos de qualidade.</p>
-      </section>
-
-      <!-- 06, Conteúdo (placeholder) -->
+      <!-- 05, Gancho, qualidade é invisível até quebrar -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Conteúdo, a preencher</h2>
+          <h2>Qualidade é invisível, até ela quebrar</h2>
         </div>
         <div class="slide-body">
-          <div class="callout">
-            <h4>Placeholder de conteúdo</h4>
-            <p>8 características da ISO/IEC 25010, relação com Clean Code e um panorama de uso de IA em engenharia de software (geração, revisão, testes, documentação).</p>
+          <p style="font-size: 0.76em; margin: 0 0 8px;">Ninguém abre o console e pensa "hoje quero um código bonito". As decisões de qualidade entram escondidas: no momento em que você escreve o MR, no momento em que você comenta o MR do colega, no momento em que o pipeline roda Sonar e você escolhe se olha o resultado ou fecha a aba. A aula de hoje torna esses três momentos visíveis, porque enquanto invisíveis eles viram dívida técnica silenciosa.</p>
+          <div class="side-by-side" style="margin-top: 4px;">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Qualidade que aparece no painel</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Cobertura de testes.</li>
+                <li>Bugs fechados por sprint.</li>
+                <li>Tempo médio de build.</li>
+                <li>Fácil de medir, fácil de gamear.</li>
+              </ul>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Qualidade que só aparece na rotina</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Descrição de MR que poupa uma pergunta.</li>
+                <li>Comentário que ensina em vez de humilhar.</li>
+                <li>Refatoração que não virou MR gigante.</li>
+                <li>Difícil de medir, difícil de fingir.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="quote-card" style="margin-top: 10px;">
+            <p>"Code review is not about catching bugs. It is about everyone on the team getting to see how the code evolves."</p>
+            <cite>Google Engineering Practices, adaptado</cite>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, ISO 25010 lembrete -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>ISO 25010 em uma tela, só para alinhar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Vocês leram a norma inteira no auto-estudo. O lembrete aqui é para deixar as oito famílias à vista. Hoje a gente vive em duas delas, manutenibilidade e segurança. As outras seis não somem, só não são o foco desta aula.</p>
+          <div class="iso-grid">
+            <div class="iso-card">
+              <h4>Functional suitability</h4>
+              <p>Faz o que promete, com exatidão.</p>
+            </div>
+            <div class="iso-card">
+              <h4>Performance efficiency</h4>
+              <p>Tempo de resposta aceitável.</p>
+            </div>
+            <div class="iso-card">
+              <h4>Compatibility</h4>
+              <p>Convive com outros sistemas.</p>
+            </div>
+            <div class="iso-card">
+              <h4>Usability</h4>
+              <p>Aprendível, difícil de usar errado.</p>
+            </div>
+            <div class="iso-card">
+              <h4>Reliability</h4>
+              <p>Funciona, se recupera de falha.</p>
+            </div>
+            <div class="iso-card focus">
+              <h4>Security</h4>
+              <p>Foco da aula. Protege dado e acesso.</p>
+            </div>
+            <div class="iso-card focus">
+              <h4>Maintainability</h4>
+              <p>Foco da aula. Lê-se e altera-se sem medo.</p>
+            </div>
+            <div class="iso-card">
+              <h4>Portability</h4>
+              <p>Roda em outros ambientes.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que o foco em manutenibilidade</h4>
+            <p style="font-size: 0.64em; margin: 0; line-height: 1.4;">A norma quebra manutenibilidade em cinco subatributos: modularidade, reusabilidade, analisabilidade, modificabilidade, testabilidade. Revisão de código, análise estática e IA na revisão mexem direto nesses cinco. Por isso são o coração da aula.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -136,45 +437,79 @@
         </div>
       </section>
 
-      <!-- 07, Separador Bloco 2 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 2, 40 min</span>
-        <h2>IA no processo</h2>
-        <p class="section-description">Onde IA acelera, onde amplifica risco e como medir seu efeito.</p>
-      </section>
-
-      <!-- 08, Exercício hands-on -->
-      <section class="exercise-slide">
-        <span class="exercise-tag">Hands-on, em duplas</span>
-        <h2>Qualidade assistida por IA</h2>
-        <ol class="exercise-steps">
-          <li><em>Placeholder:</em> escolher um trecho de código do projeto do módulo.</li>
-          <li>Listar 3 atributos ISO/IEC 25010 relevantes para esse trecho.</li>
-          <li>Pedir à IA sugestões de melhoria alinhadas a esses 3 atributos.</li>
-          <li>Aceitar, rejeitar ou ajustar cada sugestão com justificativa técnica.</li>
-          <li>Concluir: onde a IA ajudou e onde ela errou?</li>
-        </ol>
-      </section>
-
-      <!-- 09, Quiz -->
-      <section class="quiz-slide">
+      <!-- 07, Três atores da qualidade, preview -->
+      <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem rápida</h2>
+          <h2>Três atores olham seu código</h2>
         </div>
-        <div class="quiz-container">
-          <p class="quiz-question"><em>Placeholder:</em> ISO/IEC 25010 organiza qualidade do produto em quantas características principais?</p>
-          <ul class="quiz-options">
-            <li data-correct="false">5</li>
-            <li data-correct="false">6</li>
-            <li data-correct="true">8</li>
-            <li data-correct="false">10</li>
-          </ul>
-          <div class="quiz-feedback"
-               data-correct-msg="Certo. A ISO/IEC 25010 define 8 características principais de qualidade do produto."
-               data-incorrect-msg="Ainda não. São 8 características: funcional, desempenho, compatibilidade, usabilidade, confiabilidade, segurança, manutenibilidade e portabilidade."></div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A aula inteira gira em torno destes três. Cada um tem um ponto cego diferente. A qualidade boa do time aparece quando os três conversam, não quando um tenta fazer o papel dos outros.</p>
+          <div class="actors-grid">
+            <div class="actor-card">
+              <span class="actor-role">Ator 01</span>
+              <h4>Revisor humano</h4>
+              <p>Pega contexto de domínio, histórico do time, decisão de produto. Erra por cansaço e por viés. Cobre o que ferramenta não vê.</p>
+            </div>
+            <div class="actor-card">
+              <span class="actor-role">Ator 02</span>
+              <h4>Análise estática</h4>
+              <p>Pega padrão sintático, métrica objetiva, regra conhecida. Nunca cansa, nunca vê ironia. Cobre o que o humano esquece no cansaço.</p>
+            </div>
+            <div class="actor-card">
+              <span class="actor-role">Ator 03</span>
+              <h4>IA generativa</h4>
+              <p>Pega padrão de código visto em milhões de repos, explica em linguagem natural. Inventa referência, alucina fix. Útil como segunda opinião, não como árbitro.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O perigo dos três</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se o time delega revisão só para a IA, a primeira MR com um bug de domínio passa batido. Se delega só para o Sonar, a primeira MR com decisão de arquitetura ruim passa batido. Se delega só para o humano, a fadiga silencia o que ele mesmo sabe que deveria cobrar. Três atores, três papéis, não substituíveis.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Separador Bloco 1, Revisão em dois papéis -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 90 min</span>
+        <h2>Revisão de código, dois papéis</h2>
+        <p class="section-description">Primeiro vocês são autores de uma MR. Depois, revisores de uma MR suja. Os dois lados da mesma mesa.</p>
+      </section>
+
+      <!-- 09, Por que revisar -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Por que a gente revisa, de verdade</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A resposta clichê é "para pegar bugs". Se fosse só isso, análise estática já bastaria. Revisão serve para três coisas que ferramenta nenhuma entrega: transferir conhecimento, pressionar a qualidade do código para cima, e criar um registro do porquê das decisões. O bug pego é bônus.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Transferir conhecimento</h4>
+              <p>Todo MR aberto é uma aula curta para quem não mexeu naquela parte. O revisor aprende o contexto, o autor ensina a escolha.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Pressionar qualidade</h4>
+              <p>Saber que alguém vai ler te faz escrever melhor. É o efeito platéia do próprio time, sem precisar de meta.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Registrar decisões</h4>
+              <p>Comentário no MR fica gravado. Seis meses depois, ninguém lembra por que o método ficou complexo. O thread do MR lembra.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O mito do carimbador</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Time que aprova tudo em três minutos não faz revisão, faz certificação simbólica. Time que trava tudo por detalhe tampouco. Revisão boa tem atrito proporcional ao risco da mudança. Hotfix minúsculo passa em cinco minutos. Refatoração que toca dez arquivos merece trinta.</p>
+          </div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
@@ -182,20 +517,37 @@
         </div>
       </section>
 
-      <!-- 10, Auto-estudo -->
+      <!-- 10, Como autor, escola GitHub Staff -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Auto-estudo para a próxima</h2>
+          <h2>Como autor, quatro hábitos caros</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Resumo do que o Gergely Orosz escreve na Pragmatic Engineer e do que a própria documentação interna de grandes engenharias repete: a maioria das MRs ruins não é por código ruim, é por empacotamento ruim. Quatro hábitos que custam pouco para o autor e poupam muito do revisor.</p>
           <div class="concept-cards">
-            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
-            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
-            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+            <div class="concept-card">
+              <h4>1, Escopo pequeno</h4>
+              <p>Uma MR, uma intenção. Separar refactor de feature. Se a descrição precisa de mais de dois parágrafos para explicar, quase sempre são dois MRs.</p>
+            </div>
+            <div class="concept-card">
+              <h4>2, Descrição que responde o porquê</h4>
+              <p>O diff mostra o que mudou. O MR precisa dizer por que mudou, o que NÃO mudou por decisão, e como testar em 30 segundos.</p>
+            </div>
+            <div class="concept-card">
+              <h4>3, Teste que prova o caso</h4>
+              <p>Um teste por caminho novo. Um teste negativo por erro esperado. Se o teste parece trivial, ótimo, ele vira documentação executável.</p>
+            </div>
+            <div class="concept-card">
+              <h4>4, Revisar o próprio diff antes de pedir revisão</h4>
+              <p>Abra o MR no navegador e leia linha por linha. Metade dos comentários dos outros some aí, porque você mesmo pega.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A heurística dos 400 linhas</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Estudo clássico da SmartBear mostra que a qualidade da revisão cai depois de 400 linhas de diff. Acima de 800, o revisor faz leitura dinâmica sem querer. Se seu MR passou de 400, considere dividir. Revisor cansado é pior que revisor ausente, porque ele aprova achando que leu.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -204,11 +556,710 @@
         </div>
       </section>
 
-      <!-- 11, Encerramento -->
+      <!-- 11, Como revisor, escola Google -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Como revisor, a linha do Google</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O Google Engineering Practices é o documento mais citado quando se fala em revisão de código. A versão curta: a meta não é chegar no código perfeito. É chegar no código <strong>melhor do que estava</strong> sem travar o time. Três regras que valem mais que vinte.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Prefira progresso</h4>
+              <p>Se o MR deixa o código melhor, aprove. Perfeição paralisa. "Not worse" é critério real.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Princípios, não gosto pessoal</h4>
+              <p>Cada comentário deve apontar um princípio (legibilidade, consistência, performance). Gosto próprio vira "eu preferiria", e isso é nit, não blocker.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Responda em até um dia útil</h4>
+              <p>Revisão parada é fricção amplificada. O autor perde contexto, a MR vira patchwork. Atrasar 3 dias custa mais ao time que aprovar com ressalva.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Tom profissional, sempre</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Comentário de revisão é registro permanente. Evite "isso está errado", prefira "isso pode gerar X quando Y". Critique o código, não a pessoa. Em caso de discordância insolúvel, escale para plenária ou PR, nunca resolva no thread em tom de duelo.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Rubrica blocker / question / nit -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>A rubrica que vocês vão usar hoje</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Três rótulos, nada mais. Todo comentário que você fizer em uma MR hoje precisa entrar em uma dessas três caixas. A escolha do rótulo força o autocontrole: é mesmo blocker, ou eu só queria outra coisa?</p>
+          <div class="rubric-grid">
+            <div class="rubric-card block">
+              <span class="rubric-tag">Blocker</span>
+              <h4>Não pode fundir</h4>
+              <p>Bug claro, falha de segurança, quebra de contrato, teste ausente em código crítico. Se passar, alguém paga. Exige correção antes de aprovar.</p>
+            </div>
+            <div class="rubric-card quest">
+              <span class="rubric-tag">Question</span>
+              <h4>Explica melhor</h4>
+              <p>Não bloqueia, mas precisa de resposta. Decisão de design, trade-off, escolha que não está óbvia no diff. Autor responde, todos aprendem.</p>
+            </div>
+            <div class="rubric-card nit">
+              <span class="rubric-tag">Nit</span>
+              <h4>Opcional</h4>
+              <p>Nome de variável, quebra de linha, preferência estilística sem regra formal. Autor pode aceitar ou ignorar sem justificativa longa.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Tip de revisor sênior</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se a MR só tem nits, aprove. Se tem 20 nits e zero blocker, pergunte a si mesmo se você está lendo o código ou fazendo linting manual. Lint automático resolve nit em escala. Revisão humana rende quando foca em question e blocker, onde a máquina não chega.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, MR pequena, o superpoder -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>MR pequena, o superpoder</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Duas MRs, mesma feature, uma bem empacotada, outra não. A diferença de tempo de revisão e taxa de defeito pós merge é absurda. O que parece "mais esforço para dividir" no momento de empacotar vira menos esforço para todo mundo no resto do ciclo.</p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px;">
+            <div class="mr-panel">
+              <h4>MR empacotada</h4>
+              <div class="mr-row"><span class="mr-label">Linhas de diff</span><span class="mr-value">120</span></div>
+              <div class="mr-row"><span class="mr-label">Commits</span><span class="mr-value">3, tipados</span></div>
+              <div class="mr-row"><span class="mr-label">Descrição</span><span class="mr-value">Porquê, Como testar</span></div>
+              <div class="mr-row"><span class="mr-label">Tempo médio de review</span><span class="mr-value">20 min</span></div>
+              <div class="mr-row"><span class="mr-label">Rodadas de feedback</span><span class="mr-value">1 a 2</span></div>
+              <div class="mr-row"><span class="mr-label">Defeito pós merge</span><span class="mr-value">raro</span></div>
+            </div>
+            <div class="mr-panel alt">
+              <h4>MR gigante</h4>
+              <div class="mr-row"><span class="mr-label">Linhas de diff</span><span class="mr-value">1200</span></div>
+              <div class="mr-row"><span class="mr-label">Commits</span><span class="mr-value">1, "wip"</span></div>
+              <div class="mr-row"><span class="mr-label">Descrição</span><span class="mr-value">vazia ou "ajustes"</span></div>
+              <div class="mr-row"><span class="mr-label">Tempo médio de review</span><span class="mr-value">3 a 4 dias</span></div>
+              <div class="mr-row"><span class="mr-label">Rodadas de feedback</span><span class="mr-value">5+</span></div>
+              <div class="mr-row"><span class="mr-label">Defeito pós merge</span><span class="mr-value">esperado</span></div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Em duplas, resposta de cabeça</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Pensem em um MR que vocês abriram na Sprint 01. Qual dos dois painéis ele mais se pareceu? Compartilhem em dupla, 30 segundos, antes do próximo slide. Honestidade conta mais que pose.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, FLIP Exercício A, abrir MR -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Exercício A, em dupla, 35 min</span>
+        <h2>Abra sua primeira MR bem empacotada</h2>
+        <p class="flip-prompt">Cada dupla clona o <code>academic-tracker</code> em <a href="https://github.com/josercf/inteli-2026-1B-T13-ES10-S3" target="_blank" rel="noopener">github.com/josercf/inteli-2026-1B-T13-ES10-S3</a>, cria a branch <code>feat/student-status</code>, implementa <code>GET /students/:id/status</code> e abre a MR. Regras:</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Branch e commits</h4>
+            <p>Nome <code>feat/student-status</code>. Pelo menos dois commits em Conventional Commits, um <code>feat</code> e um <code>test</code>.</p>
+            <span class="flip-hint">commit de "wip" não passa</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Teste</h4>
+            <p>Um teste do caminho feliz (aluno existe), um do 404 (aluno não existe). Ambos verdes no CI.</p>
+            <span class="flip-hint">supertest já está no repo</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Descrição do MR</h4>
+            <p>Use o template. Preencha "o que muda", "motivação", "como testar". Descrição vazia é motivo de não review.</p>
+            <span class="flip-hint">1 parágrafo por seção basta</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Auto-revisão</h4>
+            <p>Antes de pedir review do par, leia seu próprio diff no navegador. Comente dúvidas suas na MR como se fosse outra pessoa.</p>
+            <span class="flip-hint">revisar o próprio é 80% do ganho</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Debrief em 35 min</span>
+          <span>Escolho duas MRs no projetor, lemos em voz alta, a turma comenta. Critério: uma boa e uma com algo a melhorar. Sem pessoalidade, só código.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 15, Debrief A -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Debrief A, o que olhar nas duas MRs</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Vou abrir duas MRs no projetor. A turma fala primeiro, em ordem: impressão de quem nunca viu, pergunta que o título deixou na mesa, o que faltou na descrição, se o teste prova o caso. Eu só sintetizo no fim.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Sinal de MR boa</h4>
+              <p>Você lê a descrição e já tem hipótese do que vai ver no diff. Ao abrir o diff, confirma em vez de descobrir.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Sinal de MR a melhorar</h4>
+              <p>A descrição repete o título. O diff traz três mudanças que não estavam prometidas. O teste existe mas cobre o caminho feliz e nada mais.</p>
+            </div>
+            <div class="concept-card">
+              <h4>A pergunta de fechamento</h4>
+              <p>Se você fosse revisar isso às 17h de uma quinta-feira, aprovaria, comentaria ou largaria para amanhã? Essa resposta conta mais que a rubrica.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que vocês levam daqui</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O debrief não é avaliação. É espelho. Mesmo quem teve MR escolhida vai reconhecer nela algo que o par escreveu antes. O ganho é sair do "tá bom assim?" para "eu sei o que falta, e sei por quê".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, FLIP Exercício B, revisar MR suja -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Exercício B, individual, 30 min</span>
+        <h2>Revisar <code>feat/scholarship-check</code></h2>
+        <p class="flip-prompt">A MR já está aberta no repo, com o título "Ajuste bolsa" e descrição vazia. Eu plantei doze problemas de propósito. Sua missão: pegar pelo menos oito, classificados em blocker, question, nit.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Leitura</h4>
+            <p>Leia a descrição, depois o diff. Anote toda vez que você precisou parar para entender o que está sendo feito. Essa fricção é sinal.</p>
+            <span class="flip-hint">descrição vazia já é achado</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Comentários no MR</h4>
+            <p>Abra um thread por problema. Comece o comentário com [blocker], [question] ou [nit] para forçar o rótulo.</p>
+            <span class="flip-hint">um thread por problema, não combinar</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Rubrica mínima</h4>
+            <p>Meta: pelo menos 2 blockers, 2 questions, 2 nits. Se tudo te parece blocker, releia, quase nunca é.</p>
+            <span class="flip-hint">perfeccionismo vira ruído</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Veredito</h4>
+            <p>No fim, escreva "aprova", "aprova com nits", ou "pede mudanças". A decisão resume a leitura.</p>
+            <span class="flip-hint">sem veredito, não é revisão</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Critério de pontuação</span>
+          <span>4 ou menos pontos, ainda em formação. 5 a 7, revisor funcional. 8+, revisor maduro. Não é nota, é diagnóstico.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, Debrief B, quadro de achados -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Debrief B, os doze que eu plantei</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A gente agrega o que a turma achou em um quadro comum. A lista abaixo é a que um revisor sênior pega sem suar. Se o seu número ficou perto dela, a rubrica entrou. Se ficou longe, não é drama: é o ganho da próxima semana.</p>
+          <div class="rubric-grid">
+            <div class="rubric-card block">
+              <span class="rubric-tag">Blocker, 5</span>
+              <h4>Não pode fundir</h4>
+              <p>Credencial default <code>'admin123'</code>. Rota sem teste. Magic number 8. Sem validação de entrada. Sem 404 para aluno inexistente.</p>
+            </div>
+            <div class="rubric-card quest">
+              <span class="rubric-tag">Question, 2</span>
+              <h4>Explica melhor</h4>
+              <p>Por que duplicar a lógica de média ponderada em vez de importar? Por que <code>==</code> se a base toda usa <code>===</code>?</p>
+            </div>
+            <div class="rubric-card nit">
+              <span class="rubric-tag">Nit, 5</span>
+              <h4>Opcional, mas pega</h4>
+              <p><code>console.log</code> sobrando. Commit "ajuste". Descrição vazia. Import morto (<code>buildError</code>). Função chamada <code>calc</code>.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Bônus, se alguém foi longe</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Algum de vocês pegou o <code>// eslint-disable-next-line no-unused-vars</code> mascarando a variável <code>_token</code>? Esse é o sinal de revisor que lê pragma, não só código. Lint silenciado é lint escondido. Costuma ser o lugar onde o autor já sabia que tinha algo errado.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 18, Separador Bloco 2, Análise estática -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 30 min</span>
+        <h2>Análise estática, o painel</h2>
+        <p class="section-description">O Sonar ativa, o painel enche. Seu trabalho não é consertar tudo, é decidir o que entra na fila.</p>
+      </section>
+
+      <!-- 19, O que análise estática olha -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O que análise estática vê, e o que não vê</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A ferramenta lê o código sem rodar. Olha sintaxe, padrão, relação entre trechos. Não sabe seu domínio, não sabe o porquê de cada escolha. O que ela pega e o que ela ignora desenha o papel que ela tem no time.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Pega bem</h4>
+              <p>Credencial em claro, complexidade cognitiva alta, comparação frouxa (<code>==</code>), duplicação, dead code, código inalcançável.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Pega mais ou menos</h4>
+              <p>Nomeação, bug lógico sutil, concorrência. A ferramenta dá sinal, mas sem contexto o sinal confunde mais do que ajuda.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Não pega</h4>
+              <p>Decisão de arquitetura errada, regra de negócio invertida, trade-off de experiência do usuário. Só quem conhece o produto pega.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A pergunta que decide se o alerta vale</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">"Se isso fica assim por seis meses, o que quebra?" Se a resposta é "nada", é candidato a fila ou descarte. Se a resposta é "alguém paga", blocker. Análise estática vira útil quando o time aprende a responder essa pergunta sem romantizar nem descartar no automático.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 20, SonarQube Community + SonarLint -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SonarQube Community, SonarLint, e como se conectam</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O repo já vem com Sonar pronto para rodar localmente via Docker Compose. Sobe em três comandos. No pipeline, a gente só liga se <code>SONAR_HOST_URL</code> e <code>SONAR_TOKEN</code> estiverem definidos, senão o job fica dormindo. É de propósito, para não travar quem quer só rodar o repo sem subir o servidor.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>SonarQube</h4>
+              <p>Servidor que acumula análises no tempo. Painel único por projeto, histórico, QG (quality gate), comparação de branch.</p>
+            </div>
+            <div class="concept-card">
+              <h4>SonarLint</h4>
+              <p>Plugin da IDE. Mesmas regras do SonarQube, mas na hora de digitar. Pega o alerta antes de virar commit.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Sonar na pipeline</h4>
+              <p>O CI roda scanner em cada push, publica no servidor. Se o QG falha, a pipeline falha. Sinal visível para o time inteiro, não só para quem abriu o MR.</p>
+            </div>
+          </div>
+          <pre style="font-size: 0.62em; background: #2b2b2b; color: #f5f5f5; padding: 10px 14px; border-radius: 8px; margin-top: 8px; font-family: var(--inteli-mono, 'Space Mono', monospace);">
+<code>npm run sonar:up         # sobe Sonar + Postgres em http://localhost:9000
+npm run sonar:scan       # roda o scanner com coverage
+npm run sonar:down       # derruba os containers quando terminar</code></pre>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Preview de smells no academic-tracker -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Smells plantados no <code>academic-tracker</code></h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.68em; margin: 0 0 4px;">Eu plantei cerca de dez apontamentos de propósito no <code>main</code>, entre segurança, code smell, dead code e complexidade. Esta tela é preview, o Sonar devolve mais contexto quando vocês rodarem.</p>
+          <table class="smell-table">
+            <thead>
+              <tr><th style="width: 28%;">Arquivo</th><th style="width: 14%;">Severidade</th><th>Apontamento esperado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>src/config/index.js</code></td><td class="sev-block">Blocker</td><td>credencial hardcoded, <code>jwtSecret</code> e <code>adminPassword</code></td></tr>
+              <tr><td><code>src/utils/validators.js</code></td><td class="sev-major">Major</td><td><code>==</code> em vez de <code>===</code></td></tr>
+              <tr><td><code>src/utils/validators.js</code></td><td class="sev-major">Major</td><td>cognitive complexity alta em <code>classifyScore</code></td></tr>
+              <tr><td><code>src/utils/validators.js</code></td><td class="sev-minor">Minor</td><td>reatribuição de <code>label</code> após retorno (dead code)</td></tr>
+              <tr><td><code>src/grades/grades.service.js</code></td><td class="sev-major">Major</td><td>duplicação entre <code>computeSimpleAverage</code> e <code>computeWeightedAverage</code></td></tr>
+              <tr><td><code>src/grades/grades.service.js</code></td><td class="sev-minor">Minor</td><td>condição <code>totalCredits == 0</code> inalcançável</td></tr>
+              <tr><td><code>src/app.js</code></td><td class="sev-minor">Minor</td><td><code>console.error</code> e <code>console.log</code> em rota de produção</td></tr>
+            </tbody>
+          </table>
+          <div class="callout" style="margin-top: 6px; padding: 6px 14px;">
+            <h4 style="margin: 0 0 2px; font-size: 0.82em;">O que fazer com isso</h4>
+            <p style="font-size: 0.62em; margin: 0; line-height: 1.35;">A tabela é o mapa. No exercício C a missão é <strong>triagem</strong>, não consertar tudo. Três decisões possíveis por item: consertar agora, abrir issue, ignorar justificando.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, FLIP Exercício C, Sonar -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Exercício C, em dupla, 30 min</span>
+        <h2>Triagem de SonarQube</h2>
+        <p class="flip-prompt">Com o Sonar rodando, vocês têm 10 apontamentos a triar. Em dupla, preencham a tabela e abram UMA MR consertando o item que vocês escolheram como "consertar agora".</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Tabela</h4>
+            <p>Colunas: severidade, arquivo, regra, o que diz, sua decisão, motivo. Decisão em três: consertar agora, abrir issue, ignorar justificando.</p>
+            <span class="flip-hint">sem motivo escrito, não vale</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Critério de triagem</h4>
+            <p>Quatro filtros: risco real, custo de corrigir, dívida técnica, contexto. Nenhum alerta é verdade absoluta.</p>
+            <span class="flip-hint">alerta sem contexto vira ruído</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, MR de exemplo</h4>
+            <p>Escolham um apontamento da coluna "consertar agora" e abram MR corrigindo. Aplica tudo do Exercício A: escopo, descrição, teste.</p>
+            <span class="flip-hint">uma MR, uma intenção</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Entrega</h4>
+            <p>Tabela preenchida, link do MR, três linhas sobre o que o painel mostrou que você não teria percebido só lendo código.</p>
+            <span class="flip-hint">o insight conta mais que o fix</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Debate curto ao final</span>
+          <span>Pergunta aberta para plenária: teve algum alerta que vocês descartaram com convicção? Qual e por quê? Justificar descarte é músculo mais difícil que consertar.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Triagem, como pensar -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três decisões, quatro filtros</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Triagem não é lista de desejos. É método. Cada alerta passa pelos quatro filtros, depois entra em uma das três gavetas. Quando o time combina isso, o painel do Sonar deixa de assustar e vira ferramenta de fila.</p>
+          <div class="rubric-grid">
+            <div class="rubric-card block">
+              <span class="rubric-tag">Decisão 1</span>
+              <h4>Consertar agora</h4>
+              <p>Risco alto ou custo baixo de correção. Credencial em claro. Condição inalcançável. Typo em nome público. Fica barato e evita vergonha.</p>
+            </div>
+            <div class="rubric-card quest">
+              <span class="rubric-tag">Decisão 2</span>
+              <h4>Abrir issue</h4>
+              <p>Vale corrigir, mas não agora. Requer escopo próprio, contexto, possivelmente MR só para isso. Ex.: refatorar <code>classifyScore</code>, remover duplicação de médias.</p>
+            </div>
+            <div class="rubric-card nit">
+              <span class="rubric-tag">Decisão 3</span>
+              <h4>Ignorar, justificando</h4>
+              <p>Alerta não se aplica ao contexto. Ex.: <code>console.log</code> em script de CLI de dev, não em rota de produção. Ignorar exige comentário, não silêncio.</p>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A armadilha da fila infinita</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Time que abre issue para tudo sem fechar nenhuma está empurrando dívida disfarçada. Existe meta: do total triado, pelo menos 20% vira "consertar agora", pelo menos 30% vai para issue com dono e prazo, o resto é ignorado com justificativa escrita. Sem meta, o painel cresce e ninguém olha mais.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Separador Bloco 3, IA na revisão -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 15 min</span>
+        <h2>IA na revisão</h2>
+        <p class="section-description">Mesma MR do exercício B, mas olhada por um modelo. Compara, discorda, cruza.</p>
+      </section>
+
+      <!-- 25, Três momentos de IA no ciclo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três momentos da IA no ciclo</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A IA entra no fluxo de engenharia em três lugares diferentes. Cada um tem um ponto cego próprio, e cada um exige um hábito de uso diferente. Quem joga a IA em todos os três sem perceber a diferença fica refém.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>1, Sugestão in-editor</h4>
+              <p>Copilot, Cursor, Codeium. Completa enquanto você digita. Ganho de velocidade em boilerplate. Risco: aceitar sem ler.</p>
+            </div>
+            <div class="concept-card">
+              <h4>2, Revisão automática de MR</h4>
+              <p>GitLab Duo, Copilot Code Review, Graphite AI. Comenta no diff assim que a MR abre. Ganho de cobertura. Risco: o time parar de revisar achando que ela revisou.</p>
+            </div>
+            <div class="concept-card">
+              <h4>3, Conversa com o código</h4>
+              <p>Claude, ChatGPT, Gemini. Você cola o diff e pergunta. Ganho de segunda opinião. Risco: alucinação de referência e de arquivos que não existem.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A regra que eu uso</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Os três são úteis, nenhum é árbitro. Sugestão in-editor, aceito só o que eu consigo explicar em voz alta. Revisão automática de MR, trato como mais um revisor, não como aprovador final. Conversa com o código, uso para abrir perspectiva, nunca para produzir fact sem checar.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, IA, onde acerta, onde erra -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>IA na revisão, onde cobre e onde falha</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">É o que eu vejo em revisões reais e o que aparece em estudos do último ano sobre uso de IA no fluxo de engenharia. Os pontos fortes e fracos não são fixos, mudam de modelo para modelo. Mas o padrão se repete o suficiente para virar heurística prática.</p>
+          <div class="side-by-side" style="margin-top: 4px;">
+            <div class="side" style="background: var(--inteli-bg-soft); padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Onde a IA cobre bem</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Padrão sintático, convenção de estilo.</li>
+                <li>Sugestão de nome alternativo.</li>
+                <li>Detecção de duplicação próxima.</li>
+                <li>Explicação de função antiga para quem acabou de chegar.</li>
+                <li>Escrita de teste para caminho feliz.</li>
+              </ul>
+            </div>
+            <div class="side" style="padding: 12px 16px;">
+              <h3 style="font-size: 0.86em; margin-bottom: 4px;">Onde a IA falha</h3>
+              <ul style="font-size: 0.68em; line-height: 1.45; margin: 0; padding-left: 18px;">
+                <li>Contexto de domínio fora do texto do prompt.</li>
+                <li>Decisão de arquitetura baseada em histórico do time.</li>
+                <li>Trade-off de experiência de usuário.</li>
+                <li>Detectar lint silenciado disfarçado de intenção.</li>
+                <li>Inventar arquivo, função ou referência que não existe.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout warn" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A parábola da MR do B</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Quase sempre a IA pega <code>console.log</code>, <code>==</code>, import morto, magic number. Quase nunca pega que o <code>eslint-disable</code> mascara a variável <code>_token</code>, nem questiona por que o <code>ADMIN_TOKEN</code> virou default <code>'admin123'</code>. O sinal de alerta em um lint silenciado exige conhecer a dinâmica de uma equipe. A IA não estava na sua daily.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">26</div>
+        </div>
+      </section>
+
+      <!-- 27, FLIP Exercício D, IA na revisão -->
+      <section class="flip-slide">
+        <div class="top-bar"></div>
+        <span class="flip-tag">Exercício D, individual, 10 min</span>
+        <h2>IA revisa o mesmo MR do B</h2>
+        <p class="flip-prompt">Pegue a MR <code>feat/scholarship-check</code> e peça à IA de sua escolha para revisar usando a mesma rubrica (blocker, question, nit). Compare com o que você pegou sozinho.</p>
+        <div class="flip-cards four">
+          <div class="flip-card">
+            <h4>1, Escolha a ferramenta</h4>
+            <p>GitLab Duo na pipeline, Copilot Code Review no PR, Claude/ChatGPT/Gemini no chat colando o diff. Qualquer das três serve.</p>
+            <span class="flip-hint">mesmo prompt em todas, se der</span>
+          </div>
+          <div class="flip-card">
+            <h4>2, Tabela de comparação</h4>
+            <p>Colunas: ponto apontado, origem, humano pegou, IA pegou, quem acertou mais.</p>
+            <span class="flip-hint">mesmo ponto em linhas separadas</span>
+          </div>
+          <div class="flip-card">
+            <h4>3, Classifique cada ponto</h4>
+            <p>Convergente, complementar, ruído da IA, ângulo morto humano. Quatro etiquetas, nada mais.</p>
+            <span class="flip-hint">sem meio-termo, decide</span>
+          </div>
+          <div class="flip-card">
+            <h4>4, Retorno para a plenária</h4>
+            <p>Em uma ou duas linhas: onde a IA foi mais útil? Onde você ainda confia mais no revisor humano? Qual comentário te surpreendeu?</p>
+            <span class="flip-hint">honestidade, não torcida</span>
+          </div>
+        </div>
+        <div class="flip-footer">
+          <span class="flip-footer-label">Fechamento</span>
+          <span>Três ou quatro falas curtas da turma. Meu papel aqui é só segurar o microfone, a síntese vem de vocês.</span>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">27</div>
+        </div>
+      </section>
+
+      <!-- 28, Síntese, três atores voltam -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três atores, três papéis, nenhum substituto</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A aula inteira cabe nesta tela. Humano, ferramenta estática, IA. Cada um tem um dia, cada um tem um cego. O trabalho de engenharia de qualidade é orquestrar os três, não escolher um campeão.</p>
+          <div class="actors-grid">
+            <div class="actor-card">
+              <span class="actor-role">Humano</span>
+              <h4>Contexto</h4>
+              <p>Olha domínio, história do time, decisão de produto. Prioriza. Cansa. Precisa de MR pequena para render bem. Insubstituível em question e blocker de arquitetura.</p>
+            </div>
+            <div class="actor-card">
+              <span class="actor-role">Sonar</span>
+              <h4>Consistência</h4>
+              <p>Varre o repo inteiro sempre, sem cansar. Pega padrão sintático, segurança, duplicação, complexidade. Exige triagem humana para virar fila.</p>
+            </div>
+            <div class="actor-card">
+              <span class="actor-role">IA</span>
+              <h4>Segunda opinião</h4>
+              <p>Explica em linguagem natural, sugere alternativa, pega padrão comum. Alucina referência e falha com contexto fora do prompt. Útil como lente extra, nunca como árbitro.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A regra da dupla camada</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O time maduro roda Sonar no pipeline, usa IA como lente extra, e reserva a energia do revisor humano para o que as duas camadas não pegam. Se o humano está repetindo comentário que Sonar ou IA pegariam, o time está desperdiçando o recurso mais caro no trabalho mais barato.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">28</div>
+        </div>
+      </section>
+
+      <!-- 29, Quiz 1, rubrica -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, rubrica de revisão</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Em um MR, o revisor comenta que prefere <code>const</code> em vez de <code>let</code> em uma variável que nunca é reatribuída. O Prettier e o ESLint do repo não exigem isso. Qual rótulo cabe melhor?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Blocker, porque <code>const</code> expressa intenção e evita bug futuro</li>
+            <li data-correct="true">Nit, o autor pode aceitar ou ignorar sem precisar justificar</li>
+            <li data-correct="false">Question, por ser uma escolha que precisa de discussão na MR</li>
+            <li data-correct="false">Não comente, isso é trabalho do lint</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Preferência estilística sem regra formal é nit clássico. Se a convenção for forte no time, vira regra de lint, e o comentário humano some."
+               data-incorrect-msg="Volte à rubrica. Blocker é para risco real, question é para decisão que precisa de resposta. Sem regra formal, a escolha entre <code>const</code> e <code>let</code> em variável não reatribuída é gosto, logo nit."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">29</div>
+        </div>
+      </section>
+
+      <!-- 30, Quiz 2, IA na revisão -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, IA na revisão</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">A IA comenta em um MR: "A função <code>calc</code> deveria chamar <code>computeEligibilityScore</code>, que já existe em <code>src/shared/eligibility.js</code>, linha 42." Você abre o arquivo e ele não existe. Qual é a interpretação correta?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">A IA está certa, alguém apagou o arquivo em outro MR, reclamar no time</li>
+            <li data-correct="false">Ignorar, IA nunca está certa de qualquer forma</li>
+            <li data-correct="true">Alucinação, a IA inventou o arquivo, comentário descartado, padrão a observar no restante da revisão</li>
+            <li data-correct="false">Abrir issue pedindo para o autor criar o arquivo que a IA citou</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Certo. IA generativa tende a inventar arquivo, função e referência com confiança. Sempre cheque caminho e nome antes de agir em cima do comentário. O resto da revisão da IA ainda pode ter pontos bons, só não tome por verdade."
+               data-incorrect-msg="Releia. O arquivo não existe. Isso é o que a literatura chama de alucinação: a IA gerou uma referência plausível mas falsa. Nem é desprezar tudo que veio da IA, nem aceitar sem checar. É descartar o comentário específico e continuar."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">30</div>
+        </div>
+      </section>
+
+      <!-- 31, Auto-estudo Aula 05 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 05</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">A Aula 05 é bem prática. Tema: <strong>CI parte 1, validações locais e containers</strong>. Três provocações antes dela.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, Git hooks</h4>
+              <p>Seção "Customizing Git, Git Hooks" do Pro Git (git-scm.com). Foque em pre-commit, commit-msg, pre-push e pre-receive. Três páginas, direto ao ponto.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, Husky + lint-staged</h4>
+              <p>Tutorial curto de 10 min mostrando Husky instalado do zero em repo Node, com lint-staged e commitlint rodando em pre-commit.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, Docker em 10 min</h4>
+              <p>Primer "Get Started, part 1" da docs oficial. Leia sobre Dockerfile, imagem, container e o básico de <code>docker build</code>/<code>docker run</code>.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega desta aula</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">MR do exercício A com descrição, commits e testes. Tabela do exercício C com triagem dos alertas do Sonar. Tabela do exercício D com comparação humano vs IA. Os três pacotes vão para o AdaLove como diagnóstico da sprint, não como avaliação.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 04, Qualidade de software e IA no processo, Sprint 02</div>
+          <div class="footer-page">31</div>
+        </div>
+      </section>
+
+      <!-- 32, Encerramento -->
       <section class="end-slide">
         <span class="inteli-wordmark light">inteli</span>
         <h2>Até a próxima</h2>
-        <p>Aula 05, CI parte 1, 11/05</p>
+        <p>Aula 05, CI parte 1, validações locais e containers, 11/05</p>
       </section>
 
     </div>

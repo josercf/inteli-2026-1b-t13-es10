@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=1280, initial-scale=1.0" />
-  <title>Aula 05, CI parte 1: etapas locais, Inteli T13</title>
+  <title>Aula 05, CI parte 1: validações locais e containers, Inteli T13</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,6 +18,276 @@
 
   <link rel="stylesheet" href="assets/css/inteli-theme.css" />
   <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Layout local da Aula 05 */
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Card de citação */
+    .quote-card {
+      background: var(--inteli-purple);
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin: 10px auto 0;
+      max-width: 85%;
+      text-align: center;
+    }
+    .quote-card p {
+      font-size: 0.8em;
+      font-style: italic;
+      margin: 0;
+      line-height: 1.4;
+      color: #fff;
+    }
+    .quote-card cite {
+      display: block;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      color: var(--inteli-green);
+      letter-spacing: 0.06em;
+      margin-top: 6px;
+      font-style: normal;
+    }
+
+    /* Grid 4x para hooks */
+    .hook-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .hook-card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--inteli-lilac);
+    }
+    .hook-card.client {
+      border-left-color: var(--inteli-coral);
+    }
+    .hook-card.server {
+      border-left-color: var(--inteli-dark-green);
+    }
+    .hook-card h4 {
+      font-size: 0.78em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      line-height: 1.15;
+    }
+    .hook-card .hook-when {
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .hook-card p {
+      font-size: 0.62em;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Tabela comparativa genérica */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li {
+      margin-bottom: 3px;
+    }
+
+    /* Imagem central com legenda */
+    .figure-block {
+      text-align: center;
+      margin: 6px 0 4px;
+    }
+    .figure-block img {
+      max-width: 560px;
+      max-height: 220px;
+      width: auto;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(46, 38, 64, 0.12);
+    }
+    .figure-block figcaption {
+      font-size: 0.6em;
+      color: var(--inteli-gray-dark);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* Stack de container vs VM */
+    .stack-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    .stack {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px;
+    }
+    .stack h4 {
+      text-align: center;
+      font-size: 0.72em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-coral);
+    }
+    .stack-layer {
+      background: #fff;
+      margin: 2px 0;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.55em;
+      text-align: center;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      color: var(--inteli-purple-deep);
+    }
+    .stack-layer.app {
+      background: var(--inteli-coral-soft);
+      color: var(--inteli-purple-deep);
+    }
+    .stack-layer.kernel {
+      background: var(--inteli-purple);
+      color: #fff;
+    }
+    .stack-layer.infra {
+      background: var(--inteli-gray-medium);
+    }
+
+    /* Bloco de código Dockerfile com numeração e anotações */
+    .dockerfile-block {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .dockerfile-block pre {
+      margin: 0;
+      font-size: 0.56em;
+      line-height: 1.35;
+      padding: 12px 14px;
+    }
+    .dockerfile-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.56em;
+      line-height: 1.4;
+    }
+    .dockerfile-block .annot ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .dockerfile-block .annot li {
+      margin-bottom: 2px;
+    }
+    .dockerfile-block .annot strong {
+      color: var(--inteli-coral);
+    }
+
+    /* Grid 3 colunas para practices, registry, checklist */
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+    .three-cards .card code {
+      font-size: 0.88em;
+    }
+
+    /* Trivy output fake */
+    .scan-output {
+      background: #1d1829;
+      color: #e6eaeb;
+      font-family: var(--inteli-mono, monospace);
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 0.6em;
+      line-height: 1.5;
+      margin-top: 8px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .scan-output .sev-crit { color: #ff7a7a; font-weight: 700; }
+    .scan-output .sev-high { color: #ffb347; font-weight: 700; }
+    .scan-output .sev-med  { color: #ffd580; }
+    .scan-output .sev-low  { color: #89cea5; }
+    .scan-output .sev-head { color: var(--inteli-lilac); font-weight: 700; }
+
+    /* Compact exercise slide para caber 5 passos + hint em 720px */
+    .exercise-slide.compact {
+      padding: 48px 60px 40px 60px;
+    }
+    .exercise-slide.compact h2 {
+      font-size: 1.4em;
+      margin: 0 0 10px 0;
+    }
+    .exercise-slide.compact .exercise-tag {
+      margin-bottom: 8px;
+    }
+    .exercise-slide.compact .exercise-steps li {
+      padding: 7px 10px 7px 46px;
+      margin-bottom: 6px;
+      font-size: 0.66em;
+      line-height: 1.45;
+    }
+    .exercise-slide.compact .exercise-steps li::before {
+      width: 24px; height: 24px;
+      top: 7px; left: 12px;
+      font-size: 0.8em;
+    }
+    .exercise-slide.compact .hint-caption {
+      font-size: 0.62em;
+      margin-top: 10px !important;
+    }
+  </style>
 </head>
 <body>
   <div class="reveal">
@@ -28,8 +298,8 @@
         <div class="top-bar"></div>
         <div class="cover-content">
           <span class="sprint-tag">Sprint 02, Qualidade e CI</span>
-          <h1>CI parte 1: etapas locais</h1>
-          <p class="subtitle">Pré-commit, build, testes e proteção contra secrets: tudo que deve passar antes do push.</p>
+          <h1>CI parte 1, validações locais e containers</h1>
+          <p class="subtitle">Antes do push, o laptop é a primeira pipeline. Hooks, Husky, Docker e a imagem que vai para o registry.</p>
           <div class="cover-meta">
             <strong>Aula</strong><span>05 de 14</span>
             <strong>Data</strong><span>11 de maio de 2026, segunda-feira, 10h00 às 12h00</span>
@@ -49,23 +319,22 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em; margin-bottom: 18px;">
-            <em>Placeholder de agenda. Será detalhado ao populargmos o conteúdo.</em>
-          </p>
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Aula invertida, 2 horas, bem prática. Vocês leram o auto-estudo, aqui a gente roda. Quatro blocos, dois hands-on grandes, fechamento curto.</p>
           <table>
             <thead>
               <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Abertura com cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Fundamentos</td><td>Pré-commit, build reprodutível e testes locais</td><td>55 min</td></tr>
-              <tr><td>11h10, Prática</td><td>Configurar Husky, lint-staged e scanner de secrets (TruffleHog, Gitleaks)</td><td>40 min</td></tr>
-              <tr><td>11h50, Síntese</td><td>Quiz, homework e próximos passos</td><td>10 min</td></tr>
+              <tr><td>10h00, Daily Time</td><td>Check-in da sprint, cronômetro de 15 min</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>Git hooks, Husky, scanner de secrets, hands-on A</td><td>30 min</td></tr>
+              <tr><td>10h45, Bloco 2</td><td>Virtualização, Docker, Dockerfile, hands-on B</td><td>45 min</td></tr>
+              <tr><td>11h30, Bloco 3</td><td>Registry, vulnerabilidades, demo com Trivy</td><td>20 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist antes do push, auto-estudo</td><td>10 min</td></tr>
             </tbody>
           </table>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
           <div class="footer-page">02</div>
         </div>
       </section>
@@ -75,7 +344,7 @@
         <span class="daily-tag">Daily, 15 min</span>
         <h2>Daily Time</h2>
         <p class="daily-subtitle">
-          Alinhamento rápido de cada grupo: o que avançou, o que trava e qual é a próxima meta.
+          Como está a sprint? O que já está pronto do que ficou combinado na Aula 04, MR aberta, revisão feita, triagem do Sonar? Quem ficou travado diz em uma frase. Uma volta rápida, sem rodeio.
         </p>
         <div class="inteli-timer" data-minutes="15">
           <div class="inteli-timer-display">15:00</div>
@@ -96,115 +365,782 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A refinar na fase de conteúdo.</em></p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">No fim da aula, cada dupla sai com três coisas funcionando no próprio repositório: um hook que barra `console.log`, um hook que barra secret e uma imagem Docker da aplicação rodando localmente. Os objetivos refletem essa entrega.</p>
           <div class="concept-cards">
-            <div class="concept-card"><h4>Compreender</h4><p>Explicar o papel da etapa local no ciclo de CI.</p></div>
-            <div class="concept-card"><h4>Configurar</h4><p>Montar um pipeline pré-commit com validações rápidas e de baixo atrito.</p></div>
-            <div class="concept-card"><h4>Proteger</h4><p>Bloquear secrets acidentais com ferramentas automatizadas.</p></div>
+            <div class="concept-card">
+              <h4>Aplicar</h4>
+              <p>Configurar Husky, lint-staged e scanner de secrets em projeto Node, com os quatro hooks do Git na ponta do dedo.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Construir</h4>
+              <p>Escrever um Dockerfile que empacote uma aplicação Node, com multi-stage build e `.dockerignore` bem pensados.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Inspecionar</h4>
+              <p>Rodar um scanner de CVE na imagem gerada e ler o resultado sem se assustar com o número total.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Conectar</h4>
+              <p>Enxergar como hook local, build reprodutível e scan de imagem viram política de merge na Aula 06.</p>
+            </div>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
           <div class="footer-page">04</div>
         </div>
       </section>
 
-      <!-- 05, Separador Bloco 1 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 1, 55 min</span>
-        <h2>O shift-left começa no laptop</h2>
-        <p class="section-description">Pré-commit, validações rápidas e feedback sem esperar pipeline.</p>
-      </section>
-
-      <!-- 06, Conteúdo (placeholder) -->
+      <!-- 05, Da revisão ao commit, ponte com Aula 04 -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Conteúdo, a preencher</h2>
+          <h2>Da revisão ao commit, ponte com a Aula 04</h2>
         </div>
         <div class="slide-body">
-          <div class="callout">
-            <h4>Placeholder de conteúdo</h4>
-            <p>O que é pré-commit, por que rodar validações locais antes do push, como configurar Husky + lint-staged, e como detectar secrets com TruffleHog e Gitleaks.</p>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Na Aula 04 a gente olhou qualidade como processo: revisão humana, análise estática com Sonar, IA como terceiro revisor. Todo esse controle aparece depois que o código chega no repositório remoto. A pergunta desta aula é uma só: o que deveria ter acontecido antes?</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Aula 04, depois do push</h4>
+              <ul>
+                <li>MR aberta, revisor olhando o diff</li>
+                <li>Sonar rodando na pipeline</li>
+                <li>IA comentando padrão sintático</li>
+                <li>Decisão de merge no final</li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>Aula 05, antes do push</h4>
+              <ul>
+                <li>Hook bloqueia commit inválido</li>
+                <li>Lint e teste só nos arquivos tocados</li>
+                <li>Scanner de secret antes do histórico</li>
+                <li>Imagem Docker builda antes do CI</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que isso muda o jogo</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Defeito pego no laptop custa segundos. O mesmo defeito pego na pipeline custa minutos, porque o dev já trocou de contexto. Em produção custa o dia de alguém. A distribuição de onde a barreira fica define quanto a engenharia gasta em retrabalho.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, Três barreiras antes do push -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Três barreiras antes do push</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">A aula de hoje está organizada em três camadas de validação local. Cada uma pega um tipo de problema diferente. Quem pula qualquer uma delas está pagando pedágio mais caro na pipeline.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>1, Hook de commit</h4>
+              <p>Formatação, lint, teste rápido e mensagem padronizada. Husky e lint-staged. Roda em segundos, barra o commit se falhar.</p>
+            </div>
+            <div class="card">
+              <h4>2, Scanner de secrets</h4>
+              <p>TruffleHog ou Gitleaks como hook. Varre o diff, barra se detectar credencial. Última chance antes do histórico do Git.</p>
+            </div>
+            <div class="card">
+              <h4>3, Build em container</h4>
+              <p>Se a imagem Docker não builda no laptop, não vai buildar no CI. Dockerfile reprodutível elimina "na minha máquina funciona".</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Três barreiras, um mesmo princípio</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Empurrar feedback para o mais cedo possível. O desenvolvedor fica no mesmo contexto, a correção é barata, o ciclo se fecha rápido. Shift-left não é buzzword, é matemática de custo por tempo de detecção.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
           <div class="footer-page">06</div>
         </div>
       </section>
 
-      <!-- 07, Separador Bloco 2 -->
+      <!-- 07, Separador Bloco 1 -->
       <section class="section-slide">
-        <span class="section-number">Bloco 2, 40 min</span>
-        <h2>Ferramentas da trilha</h2>
-        <p class="section-description">Husky, lint-staged, TruffleHog, Gitleaks e outros.</p>
+        <span class="section-number">Bloco 1, 30 min</span>
+        <h2>Git hooks e secrets, a primeira barreira</h2>
+        <p class="section-description">Quatro hooks, Husky, lint-staged, scanner de secrets. Vocês saem da sala com isso rodando no repo.</p>
       </section>
 
-      <!-- 08, Exercício hands-on -->
-      <section class="exercise-slide">
-        <span class="exercise-tag">Hands-on, individual</span>
-        <h2>Instale o CI local no seu repositório</h2>
+      <!-- 08, Os quatro hooks que importam -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Os quatro hooks que importam</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Git tem mais de dez hooks. Na prática do dia a dia, quatro resolvem 95% dos casos. Dois rodam no cliente (laptop), dois no servidor. Todos são scripts shell comuns na pasta <code>.git/hooks</code>. Husky só empacota esses scripts em uma configuração versionável.</p>
+          <div class="hook-grid">
+            <div class="hook-card client">
+              <span class="hook-when">Cliente</span>
+              <h4>pre-commit</h4>
+              <p>Roda antes de o commit ser criado. Bloqueia se o lint quebrar ou o teste falhar. É o 80% do uso.</p>
+            </div>
+            <div class="hook-card client">
+              <span class="hook-when">Cliente</span>
+              <h4>commit-msg</h4>
+              <p>Valida a mensagem do commit. Lugar natural do commitlint, forçando Conventional Commits.</p>
+            </div>
+            <div class="hook-card client">
+              <span class="hook-when">Cliente</span>
+              <h4>pre-push</h4>
+              <p>Antes de enviar ao remoto. Bom para rodar a suite completa, teste de integração, coisas mais demoradas.</p>
+            </div>
+            <div class="hook-card server">
+              <span class="hook-when">Servidor</span>
+              <h4>pre-receive</h4>
+              <p>Roda no servidor Git antes de aceitar o push. Aqui mora política: proteção de branch, regras organizacionais.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Hook é script shell, nada de mágica</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Abre <code>.git/hooks/pre-commit.sample</code> em qualquer repositório clonado. É shell. Husky versiona esses scripts na pasta <code>.husky/</code> do projeto, então toda a equipe herda o mesmo comportamento ao clonar. Sem Husky, cada dev tem o próprio hook, o que já é ter nenhum.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 09, Husky + lint-staged + commitlint -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O trio que a Sprint usa</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">No repositório da Sprint, três pacotes trabalham juntos. Cada um resolve uma fatia do problema e nenhum substitui o outro. O arquivo <code>.husky/pre-commit</code> chama o <code>npx lint-staged</code>, que por sua vez consulta o <code>package.json</code> para saber o que rodar em cada tipo de arquivo.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Husky</h4>
+              <p>Instala os hooks na pasta <code>.husky/</code> e garante que o Git use eles. Configuração mora no repo, não no laptop.</p>
+            </div>
+            <div class="card">
+              <h4>lint-staged</h4>
+              <p>Roda comando só nos arquivos do stage. Editou dois arquivos em cem, ele rodou lint em dois. Feedback em segundos.</p>
+            </div>
+            <div class="card">
+              <h4>commitlint</h4>
+              <p>Valida a mensagem contra a regra Conventional Commits. <code>feat:</code>, <code>fix:</code>, <code>chore:</code>. Commit vago não passa.</p>
+            </div>
+          </div>
+          <pre style="font-size: 0.68em; margin-top: 10px;"><code class="language-json">// package.json, trecho do lint-staged
+"lint-staged": {
+  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+  "*.{md,json}": ["prettier --write"]
+}</code></pre>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 10, Secrets scanners -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Scanner de secrets, TruffleHog e Gitleaks</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Um <code>AWS_SECRET_ACCESS_KEY</code> vazado no Git é caro de remover depois. BFG, filter-branch, rotacionar a credencial no provedor, tudo isso dá trabalho e assusta auditoria. Melhor barrar antes. Dois scanners dominam o mercado hoje, com filosofias diferentes.</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>TruffleHog</h4>
+              <ul>
+                <li>Detecção por <strong>entropia</strong> e por regex</li>
+                <li>Verifica validade das credenciais no provedor</li>
+                <li>Varredura no histórico inteiro do repo</li>
+                <li>Go, standalone, roda em pipeline também</li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-dark-green);">
+              <h4>Gitleaks</h4>
+              <ul>
+                <li>Detecção por <strong>regex</strong> com ruleset customizável</li>
+                <li>Baseline para ignorar falsos positivos conhecidos</li>
+                <li>Integra nativamente como hook pre-commit</li>
+                <li>Go, config em TOML, CI amigável</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que a Sprint usa</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O repositório do módulo vem com TruffleHog configurado como hook pre-commit via Husky. Varre diff, falha se detectar padrão de credencial. No Exercício A vocês ativam, tentam commitar um secret de mentira e veem a barreira cair em ação.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 11, Exercício A, hands-on hooks -->
+      <section class="exercise-slide compact">
+        <div class="top-bar"></div>
+        <span class="exercise-tag">Hands-on A, em dupla, 15 min</span>
+        <h2>Ativar hook e tentar vazar um secret</h2>
         <ol class="exercise-steps">
-          <li><em>Placeholder:</em> clonar o repositório do projeto.</li>
-          <li>Instalar Husky e configurar hook pre-commit com lint-staged.</li>
-          <li>Adicionar Gitleaks como hook para bloquear secrets.</li>
-          <li>Provocar uma falha de propósito e verificar o bloqueio.</li>
-          <li>Submeter um commit válido e verificar que passa.</li>
+          <li>Clone <code>github.com/josercf/inteli-2026-1B-T13-ES10-S3</code>, rode <code>npm install</code>. O postinstall já ativa o Husky.</li>
+          <li>Abra qualquer arquivo e adicione a linha <code>AWS_SECRET_ACCESS_KEY="AKIA1234567890EXAMPLE"</code>.</li>
+          <li>Tente <code>git add .</code> seguido de <code>git commit -m "wip"</code>. Observe o que acontece na terminal.</li>
+          <li>Conserte: remova a linha do secret, ajuste a mensagem para <code>feat: testar hook</code>, commit de novo.</li>
+          <li>Confirme que o segundo commit passou e anote uma frase sobre o que o hook imprimiu na tela.</li>
         </ol>
+        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 14px;">Se o commit vago passar, seu Husky não está ativo. Rode <code>npx husky init</code>, verifique a pasta <code>.husky/</code>, tente de novo.</p>
       </section>
 
-      <!-- 09, Quiz -->
+      <!-- 12, Debrief A -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Debrief A, o que quase todo mundo quebra</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Toda turma tropeça nos mesmos três pontos quando ativa Husky pela primeira vez. Mapeio aqui para vocês não gastarem tempo no óbvio e pra gente discutir juntos em um minuto.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>1, Hook não roda</h4>
+              <p>Esqueceu <code>npm install</code>. Sem postinstall, o Husky não engata. Sintoma: commit passa sem mensagem de lint.</p>
+            </div>
+            <div class="card">
+              <h4>2, Lint falha sem diff</h4>
+              <p>lint-staged rodou em arquivo que não está no stage. Confere se você fez <code>git add</code> só do arquivo que editou.</p>
+            </div>
+            <div class="card">
+              <h4>3, Secret passa por pouco</h4>
+              <p>Usou string com entropia baixa, tipo <code>abc123</code>. TruffleHog ignora. Use o prefixo <code>AKIA</code> que ele reconhece.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A pergunta que fica</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se o hook roda só no laptop, um dev mal-intencionado desativa com <code>git commit --no-verify</code>. Por isso a barreira local é só uma das três. Na Aula 06 a gente volta para a mesma pergunta com scanner no servidor, que ninguém consegue pular.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 13, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 45 min</span>
+        <h2>Containers, a unidade de build reprodutível</h2>
+        <p class="section-description">Virtualização, Docker, Dockerfile, best practices. Vocês saem com uma imagem do academic-tracker rodando no laptop.</p>
+      </section>
+
+      <!-- 14, Virtualização vs containers -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Virtualização vs containers, a pilha importa</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Antes de Docker, reprodutibilidade significava máquina virtual. Rodar outra cópia do sistema operacional inteira, com kernel próprio, pra isolar aplicação. Containers fazem o mesmo isolamento compartilhando o kernel do host. Menos gordura, boot em segundo, densidade alta no mesmo hardware.</p>
+          <div class="stack-compare">
+            <div class="stack">
+              <h4>Máquina virtual</h4>
+              <div class="stack-layer app">App A</div>
+              <div class="stack-layer app">App B</div>
+              <div class="stack-layer">Bins e libs (guest)</div>
+              <div class="stack-layer kernel">Guest OS</div>
+              <div class="stack-layer infra">Hypervisor</div>
+              <div class="stack-layer kernel">Host OS</div>
+              <div class="stack-layer infra">Hardware</div>
+            </div>
+            <div class="stack">
+              <h4>Container</h4>
+              <div class="stack-layer app">App A</div>
+              <div class="stack-layer app">App B</div>
+              <div class="stack-layer">Bins e libs (imagem)</div>
+              <div class="stack-layer infra">Docker Engine</div>
+              <div class="stack-layer kernel">Host OS (kernel compartilhado)</div>
+              <div class="stack-layer infra">Hardware</div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O isolamento que o kernel faz</h4>
+            <p style="font-size: 0.62em; margin: 0; line-height: 1.4;">Containers usam recursos do próprio kernel Linux: <code>namespaces</code> para separar visão de processo, rede, usuário, e <code>cgroups</code> para limitar CPU, memória, IO. Docker Engine orquestra essas duas primitivas. No Mac e Windows rodam dentro de uma VM leve, por isso Docker Desktop precisa de virtualização habilitada.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 15, Dockerfile, Imagem, Container -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Dockerfile, imagem, container, o ciclo inteiro</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Três conceitos, três comandos, uma confusão bem comum. Dockerfile é a receita, arquivo de texto com instruções. Imagem é o artefato gerado pelo build, imutável, versionada por tag. Container é uma instância da imagem rodando, efêmero por natureza.</p>
+          <div class="figure-block">
+            <img src="assets/img/docker-build-run.png" alt="Dockerfile, build, Docker Image, run, Docker Container" />
+            <figcaption>Dockerfile vira imagem no <code>docker build</code>. Imagem vira container no <code>docker run</code>.</figcaption>
+          </div>
+          <div class="callout" style="margin-top: 6px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Mnemônico útil</h4>
+            <p style="font-size: 0.62em; margin: 0; line-height: 1.4;">Dockerfile está para imagem como código-fonte está para binário. Imagem está para container como classe está para instância. Quando o aluno confunde, é porque esqueceu qual é a etapa imutável e qual é a viva.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 16, Ler um Dockerfile -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ler um Dockerfile linha a linha</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Esse é o Dockerfile que a gente vai usar no exercício. Dez linhas, cinco instruções distintas, multi-stage para reduzir tamanho da imagem final. Cada número corresponde a um comentário à direita.</p>
+          <div class="dockerfile-block">
+            <pre><code class="language-dockerfile"># 1
+FROM node:20-alpine AS build
+# 2
+WORKDIR /app
+# 3
+COPY package*.json ./
+# 4
+RUN npm ci
+# 5
+COPY . .
+RUN npm run build
+
+# 6
+FROM node:20-alpine
+WORKDIR /app
+# 7
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+# 8
+EXPOSE 3000
+# 9
+CMD ["node", "dist/app.js"]</code></pre>
+            <div class="annot">
+              <ol>
+                <li><strong>FROM</strong>, base image. Alpine tem 5 MB, Debian tem 100 MB.</li>
+                <li><strong>WORKDIR</strong>, pasta padrão dentro do container.</li>
+                <li><strong>COPY</strong> só o manifest primeiro, para cache.</li>
+                <li><strong>RUN npm ci</strong> instala dependências de forma determinística.</li>
+                <li><strong>COPY . .</strong> traz o código. Ordem importa para cache.</li>
+                <li>Segunda <strong>FROM</strong>, stage final, sem dev dependencies.</li>
+                <li>Pega só o <code>dist</code> do stage anterior.</li>
+                <li><strong>EXPOSE</strong>, documenta a porta, não abre nada.</li>
+                <li><strong>CMD</strong>, comando padrão quando o container sobe.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 17, Best practices -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Dockerfile, três erros que toda primeira imagem comete</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Errar aqui é parte do processo, por isso os três pontos abaixo aparecem em praticamente toda revisão de primeiro Dockerfile. Quem já sabe disso pula uma viagem inteira de "por que minha imagem tem 1 GB".</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>1, Ordem das camadas</h4>
+              <p>Copiar código antes do manifest invalida o cache de dependências a cada commit. <code>COPY package*.json</code> primeiro, <code>npm ci</code>, depois <code>COPY . .</code>. Economiza minutos por build.</p>
+            </div>
+            <div class="card">
+              <h4>2, Multi-stage build</h4>
+              <p>Imagem de build tem compilador, node_modules de dev, cache. Imagem final não precisa de nada disso. Dois <code>FROM</code> no mesmo Dockerfile reduzem de 900 MB para 80 MB.</p>
+            </div>
+            <div class="card">
+              <h4>3, .dockerignore</h4>
+              <p>Sem ele, o <code>COPY . .</code> empacota <code>node_modules</code>, <code>.git</code>, <code>coverage</code>, fotos. Imagem infla, secret em <code>.env</code> vai junto. Três linhas resolvem 90% do problema.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Teste rápido</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Rode <code>docker history &lt;imagem&gt;</code>. Cada linha mostra o tamanho da camada e o comando que a criou. Se tem camada de 300 MB vindo de um <code>COPY . .</code>, o seu <code>.dockerignore</code> está pedindo socorro.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 18, Exercício B hands-on -->
+      <section class="exercise-slide compact">
+        <div class="top-bar"></div>
+        <span class="exercise-tag">Hands-on B, em dupla, 25 min</span>
+        <h2>Construir imagem do academic-tracker</h2>
+        <ol class="exercise-steps">
+          <li>Na raiz do repo clonado, crie um arquivo <code>Dockerfile</code> e um <code>.dockerignore</code>. Use o modelo do slide anterior.</li>
+          <li>Rode <code>docker build -t academic-tracker:dev .</code> e espere o build completar. Anote o tamanho da imagem com <code>docker images</code>.</li>
+          <li>Suba um container: <code>docker run --rm -p 3000:3000 academic-tracker:dev</code>. Acesse <code>http://localhost:3000/health</code>.</li>
+          <li>Quebre de propósito: troque a ordem, ponha <code>COPY . .</code> antes de <code>npm ci</code>. Rebuilde e veja o cache falhar. Volte.</li>
+          <li>Rode <code>docker history academic-tracker:dev</code> e identifique a camada mais pesada. Em dupla, proponha uma otimização.</li>
+        </ol>
+        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 12px;">Se seu Docker Desktop não subir, forma dupla com quem tem. O tempo aqui é para experimentar, não para instalar. TI foi avisado, mas aula é aula.</p>
+      </section>
+
+      <!-- 19, Debrief B -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Debrief B, o que a imagem gerada contém</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">A pergunta que separa quem entendeu Dockerfile de quem só copiou é: o que está dentro da imagem que eu acabei de gerar? Quatro observações que quase sempre aparecem em debrief.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Tamanho fala</h4>
+              <p>Imagem com 700 MB normalmente tem dev dependencies ou base Debian. Multi-stage e Alpine derrubam para 80 MB. Meça antes de otimizar.</p>
+            </div>
+            <div class="card">
+              <h4>Cache é ouro</h4>
+              <p>Build que leva 3 min na primeira vez deve levar 10 segundos no segundo se só o código mudou. Se levar 3 min sempre, ordem das camadas está errada.</p>
+            </div>
+            <div class="card">
+              <h4>Imagem não é VM</h4>
+              <p>Container não tem systemd, cron, ssh. Roda um processo principal e morre. Se você está pensando "como entro no container e mexo", é sinal de virar código.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Pergunta de bolso</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se amanhã eu deletar o seu laptop, a imagem que você gerou roda igual em outra máquina? Se a resposta for "depende", a reprodutibilidade ainda não chegou. Dockerfile bem feito tira o depende.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 20, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 20 min</span>
+        <h2>Registry e vulnerabilidades, onde a imagem vai morar</h2>
+        <p class="section-description">Docker Hub, GHCR, ECR, Trivy. Imagem entra no pipeline, pipeline entra na Aula 06.</p>
+      </section>
+
+      <!-- 21, Registry -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Registry, o GitHub das imagens</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Registry é servidor de artefato com namespace, autenticação e tag. <code>docker push</code> envia, <code>docker pull</code> traz de volta. A imagem que roda em produção passou por algum registry. Quatro são os mais comuns no mundo real, com tradeoffs diferentes.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Docker Hub</h4>
+              <p>O mais conhecido, público por default. Ótimo para imagens oficiais e open source. Para privado, conta paga. Rate limit é real.</p>
+            </div>
+            <div class="card">
+              <h4>GHCR e GitLab Registry</h4>
+              <p>Embutidos no próprio GitHub/GitLab. Permissão herdada do repo, pipeline publica direto. Escolha natural quando o repo já está lá.</p>
+            </div>
+            <div class="card">
+              <h4>AWS ECR, Azure ACR, GCP AR</h4>
+              <p>Registry do cloud provider. Privado por padrão, integra com IAM, scanner embutido. Opção óbvia se o deploy vai para essa nuvem.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Sobre tag latest e imutabilidade</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Tag <code>latest</code> não é imutável. Duas pessoas fazem <code>docker pull node:latest</code> em dias diferentes e podem receber imagens diferentes. Em produção isso é uma armadilha. Use tags semânticas com versão explícita, ex. <code>academic-tracker:1.4.2</code>, e considere digest SHA para garantir imutabilidade absoluta.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 22, Vulnerabilidades em imagens -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Toda imagem carrega CVEs</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">A imagem da sua aplicação é feita de três superfícies: o código que você escreveu, as dependências do <code>package.json</code> e a base image. As duas primeiras a gente já escaneia com ferramentas como npm audit. A terceira é o ponto cego. <code>node:20-alpine</code> que você puxou na semana passada pode ter CVE novo que o de hoje já corrige.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>O que é CVE</h4>
+              <p>Common Vulnerability and Exposure. Identificador padrão para falha conhecida, tipo <code>CVE-2024-12345</code>. Base image herda CVE do sistema operacional, do OpenSSL, do glibc.</p>
+            </div>
+            <div class="card">
+              <h4>O que Trivy faz</h4>
+              <p>Escaneia a imagem, casa com base de dados de CVE e lista por severidade. CLI aberta, roda em 30 segundos numa imagem pequena. Integra com pipeline.</p>
+            </div>
+            <div class="card">
+              <h4>Decisão, não lista</h4>
+              <p>A saída de scanner sempre assusta. O trabalho é triar: o que é exploitable no meu contexto, o que é falso positivo, o que exige atualizar base image já.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Regra prática</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Reconstrua sua base image toda semana, mesmo sem mudar nada. <code>docker pull node:20-alpine</code> e rebuild da imagem. Isso já elimina 80% dos CVEs que um scanner vai reclamar. O resto é triagem consciente.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 23, Demo Trivy -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Demo, Trivy na imagem que vocês acabaram de gerar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">No projetor, eu rodo <code>trivy image academic-tracker:dev</code> na imagem que a turma produziu no Exercício B. A saída típica num Alpine recente é a seguinte. Preste atenção em severidade, pacote afetado, versão fixada e vetor de ataque.</p>
+          <div class="scan-output"><span class="sev-head">academic-tracker:dev (alpine 3.19)</span>
+=======================================
+Total: 8 (UNKNOWN: 0, <span class="sev-low">LOW: 3</span>, <span class="sev-med">MEDIUM: 2</span>, <span class="sev-high">HIGH: 2</span>, <span class="sev-crit">CRITICAL: 1</span>)
+
+<span class="sev-head">┌─────────────┬────────────────┬──────────┬───────────────┐</span>
+│ Library     │ Vulnerability  │ Severity │ Fixed Version │
+<span class="sev-head">├─────────────┼────────────────┼──────────┼───────────────┤</span>
+│ libcrypto3  │ CVE-2024-5535  │ <span class="sev-crit">CRITICAL</span> │ 3.1.4-r6      │
+│ libssl3     │ CVE-2024-4741  │ <span class="sev-high">HIGH    </span> │ 3.1.4-r5      │
+│ busybox     │ CVE-2023-42366 │ <span class="sev-high">HIGH    </span> │ 1.36.1-r15    │
+│ ca-certs    │ CVE-2023-46121 │ <span class="sev-med">MEDIUM  </span> │ 20240226-r0   │
+│ ...         │ ...            │ ...      │ ...           │
+<span class="sev-head">└─────────────┴────────────────┴──────────┴───────────────┘</span></div>
+          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Como ler isso na prática</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">CRITICAL e HIGH exigem ação. Atualizar base image costuma resolver os dois de uma vez. MEDIUM e LOW entram em fila de triagem. Severidade não conta contexto, então o humano ainda decide se um CVE medium em lib interna é blocker ou ruído.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 24, Gancho Aula 06 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Gancho para a Aula 06, isso tudo vira gate</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Até aqui a gente montou as barreiras no laptop. Elas funcionam pela disciplina do dev. Um <code>git commit --no-verify</code> pula tudo. Por isso a Aula 06 pega essas mesmas validações e move para um lugar que ninguém consegue pular, o pipeline remoto.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>SAST no pipeline</h4>
+              <p>Sonar, Semgrep, CodeQL. Mesmos apontamentos que a Aula 04 viu localmente, agora bloqueando merge por severidade configurada.</p>
+            </div>
+            <div class="card">
+              <h4>Secrets no runner</h4>
+              <p>TruffleHog ou Gitleaks rodando em job da pipeline. Segundo tiro no mesmo alvo, caso algum dev tenha ignorado o hook local.</p>
+            </div>
+            <div class="card">
+              <h4>Image scanning</h4>
+              <p>Trivy como step do GitHub Actions. Falha a build se CVE CRITICAL aparece. Política de merge passa a depender do resultado do scan.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que muda na sua cabeça</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Depois da Aula 06 você vai entender que "build verde" não é só teste passando. É código sem smell de segurança, sem secret, com imagem limpa de CVE. Qualidade vira estado observável, não promessa de revisor cansado.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 25, Separador Fechamento -->
+      <section class="section-slide">
+        <span class="section-number">Fechamento, 10 min</span>
+        <h2>Checagem, checklist, próxima aula</h2>
+        <p class="section-description">Duas perguntas rápidas, cinco linhas de checklist, um tema para a semana.</p>
+      </section>
+
+      <!-- 26, Quiz 1 -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem rápida</h2>
+          <h2>Checagem 1 de 2, hooks</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question"><em>Placeholder:</em> qual o principal ganho de rodar validações em pré-commit em vez de só no pipeline?</p>
+          <p class="quiz-question">Você quer bloquear um commit que contém a palavra <code>console.log</code> em arquivo JavaScript. Qual hook é o natural para essa validação?</p>
           <ul class="quiz-options">
-            <li data-correct="false">Reduz o custo da nuvem de CI</li>
-            <li data-correct="true">Acelera o feedback e encurta o ciclo de correção</li>
-            <li data-correct="false">Substitui o pipeline remoto</li>
-            <li data-correct="false">Garante segurança total do código</li>
+            <li data-correct="false"><code>commit-msg</code>, porque valida texto</li>
+            <li data-correct="true"><code>pre-commit</code>, porque roda antes do commit ser criado e tem acesso ao diff</li>
+            <li data-correct="false"><code>pre-push</code>, porque é antes do remoto</li>
+            <li data-correct="false"><code>pre-receive</code>, porque é onde política mora</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Isso. Feedback local encurta o ciclo e reduz idas e vindas no pipeline."
-               data-incorrect-msg="Ainda não. O ponto central é o feedback mais rápido, não substituir o pipeline."></div>
+               data-correct-msg="Isso. pre-commit é o lugar natural para validação de conteúdo do diff. commit-msg valida só a mensagem, pre-push roda depois do commit já existir, pre-receive é servidor."
+               data-incorrect-msg="Releia. pre-commit é o único que roda antes do commit ser criado, com acesso ao diff. Os outros rodam tarde ou no lugar errado."></div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
-          <div class="footer-page">09</div>
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">24</div>
         </div>
       </section>
 
-      <!-- 10, Auto-estudo -->
+      <!-- 27, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, Dockerfile</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Você escreveu um Dockerfile começando com <code>FROM node:latest</code>. Sua colega de dupla sugere trocar por <code>FROM node:20.11.1-alpine</code>. Qual é o ganho concreto?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">A imagem com <code>latest</code> é mais lenta para buildar</li>
+            <li data-correct="false">Alpine é mais seguro por si só, independente da versão</li>
+            <li data-correct="true">Versão fixa garante build reprodutível. Alpine reduz superfície de ataque e tamanho</li>
+            <li data-correct="false">Docker não aceita mais <code>latest</code> em produção</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Isso. Tag específica evita que a base image mude silenciosamente entre builds. Alpine com menos pacotes reduz superfície e tamanho, mas não é seguro por default."
+               data-incorrect-msg="Releia. O problema com latest é reprodutibilidade: builds em dias diferentes podem puxar imagens diferentes. Alpine ajuda no tamanho e superfície, não na segurança automática."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 28, Checklist antes do push -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Auto-estudo para a próxima</h2>
+          <h2>Checklist antes do push, para grudar no monitor</h2>
         </div>
         <div class="slide-body">
-          <p style="color: var(--inteli-gray-dark); font-size: 0.75em;"><em>Placeholder. A definir ao populargmos a aula.</em></p>
-          <div class="concept-cards">
-            <div class="concept-card"><h4>Leitura</h4><p>Referência a capítulo ou artigo do tema.</p></div>
-            <div class="concept-card"><h4>Vídeo</h4><p>Curto vídeo introdutório.</p></div>
-            <div class="concept-card"><h4>Entrega</h4><p>Responder no AdaLove a atividade de autoestudo.</p></div>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Cinco linhas que a equipe madura roda antes de <code>git push</code> sem nem pensar. Quando vocês fecharem a sprint, essa lista deveria ser automática. Se alguma ficar no manual, vira fila de nit na revisão do parceiro.</p>
+          <div class="three-cards" style="grid-template-columns: repeat(5, 1fr); gap: 8px;">
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">1, Lint</h4>
+              <p style="font-size: 0.58em;">ESLint e Prettier sem warning nos arquivos tocados.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">2, Teste</h4>
+              <p style="font-size: 0.58em;">Unit tests verdes no diff, integração se afeta rota.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">3, Commit</h4>
+              <p style="font-size: 0.58em;">Mensagem em Conventional, validada por commitlint.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">4, Secret</h4>
+              <p style="font-size: 0.58em;">TruffleHog ou Gitleaks não achou nada suspeito.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">5, Imagem</h4>
+              <p style="font-size: 0.58em;"><code>docker build</code> completa sem erro na sua máquina.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A regra do carrinho</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Pipeline que quebra na número 5 quando 1, 2, 3, 4 passaram é pista de que o ambiente local divergiu do runner. Dockerfile bem feito torna esse caso raro. Pipeline que quebra em 1, 2 ou 3 é sinal de que o hook não rodou, ou o dev passou com <code>--no-verify</code>. Nos dois casos, a conversa é outra.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 05, CI parte 1: etapas locais, Sprint 02</div>
-          <div class="footer-page">10</div>
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">26</div>
         </div>
       </section>
 
-      <!-- 11, Encerramento -->
+      <!-- 29, Auto-estudo para Aula 06 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 06</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">A Aula 06 leva tudo isso para o pipeline remoto e fecha a Sprint 02. Três provocações curtas antes dela.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, GitHub Actions</h4>
+              <p>Documentação oficial, seção "Understanding GitHub Actions". Foque no que é workflow, job, step e runner. Syntax YAML mínima.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, SAST</h4>
+              <p>Primer curto sobre Static Application Security Testing. O post "SAST vs DAST vs IAST" da OWASP dá o panorama em cinco minutos.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, trivy-action</h4>
+              <p>Demo de 7 minutos de trivy-action no GitHub, com configuração de severidade e comportamento de falha. Chegue sabendo o que é a ação.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega desta aula, para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Um print do terminal mostrando o hook barrando o secret. Um print do <code>docker images</code> com a imagem do academic-tracker listada e seu tamanho. Uma linha dizendo qual foi o CVE mais sério que o Trivy apontou na sua imagem. Curto, objetivo, vira diagnóstico da sprint.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">27</div>
+        </div>
+      </section>
+
+      <!-- 30, Encerramento -->
       <section class="end-slide">
         <span class="inteli-wordmark light">inteli</span>
         <h2>Até a próxima</h2>
