@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 07, Hello World, Continuous Deployment, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    /* Layout local da Aula 07 */
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Grid 2 colunas comparativo */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li { margin-bottom: 3px; }
+
+    /* Grid 3 cards */
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+    .three-cards .card code { font-size: 0.88em; }
+
+    /* Grid 4 cards */
+    .four-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .four-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--inteli-lilac);
+    }
+    .four-cards .card h4 {
+      font-size: 0.78em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      line-height: 1.15;
+    }
+    .four-cards .card .tag {
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .four-cards .card p {
+      font-size: 0.62em;
+      margin: 0;
+      line-height: 1.35;
+    }
+
+    /* Bloco YAML + anotações */
+    .pipeline-block {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .pipeline-block pre {
+      margin: 0;
+      font-size: 0.54em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .pipeline-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.4;
+    }
+    .pipeline-block .annot ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .pipeline-block .annot li { margin-bottom: 2px; }
+    .pipeline-block .annot strong { color: var(--inteli-coral); }
+
+    /* Bloco workflow full (coluna única mais larga) */
+    .workflow-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .workflow-block pre {
+      margin: 0;
+      font-size: 0.52em;
+      line-height: 1.38;
+      padding: 12px 14px;
+    }
+    .workflow-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.59em;
+      line-height: 1.4;
+    }
+    .workflow-block .annot ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .workflow-block .annot li { margin-bottom: 3px; }
+    .workflow-block .annot strong { color: var(--inteli-coral); }
+
+    /* Pipeline stages (linha do tempo horizontal) */
+    .pipeline-stages {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-top: 10px;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+    .stage {
+      flex: 1;
+      background: var(--inteli-bg-soft);
+      padding: 10px 12px;
+      border-right: 2px solid var(--inteli-white);
+      position: relative;
+    }
+    .stage:last-child { border-right: none; }
+    .stage h4 {
+      font-size: 0.72em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .stage p {
+      font-size: 0.58em;
+      margin: 0;
+      line-height: 1.35;
+      color: var(--inteli-gray-dark);
+    }
+    .stage .stage-tag {
+      font-size: 0.5em;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--inteli-white);
+      background: var(--inteli-lilac);
+      border-radius: 4px;
+      padding: 1px 6px;
+      display: inline-block;
+      margin-bottom: 4px;
+    }
+    .stage.active { background: var(--inteli-lilac-soft); }
+    .stage.done   { background: #e8f5ee; }
+    .stage.focus  { background: #fff3d4; }
+
+    /* Camadas de deploy (estratégias) */
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .strategy-card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-top: 3px solid var(--inteli-coral);
+    }
+    .strategy-card.bg  { border-top-color: var(--inteli-dark-green); }
+    .strategy-card.can { border-top-color: var(--inteli-lilac); }
+    .strategy-card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .strategy-card p {
+      font-size: 0.64em;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .strategy-card .pro-con {
+      margin-top: 6px;
+      font-size: 0.6em;
+      line-height: 1.35;
+    }
+    .strategy-card .pro-con span.pro { color: var(--inteli-dark-green); font-weight: 700; }
+    .strategy-card .pro-con span.con { color: var(--inteli-coral); font-weight: 700; }
+
+    /* Compact exercise */
+    .exercise-slide.compact {
+      padding: 48px 60px 40px 60px;
+    }
+    .exercise-slide.compact h2 {
+      font-size: 1.4em;
+      margin: 0 0 10px 0;
+    }
+    .exercise-slide.compact .exercise-tag { margin-bottom: 8px; }
+    .exercise-slide.compact .exercise-steps li {
+      padding: 7px 10px 7px 46px;
+      margin-bottom: 6px;
+      font-size: 0.66em;
+      line-height: 1.45;
+    }
+    .exercise-slide.compact .exercise-steps li::before {
+      width: 24px; height: 24px;
+      top: 7px; left: 12px;
+      font-size: 0.8em;
+    }
+    .exercise-slide.compact .hint-caption {
+      font-size: 0.62em;
+      margin-top: 10px !important;
+    }
+
+    /* Checklist final compacto */
+    .checklist-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .checklist-5 .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .checklist-5 .card h4 { font-size: 0.72em; margin: 0 0 2px 0; }
+    .checklist-5 .card p  { font-size: 0.58em; margin: 0; line-height: 1.3; }
+
+    /* Secrets layer visual */
+    .secrets-layer {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 10px;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .secret-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 14px;
+      align-items: center;
+      background: var(--inteli-bg-soft);
+      border-radius: 8px;
+      padding: 8px 16px;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .secret-row.bad  { border-left-color: var(--inteli-coral); }
+    .secret-row.good { border-left-color: var(--inteli-dark-green); }
+    .secret-row h4 {
+      font-size: 0.78em;
+      margin: 0;
+      font-family: var(--inteli-mono, monospace);
+      color: var(--inteli-purple-deep);
+    }
+    .secret-row p { font-size: 0.64em; margin: 0; line-height: 1.4; }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 02, Qualidade e CI/CD</span>
+          <h1>Hello World, Continuous Deployment</h1>
+          <p class="subtitle">Pipeline verde é condição necessária. Deploy automático é o destino. GitHub Actions leva o código do repositório ao EC2 sem a mão do dev no teclado.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>07 de 14</span>
+            <strong>Data</strong><span>19 de maio de 2026, terça-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>Hermano Peixoto</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Vocês leram o artigo da AWS sobre GitHub Actions com EC2, assistiram o tutorial do GitHub Actions e ouviram o podcast de DevOps. A aula pega esses três insumos e resulta em uma aplicação rodando na nuvem, deployada automaticamente por pipeline.</p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Check-in da sprint, cronômetro de 15 min</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>CD na teoria: CI vs CDelivery vs CDeployment, estratégias de deploy, GitHub Actions anatomy</td><td>25 min</td></tr>
+              <tr><td>10h40, Bloco 2</td><td>AWS na prática: CloudFormation, EC2, workflow completo, hands-on Hello World</td><td>50 min</td></tr>
+              <tr><td>11h30, Bloco 3</td><td>Governança no CD: secrets, gates de aprovação, rollback</td><td>20 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo da Aula 08</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily Time -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          SAST rodou no pipeline do grupo? Qual achado mais sério apareceu? Tomaram decisão de fix, aceitar ou suppress? Uma volta rápida, uma frase por grupo. Quem ficou travado fala. Quem deployou algo na Sprint fala primeiro.
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos de aprendizagem -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim da aula, cada grupo sai com uma aplicação Hello World rodando no EC2 e deployada automaticamente via GitHub Actions. Quatro verbos, quatro entregas concretas.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Distinguir</h4>
+              <p>Separar CI, Continuous Delivery e Continuous Deployment pela presença ou ausência de intervencão humana e pelo ponto de entrega no ciclo.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Construir</h4>
+              <p>Escrever um workflow GitHub Actions com jobs de build, test e deploy para uma instância EC2 provisionada por CloudFormation.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Descrever</h4>
+              <p>Explicar o papel do AWS CloudFormation como IaC e os componentes principais de um template: Parameters, Resources e Outputs.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Aplicar</h4>
+              <p>Usar GitHub Secrets para armazenar credenciais AWS e chave SSH, sem nenhum valor sensível hardcoded no código ou no workflow.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">03</div>
+        </div>
+      </section>
+
+      <!-- 05, Ponte com Aula 06 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O que mudou da Aula 06 para cá</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Nas últimas aulas, o pipeline ganhou qualidade e segurança: lint, hook, SAST, SCA, scanner de secret. Todo esse trabalho garantiu que o código que entra em <code>main</code> está limpo. Mas código limpo em <code>main</code> ainda não significa usuário usando. A Aula 07 fecha o ciclo: do push ao servidor.</p>
+          <div class="pipeline-stages">
+            <div class="stage done">
+              <span class="stage-tag">Aulas 04–05</span>
+              <h4>Commit</h4>
+              <p>Hook pre-commit, lint, scanner de secret local</p>
+            </div>
+            <div class="stage done">
+              <span class="stage-tag">Aulas 05–06</span>
+              <h4>CI</h4>
+              <p>Build, testes, SAST, SCA, imagem de container</p>
+            </div>
+            <div class="stage focus">
+              <span class="stage-tag" style="background: var(--inteli-coral);">Aula 07, hoje</span>
+              <h4>CD</h4>
+              <p>CloudFormation provisiona EC2, workflow faz deploy da app</p>
+            </div>
+            <div class="stage">
+              <span class="stage-tag" style="background: var(--inteli-gray-dark);">Sprint 03</span>
+              <h4>Observability</h4>
+              <p>Logs, métricas, alertas em produção</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 12px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que "Hello World"</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O ponto não é a aplicação em si, é o pipeline até ela. Quando o Hello World deploya sozinho a cada push, a estrutura está certa. Substituir o Hello World pelo projeto real do grupo é questão de ajuste de configuração, não de arquitetura. O aprendizado de hoje é genérico e vai servir para qualquer stack.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 06, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 25 min</span>
+        <h2>CD na teoria: do push ao servidor</h2>
+        <p class="section-description">CI, Continuous Delivery e Continuous Deployment são palavras parecidas que significam coisas distintas. Estratégias de deploy e a anatomia de um workflow GitHub Actions.</p>
+      </section>
+
+      <!-- 07, CI vs CDelivery vs CDeployment -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>CI, Continuous Delivery e Continuous Deployment, três coisas distintas</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O mercado usa as três siglas de forma intercambiável e isso confunde. A distinção importa porque define onde termina a automação e onde começa a responsabilidade humana. O podcast de auto-estudo toca nesse ponto quando fala em "cultura de confiança no pipeline".</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Continuous Integration</h4>
+              <p>Todo push integra com a branch principal. Pipeline roda build e testes. Objetivo: detectar conflito e defeito cedo. <strong>Entrega: artefato verificado.</strong> Nenhum deploy acontece aqui.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-lilac);">
+              <h4>Continuous Delivery</h4>
+              <p>O artefato verificado está sempre pronto para ir a produção. O deploy para produção <strong>pode ser acionado manualmente</strong>, por um botão ou aprovação. O pipeline garante que o código está deployável, não que ele foi deployado.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-dark-green);">
+              <h4>Continuous Deployment</h4>
+              <p>Todo push que passa no pipeline vai para produção <strong>sem aprovação humana</strong>. Requer maturidade alta: feature flags, rollback automatizado, observabilidade sólida. É o que vamos construir hoje.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que os engenheiros do podcast disseram</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Empresas com menos maturidade começam em Continuous Delivery: pipeline automatizado, deploy manual com aprovação. Migram para Continuous Deployment quando confiam no teste e no rollback. Forçar CD sem essa confiança resulta em incidentes frequentes e equipe revertendo para deploy manual na mão.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 08, Estratégias de deploy -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Estratégias de deploy, como o código chega ao usuário</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Deploy não é apertar um botão. É uma operação que tem estratégia: quanto do tráfego muda, com que velocidade, com que plano de volta. Três estratégias dominam o mercado e diferem pelo nível de risco aceito durante a transição.</p>
+          <div class="strategy-grid">
+            <div class="strategy-card">
+              <h4>Rolling Update</h4>
+              <p>Instâncias são substituídas uma a uma. A nova versão entra enquanto a velha ainda serve parte do tráfego. Zero downtime, mas há momento com duas versões no ar ao mesmo tempo.</p>
+              <div class="pro-con">
+                <span class="pro">✓ Simples de implementar</span><br>
+                <span class="con">✗ Difícil de rollback rápido</span>
+              </div>
+            </div>
+            <div class="strategy-card bg">
+              <h4>Blue/Green</h4>
+              <p>Dois ambientes idênticos. Blue serve produção, Green recebe a nova versão. Quando Green está pronto, o load balancer vira a chave. Rollback = virar a chave de volta.</p>
+              <div class="pro-con">
+                <span class="pro">✓ Rollback instantâneo</span><br>
+                <span class="con">✗ Custo: dois ambientes simultâneos</span>
+              </div>
+            </div>
+            <div class="strategy-card can">
+              <h4>Canary</h4>
+              <p>Nova versão recebe uma fatia pequena do tráfego (5%, 10%). Métricas são monitoradas. Se estiver ok, o tráfego aumenta gradualmente até 100%. Rollback só afeta a fatia.</p>
+              <div class="pro-con">
+                <span class="pro">✓ Risco progressivo</span><br>
+                <span class="con">✗ Exige observabilidade madura</span>
+              </div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Para a Sprint de hoje</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O Hello World usa Rolling simples: uma instância EC2, CloudFormation atualiza, SSH puxa o código novo. É o ponto de entrada adequado. Blue/green e canary são temas da Sprint 03, quando a aplicação real tiver usuários reais e a tolerância a downtime for zero.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">06</div>
+        </div>
+      </section>
+
+      <!-- 09, GitHub Actions anatomy -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>GitHub Actions, anatomia de um workflow</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">O tutorial do auto-estudo mostrou o passo a passo entre os minutos 14 e 35. Aqui está a estrutura que ficou implícita no vídeo. Cinco conceitos, cada um com papel distinto. Saber onde cada peça encaixa é o que separa quem copia YAML de quem escreve YAML.</p>
+          <div class="pipeline-block">
+            <pre><code class="language-yaml"># .github/workflows/deploy.yml
+name: Deploy to EC2        # nome visível no GitHub UI
+
+on:                        # EVENTO que dispara o workflow
+  push:
+    branches: [main]
+
+jobs:                      # conjunto de JOBs
+  build-and-deploy:        # nome do job
+    runs-on: ubuntu-latest # RUNNER (máquina virtual)
+
+    steps:                 # sequência de STEPs
+      - uses: actions/checkout@v4  # ACTION do marketplace
+
+      - name: Run tests    # step inline
+        run: npm test      # comando shell
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1
+        with:              # parâmetros da action
+          host: ${{ secrets.EC2_HOST }}
+          key:  ${{ secrets.EC2_SSH_KEY }}
+          script: pm2 restart all</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Os cinco pilares</p>
+              <ol>
+                <li><strong>Workflow</strong>: o arquivo YAML inteiro. Um repo pode ter vários.</li>
+                <li><strong>Event (<code>on:</code>)</strong>: o que dispara o workflow — push, PR, schedule, manual.</li>
+                <li><strong>Job</strong>: conjunto de steps que roda numa mesma máquina. Jobs em paralelo por padrão.</li>
+                <li><strong>Runner</strong>: a VM que executa o job. GitHub hospeda ou você traz o seu.</li>
+                <li><strong>Step</strong>: unidade atômica — um comando shell (<code>run:</code>) ou uma Action (<code>uses:</code>).</li>
+              </ol>
+              <p style="font-size: 0.9em; margin: 6px 0 0; color: var(--inteli-gray-dark);">Actions são pacotes reutilizáveis do marketplace. <code>actions/checkout@v4</code> já tem mais de 4 bilhões de execuções registradas.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 10, Events e contexts -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Events, contexts e o marketplace de Actions</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">O que dispara um workflow define todo o comportamento do pipeline. Misturar eventos errados com o workflow certo gera CI que deploya quando não deve, ou deploy que não acontece quando deveria.</p>
+          <div class="four-cards">
+            <div class="card">
+              <span class="tag">Mais comum</span>
+              <h4>push / pull_request</h4>
+              <p>Deploy em push para <code>main</code>. Testes em qualquer PR. Filtra branch com <code>branches:</code>.</p>
+            </div>
+            <div class="card">
+              <span class="tag">Agendamento</span>
+              <h4>schedule</h4>
+              <p>Cron no GitHub. Útil para DAST noturno, limpeza de staging, relatórios periódicos.</p>
+            </div>
+            <div class="card">
+              <span class="tag">Aprovação humana</span>
+              <h4>workflow_dispatch</h4>
+              <p>Botão manual no GitHub UI. Permite parâmetros. Útil para deploy com confirmação explícita.</p>
+            </div>
+            <div class="card">
+              <span class="tag">Encadeamento</span>
+              <h4>workflow_run</h4>
+              <p>Dispara após outro workflow terminar. CD que espera CI verde antes de começar.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Contextos e expressões</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O objeto <code>github</code> expõe metadados do evento: <code>github.sha</code> (hash do commit), <code>github.actor</code> (quem fez o push), <code>github.ref</code> (branch). <code>secrets</code> expõe os segredos do repo. <code>env</code> expõe variáveis de ambiente do job. Esses três contextos cobrem 95% do que aparece em workflows reais. O marketplace tem mais de 20.000 Actions publicadas — para quase tudo já existe uma Action pronta.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 11, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 50 min</span>
+        <h2>AWS na prática: CloudFormation, EC2 e o workflow completo</h2>
+        <p class="section-description">Infraestrutura como código com CloudFormation, credenciais seguras no GitHub Actions e o workflow que coloca o Hello World no ar.</p>
+      </section>
+
+      <!-- 12, CloudFormation overview -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>CloudFormation, infraestrutura como código na AWS</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">CloudFormation é o serviço de IaC nativo da AWS. Você descreve a infraestrutura que quer num arquivo YAML (ou JSON), e a AWS cria, atualiza ou deleta os recursos automaticamente. A unidade de trabalho é o <strong>stack</strong>: um conjunto de recursos que nascem e morrem juntos.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>O que é um template</h4>
+              <p>Arquivo YAML com seções padronizadas. Define quais recursos criar (EC2, S3, RDS, IAM role...) e como eles se conectam. Versionado no repositório junto do código.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-lilac);">
+              <h4>O que é um stack</h4>
+              <p>Instância do template na AWS. Você cria um stack, a AWS lê o template e provisiona os recursos. Atualizar o template e reaplicar faz o CloudFormation calcular o diff e executar só o que mudou.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-dark-green);">
+              <h4>Por que usar no CD</h4>
+              <p>Infraestrutura reproduzível: o mesmo template em dev, staging e produção garante que o ambiente que testamos é o ambiente que deployamos. Fim de "funciona na minha máquina".</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Relação com o artigo de auto-estudo</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O artigo da AWS publicado em março de 2022 usa exatamente esse padrão: um template CloudFormation cria a instância EC2 com Security Group configurado, e o workflow GitHub Actions roda <code>aws-cloudformation-github-deploy</code> para criar ou atualizar o stack antes de fazer o deploy da aplicação. Vamos ver cada parte desse template agora.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 13, CloudFormation template EC2 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Template CloudFormation para EC2, linha por linha</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.66em; margin: 0 0 6px;">Esse é o template que o seu projeto deve ter em <code>cloudformation/ec2.yml</code>. Cada seção tem uma responsabilidade distinta. Leia o YAML e as anotações ao mesmo tempo.</p>
+          <div class="pipeline-block">
+            <pre><code class="language-yaml">AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 instance, Hello World CD demo
+
+Parameters:
+  KeyName:
+    Type: AWS::EC2::KeyPair::KeyName
+    Description: Par de chaves SSH para acesso
+  MyIPAddress:
+    Type: String
+    Description: IP autorizado para SSH (CIDR /32)
+
+Resources:
+  WebServerSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Sub "${MyIPAddress}/32"
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0c02fb55956c7d316   # Amazon Linux 2
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SecurityGroups:
+        - !Ref WebServerSG
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum update -y
+          yum install -y nodejs git
+          npm install -g pm2
+
+Outputs:
+  PublicIP:
+    Value: !GetAtt WebServer.PublicIp
+    Description: IP publico da instancia</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Seções e o que fazem</p>
+              <ol>
+                <li><strong>Parameters</strong>: valores que o workflow passa na hora de criar o stack. <code>KeyName</code> e <code>MyIPAddress</code> vêm dos GitHub Secrets — jamais hardcoded.</li>
+                <li><strong>Resources</strong>: o coração do template. <code>WebServerSG</code> abre porta 80 para o mundo e porta 22 só para o IP autorizado. <code>WebServer</code> é a instância EC2.</li>
+                <li><strong>UserData</strong>: script que roda uma vez ao criar a instância. Instala Node, git e PM2. O deploy da app vem depois via SSH.</li>
+                <li><strong>Outputs</strong>: <code>PublicIP</code> é exportado para que o step seguinte do workflow saiba onde fazer o SSH.</li>
+              </ol>
+              <p style="font-size: 0.9em; margin: 6px 0 0; color: var(--inteli-gray-dark);"><code>!Ref</code> e <code>!GetAtt</code> são funções intrínsecas do CloudFormation para referenciar outros recursos do mesmo template.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 14, Credenciais AWS no GitHub Actions -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Credenciais AWS no GitHub Actions, sem expor nada</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Para o workflow falar com a AWS ele precisa de credenciais. A forma errada (e muito comum) é colocar Access Key e Secret no YAML. A forma certa é usar GitHub Secrets combinados com IAM de mínimo privilégio.</p>
+          <div class="pipeline-block">
+            <pre><code class="language-yaml">jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Step que autentica o runner na AWS
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # A partir daqui, todos os steps têm acesso à AWS
+      - name: Deploy CloudFormation stack
+        id: cfn
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: hello-world-stack
+          template: cloudformation/ec2.yml
+          parameter-overrides: >-
+            KeyName=${{ secrets.EC2_KEY_NAME }},
+            MyIPAddress=${{ secrets.MY_IP_ADDRESS }}</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Como configurar os Secrets</p>
+              <ol>
+                <li>No repositório: <strong>Settings → Secrets and variables → Actions</strong></li>
+                <li>Criar: <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code>, <code>EC2_KEY_NAME</code>, <code>MY_IP_ADDRESS</code>, <code>EC2_SSH_KEY</code></li>
+                <li>O IAM User da AWS deve ter somente as permissões necessárias: <code>cloudformation:*</code>, <code>ec2:*</code>. Nunca usar o usuário root.</li>
+                <li><code>${{ secrets.X }}</code> nunca aparece nos logs, o GitHub mascara automaticamente.</li>
+              </ol>
+              <p style="font-size: 0.9em; margin: 6px 0 0; color: var(--inteli-gray-dark);">O step <code>aws-cloudformation-github-deploy</code> cria o stack se não existe ou atualiza se existir — idempotente por design.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 15, Workflow completo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O workflow completo: do push ao Hello World no ar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.66em; margin: 0 0 6px;">Baseado diretamente no artigo da AWS. Cada step tem um papel. Leia os comentários junto com as anotações.</p>
+          <div class="workflow-block">
+            <pre><code class="language-yaml">name: Deploy Hello World to EC2
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Provision EC2 via CloudFormation
+        id: cfn
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: hello-world-stack
+          template: cloudformation/ec2.yml
+          parameter-overrides: >-
+            KeyName=${{ secrets.EC2_KEY_NAME }},
+            MyIPAddress=${{ secrets.MY_IP_ADDRESS }}
+
+      - name: Deploy app via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ steps.cfn.outputs.PublicIP }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ec2-user/app \
+              || git clone ${{ github.server_url }}/${{ github.repository }} /home/ec2-user/app
+            cd /home/ec2-user/app
+            git fetch --all
+            git reset --hard origin/main
+            npm install --production
+            pm2 restart hello-world || pm2 start index.js --name hello-world</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">5 steps, 5 responsabilidades</p>
+              <ol>
+                <li><strong>checkout</strong>: clona o repo no runner para ter acesso ao template e ao código.</li>
+                <li><strong>configure-aws-credentials</strong>: autentica o runner na AWS usando os Secrets. Válido para os steps seguintes.</li>
+                <li><strong>aws-cloudformation-github-deploy</strong>: cria ou atualiza o stack. O output <code>PublicIP</code> fica em <code>steps.cfn.outputs.PublicIP</code>.</li>
+                <li><strong>appleboy/ssh-action</strong>: abre conexão SSH para o EC2 e executa o script de deploy.</li>
+                <li><strong>script SSH</strong>: clona o repo se for a primeira vez ou reseta para a branch <code>main</code>, instala dependências e (re)inicia o processo com PM2.</li>
+              </ol>
+              <p style="font-size: 0.88em; margin: 6px 0 0; color: var(--inteli-coral); font-weight: 600;">Nenhuma credencial ou IP aparece em texto puro no YAML.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 16, Exercício D hands-on -->
+      <section class="exercise-slide compact">
+        <div class="top-bar"></div>
+        <span class="exercise-tag">Hands-on D, em grupo, 30 min</span>
+        <h2>Hello World: deploy automático no EC2</h2>
+        <ol class="exercise-steps">
+          <li>Criem um repositório público (ou usem o da Sprint). Adicionem um arquivo <code>index.js</code> com um servidor HTTP simples que responde <code>Hello World</code> na porta 80. Commitem e façam o push.</li>
+          <li>Criem a pasta <code>cloudformation/</code> no repositório e adicionem o arquivo <code>ec2.yml</code> com o template que vimos no slide anterior. Ajustem o <code>ImageId</code> para a região <code>us-east-1</code>.</li>
+          <li>No GitHub, vão em Settings → Secrets and variables → Actions e cadastrem os cinco secrets: <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code>, <code>EC2_KEY_NAME</code>, <code>MY_IP_ADDRESS</code> e <code>EC2_SSH_KEY</code>. Usem as credenciais do sandbox do Inteli.</li>
+          <li>Criem o arquivo <code>.github/workflows/deploy.yml</code> com o workflow completo do slide anterior. Committem, façam o push para <code>main</code> e observem o workflow rodar em Actions.</li>
+          <li>Quando o workflow ficar verde, abram o IP público no navegador. <strong>Hello World deve aparecer.</strong> Façam uma segunda mudança no <code>index.js</code>, façam o push e confirmem que o update chegou automaticamente.</li>
+        </ol>
+        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 14px;">Se o step de SSH falhar com "Connection refused", a instância ainda está inicializando. Adicionem um step de espera com <code>sleep 30</code> antes do SSH. Se o CloudFormation falhar, leiam o evento de erro no console da AWS — 90% dos casos é permissão de IAM faltando.</p>
+      </section>
+
+      <!-- 17, Debrief D -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Debrief D, o que sempre trava na primeira vez</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Três problemas se repetem em toda turma que faz esse hands-on pela primeira vez. Mapeio aqui para vocês não perderem tempo com o mesmo obstáculo.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>1, IAM sem permissão</h4>
+              <p>O step do CloudFormation falha com <code>AccessDenied</code>. Causa: IAM User criado sem as policies de EC2 e CloudFormation. Solução: no console AWS, adicionar as managed policies <code>AmazonEC2FullAccess</code> e <code>AWSCloudFormationFullAccess</code> ao usuário.</p>
+            </div>
+            <div class="card">
+              <h4>2, SSH: "Permission denied"</h4>
+              <p>A chave privada no Secret está errada ou com formatting quebrado. Chave SSH precisa ser a versão PEM completa, incluindo <code>-----BEGIN RSA PRIVATE KEY-----</code> e <code>-----END-----</code>. Copiem usando <code>cat key.pem</code>, não pelo explorador de arquivos.</p>
+            </div>
+            <div class="card">
+              <h4>3, Porta 80 sem resposta</h4>
+              <p>Node está rodando mas na porta 3000, não 80. Confiram o <code>index.js</code> (porta 80 requer <code>sudo</code> no Linux) ou mudem o Security Group para liberar a porta que o Node está ouvindo e ajustem a URL de acesso.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A segunda iteração é o teste de verdade</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O primeiro push prova que o pipeline funciona. O segundo push — mudando uma linha do Hello World — prova que o CD funciona. Quem não fez o segundo push não terminou o exercício. A automação precisa ser observada em ação pelo menos duas vezes para deixar de parecer mágica.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 18, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 20 min</span>
+        <h2>Governança e segurança no CD</h2>
+        <p class="section-description">Secrets management, deployment gates com aprovação humana, estratégia de rollback. O que separa um pipeline funcional de um pipeline confiável.</p>
+      </section>
+
+      <!-- 19, Secrets management -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Secrets management, nenhuma credencial no código</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Secret hardcoded é o erro mais caro e mais desnecessário da engenharia de software. O GitHub já tem o mecanismo certo, basta usar. A tabela abaixo mostra o que vai onde.</p>
+          <div class="secrets-layer">
+            <div class="secret-row bad">
+              <h4>❌ Nunca faça</h4>
+              <p>Colocar <code>AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE</code> direto no <code>.yml</code>, no <code>.env</code> commitado, ou em variável de ambiente no <code>Dockerfile</code>. O TruffleHog da Aula 05 captura exatamente isso.</p>
+            </div>
+            <div class="secret-row good">
+              <h4>✓ GitHub Secrets</h4>
+              <p>Credenciais de curta duração, IAM keys, chave SSH, tokens de API. Escopo por repositório ou organização. Mascarado nos logs automaticamente.</p>
+            </div>
+            <div class="secret-row good">
+              <h4>✓ AWS Secrets Manager</html>
+              <p>Secrets que a <em>aplicação em execução</em> precisa em runtime (credencial de banco, API key de terceiro). A instância EC2 busca o secret via SDK — nada em variável de ambiente no processo.</p>
+            </div>
+            <div class="secret-row">
+              <h4>↗ OIDC (melhor prática)</h4>
+              <p>Em vez de IAM Keys, o runner GitHub se autentica na AWS via OpenID Connect. Sem Access Key, sem Secret Key, sem rotação. O <code>configure-aws-credentials</code> suporta essa modalidade desde 2022.</p>
+            </div>
+          </div>
+          <p class="hint-caption" style="margin-top: 8px;">Para hoje, IAM Keys nos Secrets é suficiente. OIDC é o próximo passo natural para qualquer projeto que vai para produção de verdade.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 20, Deployment gates -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Deployment gates, quando a automação para e pede um humano</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Continuous Deployment total (sem aprovação) é adequado para staging e para aplicações internas. Para produção com dados de usuário real, uma pausa para aprovação humana é governança, não burocracia. O GitHub tem isso nativo via Environments.</p>
+          <div class="pipeline-block">
+            <pre><code class="language-yaml">jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm test
+
+  deploy-staging:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: staging   # ambiente sem aprovação
+    steps:
+      - name: Deploy para staging
+        run: echo "deploy staging"
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production  # ambiente COM aprovação obrigatória
+    steps:
+      - name: Deploy para producao
+        run: echo "deploy prod"</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Como configurar o gate</p>
+              <ol>
+                <li>Vá em <strong>Settings → Environments → production</strong></li>
+                <li>Ative <strong>Required reviewers</strong> e adicione os aprovadores</li>
+                <li>O workflow pausa no job <code>deploy-production</code> e manda e-mail para os revisores</li>
+                <li>Após aprovação, o deploy continua automaticamente</li>
+              </ol>
+              <p style="font-size: 0.9em; margin: 6px 0 0; color: var(--inteli-gray-dark);">Você pode adicionar regras como "aguardar 30 minutos após o último push" para evitar deployes precipitados em horário de pico.</p>
+              <p style="font-size: 0.9em; margin: 4px 0 0; color: var(--inteli-coral); font-weight: 600;">Environments são gratuitos em repositórios públicos.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 21, Rollback -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Rollback, o deploy que desfaz o deploy</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Todo time que faz CD precisa saber como voltar atrás mais rápido do que demorou para ir pra frente. Sem rollback definido antes do incidente, o rollback vira improvisação sob pressão. Três mecanismos, cada um para um contexto.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Rerun do workflow anterior</h4>
+              <p>No GitHub Actions, cada run tem um botão "Re-run". Ré-executar o último deploy que funcionou leva o código da versão boa de volta ao servidor. Simples, sem precisar de branch extra.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-lilac);">
+              <h4>CloudFormation rollback</h4>
+              <p>Se o stack update falhar, CloudFormation <strong>reverte automaticamente</strong> para o estado anterior por padrão. Pode-se também usar <code>aws cloudformation continue-rollback-execution</code> manualmente.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-dark-green);">
+              <h4>Feature flag</h4>
+              <p>O código novo está no ar mas a feature está desligada por uma flag. Rollback = desligar a flag no painel, sem novo deploy. Exige mais arquitetura mas é o rollback mais rápido de todos.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A regra do runbook</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O rollback precisa estar documentado <em>antes</em> do incidente. Um runbook de 4 linhas — "como voltar atrás em 5 minutos" — vale mais que qualquer documentação de arquitetura produzida com calma. O podcast de DevOps chama isso de "design para falha": aceitar que o deploy vai dar errado e preparar a saída antes da entrada.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 22, Separador Fechamento -->
+      <section class="section-slide">
+        <span class="section-number">Fechamento, 10 min</span>
+        <h2>Checagem, checklist e próxima aula</h2>
+        <p class="section-description">Duas perguntas, uma checklist de cinco itens, o dever de casa para a Aula 08.</p>
+      </section>
+
+      <!-- 23, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, CI vs CD</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Um time tem CI configurado. Todo push para <code>main</code> roda os testes e gera um artefato Docker. Para subir para produção, alguém ainda precisa clicar um botão no painel. Como se classifica esse processo corretamente?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Continuous Deployment, porque o deploy ocorre automaticamente após os testes</li>
+            <li data-correct="true">Continuous Delivery, porque o artefato está sempre pronto mas o deploy para produção requer ação humana</li>
+            <li data-correct="false">Continuous Integration, porque o foco é a integração contínua do código na branch principal</li>
+            <li data-correct="false">Rolling Deployment, porque o processo é incremental e controlado</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. Continuous Delivery garante que o código está sempre em condição de ir a produção. O gate manual é a diferença fundamental para Continuous Deployment, onde nenhuma aprovação humana é necessária."
+               data-incorrect-msg="Reveja. O artigo de auto-estudo define: CI integra e testa, Continuous Delivery mantém o artefato deployável com gate opcional, Continuous Deployment vai a produção sem intervenção humana. O botão manual é o marcador decisivo."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 24, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, CloudFormation</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Você quer que o step de SSH do seu workflow saiba o IP público da instância EC2 criada pelo CloudFormation. Qual é a forma correta de obter esse dado dentro do workflow?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Hardcodar o IP no workflow YAML depois de criar a instância pela primeira vez no console AWS</li>
+            <li data-correct="false">Usar a AWS CLI no step de SSH para chamar <code>describe-instances</code> e filtrar o IP pelo nome da instância</li>
+            <li data-correct="true">Declarar um Output no template CloudFormation e referenciar com <code>steps.cfn.outputs.PublicIP</code> no workflow</li>
+            <li data-correct="false">Salvar o IP num arquivo de texto no S3 durante o step do CloudFormation e baixar no step do SSH</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Outputs do CloudFormation são expostos como outputs do step no GitHub Actions quando se usa a Action aws-cloudformation-github-deploy. Nenhuma consulta extra, nenhum IP hardcoded."
+               data-incorrect-msg="Releia o slide do workflow completo. A Action aws-cloudformation-github-deploy exporta os Outputs do stack como outputs do step. Isso é referenciado com steps.{id}.outputs.{NomeDoOutput}. É o padrão limpo e portátil."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 25, Checklist do pipeline CD -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist do pipeline CD, o que um deploy maduro tem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Cinco critérios para avaliar se o pipeline de CD do seu projeto está pronto para algo além de sandbox. Não precisam estar todos verdes hoje. Precisam ter justificativa para os que ainda estão em aberto.</p>
+          <div class="checklist-5">
+            <div class="card">
+              <h4>1, IaC versionado</h4>
+              <p>Template CloudFormation (ou equivalente) no repositório, ao lado do código. Infra reproduzível em qualquer conta AWS.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-lilac);">
+              <h4>2, Zero segredo no código</h4>
+              <p>Nenhuma credencial, chave ou token em texto puro no repositório, no workflow ou no Dockerfile.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-dark-green);">
+              <h4>3, Pipeline idempotente</h4>
+              <p>Rodar o workflow duas vezes no mesmo commit produz o mesmo resultado. CloudFormation e o script SSH já garantem isso.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-coral);">
+              <h4>4, Rollback documentado</h4>
+              <p>Runbook de quatro linhas: como voltar à versão anterior em menos de 5 minutos. Escrito, testado, linkado na wiki do projeto.</p>
+            </div>
+            <div class="card" style="border-left-color: var(--inteli-lilac);">
+              <h4>5, Gate de produção</h4>
+              <p>Deploy para produção com aprovação obrigatória ou, se automático, com observabilidade suficiente para detectar regressão em menos de 1 minuto.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que as bigtechs do podcast já fazem além disso</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">OIDC em vez de IAM Keys, canary automático com rollback por métrica, deploy em centenas de instâncias em paralelo com circuit breaker. Esses cinco itens de hoje são o piso, não o teto. Mas ninguém chega lá sem antes ter o piso sólido.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 26, Auto-estudo Aula 08 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 08</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">A Aula 08 abre a Sprint 03 com Observabilidade. O Hello World está no ar, o pipeline está verde. A próxima pergunta é: como sei que está funcionando direito? Três materiais para chegar pronto.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, The Three Pillars of Observability</h4>
+              <p>Artigo do blog do Honeycomb. Cobre logs, métricas e traces como os três pilares. 15 min. Foco na diferença entre monitoring e observability.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, CloudWatch para aplicações Node</h4>
+              <p>Documentação AWS sobre <code>aws-sdk</code> + CloudWatch Logs. Configure o agent básico na instância EC2 para enviar logs do PM2. 20 min de leitura + 10 min de prática.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, Grafana + Prometheus em 20 min</h4>
+              <p>Tutorial rápido de stack de observabilidade open source. Não vamos usar na Inteli, mas entender o modelo de coleta de métricas ajuda a interpretar qualquer ferramenta de monitoring.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega desta aula, para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Um print do workflow rodando verde no GitHub Actions com os quatro steps visíveis. Um print do navegador mostrando o Hello World no IP público do EC2. Uma frase respondendo: qual seria o primeiro indicador de saúde que você monitoraria nessa aplicação em produção e por quê?</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 02</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 27, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Até a próxima</h2>
+        <p>Aula 08, Observabilidade, logs e métricas em produção</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>
