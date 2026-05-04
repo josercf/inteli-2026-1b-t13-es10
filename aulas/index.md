@@ -9,4 +9,6 @@ Apresentações disponíveis:
 - Aula 03: Métricas de software, processo, produto e DORA (28/04/2026)
 - Aula 04: Qualidade de software e IA no processo (07/05/2026)
 - Aula 05: CI parte 1, etapas locais (11/05/2026)
-- Aula 06: CI parte 2, SAST no pipeline (13/05/2026)
+- Aula 06: CI parte 2, SAST e DAST no pipeline (13/05/2026)
+- Aula 07: Hello World, Continuous Deployment (19/05/2026, prof Hermano)
+- Aula 08: Extraindo métricas do pipeline de CI/CD (22/05/2026)
