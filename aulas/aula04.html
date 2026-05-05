@@ -526,28 +526,28 @@
           <h2>Como autor, quatro hábitos caros</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Resumo do que o Gergely Orosz escreve na Pragmatic Engineer e do que a própria documentação interna de grandes engenharias repete: a maioria das MRs ruins não é por código ruim, é por empacotamento ruim. Quatro hábitos que custam pouco para o autor e poupam muito do revisor.</p>
-          <div class="concept-cards">
-            <div class="concept-card">
-              <h4>1, Escopo pequeno</h4>
-              <p>Uma MR, uma intenção. Separar refactor de feature. Se a descrição precisa de mais de dois parágrafos para explicar, quase sempre são dois MRs.</p>
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Resumo do que o Gergely Orosz escreve na Pragmatic Engineer e do que a própria documentação interna de grandes engenharias repete: a maioria das MRs ruins não é por código ruim, é por empacotamento ruim. Quatro hábitos que custam pouco para o autor e poupam muito do revisor.</p>
+          <div class="concept-cards" style="grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4 style="font-size: 0.78em; margin: 0 0 3px;">1, Escopo pequeno</h4>
+              <p style="font-size: 0.6em; line-height: 1.4;">Uma MR, uma intenção. Separar refactor de feature. Se a descrição precisa de mais de dois parágrafos, quase sempre são duas MRs.</p>
             </div>
-            <div class="concept-card">
-              <h4>2, Descrição que responde o porquê</h4>
-              <p>O diff mostra o que mudou. O MR precisa dizer por que mudou, o que NÃO mudou por decisão, e como testar em 30 segundos.</p>
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4 style="font-size: 0.78em; margin: 0 0 3px;">2, Descrição com porquê</h4>
+              <p style="font-size: 0.6em; line-height: 1.4;">O diff mostra o que mudou. O MR precisa dizer por que mudou, o que não mudou por decisão e como testar em 30 segundos.</p>
             </div>
-            <div class="concept-card">
-              <h4>3, Teste que prova o caso</h4>
-              <p>Um teste por caminho novo. Um teste negativo por erro esperado. Se o teste parece trivial, ótimo, ele vira documentação executável.</p>
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4 style="font-size: 0.78em; margin: 0 0 3px;">3, Teste que prova o caso</h4>
+              <p style="font-size: 0.6em; line-height: 1.4;">Um teste por caminho novo, um teste negativo por erro esperado. Teste que parece trivial é ótimo, vira documentação executável.</p>
             </div>
-            <div class="concept-card">
-              <h4>4, Revisar o próprio diff antes de pedir revisão</h4>
-              <p>Abra o MR no navegador e leia linha por linha. Metade dos comentários dos outros some aí, porque você mesmo pega.</p>
+            <div class="concept-card" style="padding: 10px 14px;">
+              <h4 style="font-size: 0.78em; margin: 0 0 3px;">4, Revisar o próprio diff</h4>
+              <p style="font-size: 0.6em; line-height: 1.4;">Abra o MR no navegador e leia linha por linha antes de pedir revisão. Metade dos comentários dos outros some aí.</p>
             </div>
           </div>
-          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+          <div class="callout" style="margin-top: 8px; padding: 7px 14px;">
             <h4 style="margin: 0 0 2px;">A heurística dos 400 linhas</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Estudo clássico da SmartBear mostra que a qualidade da revisão cai depois de 400 linhas de diff. Acima de 800, o revisor faz leitura dinâmica sem querer. Se seu MR passou de 400, considere dividir. Revisor cansado é pior que revisor ausente, porque ele aprova achando que leu.</p>
+            <p style="font-size: 0.62em; margin: 0; line-height: 1.4;">Estudo da SmartBear mostra que a qualidade da revisão cai depois de 400 linhas de diff. Acima de 800, o revisor faz leitura dinâmica sem querer. Se a MR passou de 400, considere dividir. Revisor cansado é pior que revisor ausente, ele aprova achando que leu.</p>
           </div>
         </div>
         <div class="slide-footer">
