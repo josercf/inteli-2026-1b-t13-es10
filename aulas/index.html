@@ -164,8 +164,47 @@
     .aula-card .aula-date {
       font-size: 13px;
       color: var(--inteli-gray-dark);
-      margin: 0;
+      margin: 0 0 6px 0;
       font-weight: 600;
+    }
+    .aula-card .aula-prof {
+      font-size: 12px;
+      color: var(--inteli-purple);
+      margin: 0;
+      font-weight: 500;
+      opacity: 0.75;
+      letter-spacing: 0.01em;
+    }
+    .aula-card .aula-prof::before {
+      content: "Prof: ";
+      color: var(--inteli-coral);
+      font-weight: 700;
+    }
+    .aula-card.placeholder {
+      opacity: 0.55;
+      cursor: default;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        135deg,
+        var(--inteli-bg-soft),
+        var(--inteli-bg-soft) 14px,
+        var(--inteli-white) 14px,
+        var(--inteli-white) 28px
+      );
+    }
+    .aula-card.placeholder::after {
+      content: "em breve";
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--inteli-gray-light);
+      color: var(--inteli-purple);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 10px;
+      margin-top: 8px;
     }
 
     footer {
@@ -192,24 +231,27 @@
     <section class="sprint">
       <div class="sprint-header">
         <h2>Sprint 1</h2>
-        <span class="sprint-dates">22/04/2026 a 05/05/2026</span>
+        <span class="sprint-dates">22/04/2026 a 30/04/2026</span>
       </div>
       <div class="sprint-theme">Fundamentos do processo de software</div>
       <ul class="aula-list">
         <li><a class="aula-card" href="aula01.html">
           <span class="aula-num">Aula 01</span>
           <h3>Ciclo de vida de software</h3>
-          <p class="aula-date">23/04/2026 (quarta)</p>
+          <p class="aula-date">23/04/2026 (quinta)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
         <li><a class="aula-card" href="aula02.html">
           <span class="aula-num">Aula 02</span>
           <h3>Gestão de configuração (SCM)</h3>
           <p class="aula-date">27/04/2026 (segunda)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
         <li><a class="aula-card" href="aula03.html">
           <span class="aula-num">Aula 03</span>
           <h3>Métricas de software: processo, produto e DORA</h3>
           <p class="aula-date">28/04/2026 (terça)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
       </ul>
     </section>
@@ -225,16 +267,19 @@
           <span class="aula-num">Aula 04</span>
           <h3>Qualidade de software e IA no processo</h3>
           <p class="aula-date">07/05/2026 (quinta)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
         <li><a class="aula-card" href="aula05.html">
           <span class="aula-num">Aula 05</span>
           <h3>CI parte 1: etapas locais (pré-commit, build, testes, secrets)</h3>
           <p class="aula-date">11/05/2026 (segunda)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
         <li><a class="aula-card" href="aula06.html">
           <span class="aula-num">Aula 06</span>
           <h3>CI parte 2: SAST e DAST no pipeline</h3>
           <p class="aula-date">13/05/2026 (quarta)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
       </ul>
     </section>
@@ -249,27 +294,72 @@
         <li><a class="aula-card" href="aula07.html">
           <span class="aula-num">Aula 07</span>
           <h3>Hello World: Continuous Deployment</h3>
-          <p class="aula-date">19/05/2026 (terça, prof Hermano)</p>
+          <p class="aula-date">19/05/2026 (terça)</p>
+          <p class="aula-prof">Hermano Peixoto</p>
         </a></li>
         <li><a class="aula-card" href="aula08.html">
           <span class="aula-num">Aula 08</span>
           <h3>Extraindo métricas do pipeline de CI/CD</h3>
           <p class="aula-date">22/05/2026 (sexta)</p>
+          <p class="aula-prof">José Romualdo</p>
         </a></li>
+        <li><div class="aula-card placeholder">
+          <span class="aula-num">Aula 09</span>
+          <h3>Você escreve (bons) testes de integração?</h3>
+          <p class="aula-date">26/05/2026 (terça)</p>
+          <p class="aula-prof">Hermano Peixoto</p>
+        </div></li>
+        <li><div class="aula-card placeholder">
+          <span class="aula-num">Aula 10</span>
+          <h3>Esteira de CI como guardiã da qualidade</h3>
+          <p class="aula-date">28/05/2026 (quinta)</p>
+          <p class="aula-prof">Hermano Peixoto</p>
+        </div></li>
       </ul>
     </section>
 
-    <section class="sprint" style="opacity: 0.55;">
+    <section class="sprint">
       <div class="sprint-header">
-        <h2>Próximas sprints</h2>
-        <span class="sprint-dates">a definir</span>
+        <h2>Sprint 4</h2>
+        <span class="sprint-dates">01/06/2026 a 12/06/2026</span>
       </div>
-      <div class="sprint-theme">Testes de integração, performance, SRE, IaC</div>
-      <p style="margin: 0; color: var(--inteli-gray-dark); font-size: 14px;">
-        Aulas 09 a 14 em construção. Temas: testes de integração (26/05),
-        esteira de qualidade (28/05), performance de código (03/06), Terraform (11/06),
-        SRE (16/06), coding skills (22/06).
-      </p>
+      <div class="sprint-theme">Performance e infraestrutura como código</div>
+      <ul class="aula-list">
+        <li><div class="aula-card placeholder">
+          <span class="aula-num">Aula 11</span>
+          <h3>Aspectos avançados de programação: performance</h3>
+          <p class="aula-date">03/06/2026 (quarta)</p>
+          <p class="aula-prof">Hermano Peixoto</p>
+        </div></li>
+        <li><div class="aula-card placeholder">
+          <span class="aula-num">Aula 12</span>
+          <h3>Como dialogar com seu ambiente cloud? (Terraform)</h3>
+          <p class="aula-date">11/06/2026 (quinta)</p>
+          <p class="aula-prof">José Romualdo</p>
+        </div></li>
+      </ul>
+    </section>
+
+    <section class="sprint">
+      <div class="sprint-header">
+        <h2>Sprint 5</h2>
+        <span class="sprint-dates">15/06/2026 a 26/06/2026</span>
+      </div>
+      <div class="sprint-theme">SRE e habilidades de programação</div>
+      <ul class="aula-list">
+        <li><div class="aula-card placeholder">
+          <span class="aula-num">Aula 13</span>
+          <h3>SRE: você está fazendo isso errado!</h3>
+          <p class="aula-date">16/06/2026 (terça)</p>
+          <p class="aula-prof">Hermano Peixoto</p>
+        </div></li>
+        <li><div class="aula-card placeholder">
+          <span class="aula-num">Aula 14</span>
+          <h3>Improve your coding skills</h3>
+          <p class="aula-date">22/06/2026 (segunda)</p>
+          <p class="aula-prof">Hermano Peixoto</p>
+        </div></li>
+      </ul>
     </section>
   </main>
 
