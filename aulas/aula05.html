@@ -261,6 +261,121 @@
     .scan-output .sev-low  { color: #89cea5; }
     .scan-output .sev-head { color: var(--inteli-lilac); font-weight: 700; }
 
+    /* Stack visual de ferramentas de CI (inspirado em SP2.1 do prof. Romualdo) */
+    .tool-stack-layout {
+      display: grid;
+      grid-template-columns: 0.85fr 1.6fr;
+      gap: 14px;
+      margin-top: 6px;
+      align-items: stretch;
+    }
+    .tool-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .tool-stack-item {
+      background: var(--inteli-coral-soft);
+      color: var(--inteli-purple-deep);
+      opacity: 0.55;
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.68em;
+      letter-spacing: 0.02em;
+      text-align: center;
+      transition: opacity 0.2s ease;
+    }
+    .tool-stack-item.active {
+      background: var(--inteli-coral);
+      color: #fff;
+      opacity: 1;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(255, 69, 69, 0.35);
+    }
+    .tool-stack-item.split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+      padding: 5px 8px;
+      font-size: 0.6em;
+    }
+    .tool-stack-item.split span {
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 4px;
+      padding: 3px 6px;
+    }
+    .tool-stack-item.active.split span {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .tool-stack-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .tool-stack-detail .detail-text {
+      background: var(--inteli-gray-medium, #4a4456);
+      color: #fff;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.66em;
+      line-height: 1.45;
+    }
+    .tool-stack-detail .detail-text strong {
+      color: var(--inteli-coral);
+    }
+    .tool-stack-detail .detail-code {
+      background: #1d1829;
+      color: #e6eaeb;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: var(--inteli-mono, 'Space Mono', monospace);
+      font-size: 0.62em;
+      line-height: 1.5;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .tool-stack-detail .detail-code .cmt { color: #89cea5; }
+    .tool-stack-detail .detail-code .kw  { color: #ff7a7a; }
+    .tool-stack-detail .detail-code .arg { color: #ffd580; }
+
+    /* Versão "stack-only" (slide de overview, sem detalhe à direita) */
+    .stack-overview {
+      display: grid;
+      grid-template-columns: 0.85fr 1.6fr;
+      gap: 18px;
+      margin-top: 6px;
+      align-items: start;
+    }
+    .stack-overview .stack-notes {
+      font-size: 0.7em;
+      line-height: 1.5;
+    }
+    .stack-overview .stack-notes p {
+      margin: 0 0 8px;
+    }
+    .stack-overview .stack-notes .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .stack-overview .stack-notes .badge {
+      background: var(--inteli-coral);
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.7em;
+      font-family: var(--inteli-mono, monospace);
+      letter-spacing: 0.04em;
+    }
+    .stack-overview .stack-notes .badge.muted {
+      background: var(--inteli-coral-soft);
+      color: var(--inteli-purple-deep);
+      opacity: 0.7;
+    }
+
     /* Compact exercise slide para caber 5 passos + hint em 720px */
     .exercise-slide.compact {
       padding: 48px 60px 40px 60px;
@@ -319,16 +434,15 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 10px;">Aula invertida, 2 horas, bem prática. Vocês leram o auto-estudo, aqui a gente roda. Quatro blocos, dois hands-on grandes, fechamento curto.</p>
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Aula invertida, 2 horas, bem prática. Vocês leram o auto-estudo, aqui a gente roda. Três blocos, três hands-on, fechamento curto. A stack de qualidade aparece já no segundo slide e segue como fio condutor até o final.</p>
           <table>
             <thead>
               <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Check-in da sprint, cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Bloco 1</td><td>Git hooks, Husky, scanner de secrets, hands-on A</td><td>30 min</td></tr>
-              <tr><td>10h45, Bloco 2</td><td>Virtualização, Docker, Dockerfile, hands-on B</td><td>45 min</td></tr>
-              <tr><td>11h30, Bloco 3</td><td>Registry, vulnerabilidades, demo com Trivy</td><td>20 min</td></tr>
+              <tr><td>10h00, Bloco 1</td><td>Git hooks, Husky, TruffleHog na stack, hands-on A</td><td>30 min</td></tr>
+              <tr><td>10h30, Bloco 2</td><td>Virtualização, Docker, Dockerfile, hands-on B</td><td>45 min</td></tr>
+              <tr><td>11h15, Bloco 3</td><td>Análise estática local via Docker, SonarQube e Trivy, hands-on C</td><td>35 min</td></tr>
               <tr><td>11h50, Fechamento</td><td>Quiz, checklist antes do push, auto-estudo</td><td>10 min</td></tr>
             </tbody>
           </table>
@@ -339,24 +453,7 @@
         </div>
       </section>
 
-      <!-- 03, Daily Time -->
-      <section class="daily-slide">
-        <span class="daily-tag">Daily, 15 min</span>
-        <h2>Daily Time</h2>
-        <p class="daily-subtitle">
-          Como está a sprint? O que já está pronto do que ficou combinado na Aula 04, MR aberta, revisão feita, triagem do Sonar? Quem ficou travado diz em uma frase. Uma volta rápida, sem rodeio.
-        </p>
-        <div class="inteli-timer" data-minutes="15">
-          <div class="inteli-timer-display">15:00</div>
-          <div class="inteli-timer-controls">
-            <button data-action="start">Iniciar</button>
-            <button data-action="pause">Pausar</button>
-            <button data-action="reset">Zerar</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 04, Objetivos de aprendizagem -->
+      <!-- 03, Objetivos de aprendizagem -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
@@ -365,29 +462,29 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">No fim da aula, cada dupla sai com três coisas funcionando no próprio repositório: um hook que barra `console.log`, um hook que barra secret e uma imagem Docker da aplicação rodando localmente. Os objetivos refletem essa entrega.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">No fim da aula, cada dupla sai com quatro coisas funcionando no próprio repositório: um hook que barra commit inválido, uma imagem Docker da aplicação rodando localmente, e a stack de análise estática (TruffleHog, SonarQube, Trivy) sendo executada via <code>docker run</code> contra o <code>academic-tracker</code>.</p>
           <div class="concept-cards">
             <div class="concept-card">
               <h4>Aplicar</h4>
-              <p>Configurar Husky, lint-staged e scanner de secrets em projeto Node, com os quatro hooks do Git na ponta do dedo.</p>
+              <p>Configurar Husky, lint-staged e TruffleHog em projeto Node, com os quatro hooks do Git na ponta do dedo.</p>
             </div>
             <div class="concept-card">
               <h4>Construir</h4>
-              <p>Escrever um Dockerfile que empacote uma aplicação Node, com multi-stage build e `.dockerignore` bem pensados.</p>
+              <p>Escrever um Dockerfile que empacote uma aplicação Node, com multi-stage build e <code>.dockerignore</code> bem pensados.</p>
             </div>
             <div class="concept-card">
               <h4>Inspecionar</h4>
-              <p>Rodar um scanner de CVE na imagem gerada e ler o resultado sem se assustar com o número total.</p>
+              <p>Rodar a stack de análise estática local via Docker: SonarQube no <code>localhost:9000</code>, TruffleHog no histórico, Trivy na imagem.</p>
             </div>
             <div class="concept-card">
               <h4>Conectar</h4>
-              <p>Enxergar como hook local, build reprodutível e scan de imagem viram política de merge na Aula 06.</p>
+              <p>Ver como a mesma stack que roda no laptop hoje vira gate de pipeline na Aula 06.</p>
             </div>
           </div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
-          <div class="footer-page">04</div>
+          <div class="footer-page">03</div>
         </div>
       </section>
 
@@ -400,13 +497,13 @@
           <h2>Da revisão ao commit, ponte com a Aula 04</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.74em; margin: 0 0 8px;">Na Aula 04 a gente olhou qualidade como processo: revisão humana, análise estática com Sonar, IA como terceiro revisor. Todo esse controle aparece depois que o código chega no repositório remoto. A pergunta desta aula é uma só: o que deveria ter acontecido antes?</p>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Na Aula 04 a gente olhou qualidade como processo: revisão humana, análise estática com Sonar, IA como terceiro revisor. O Sonar a gente até subiu via Docker Compose para triar smells no <code>academic-tracker</code>. Hoje a pergunta vira outra: e se eu rodasse a stack inteira antes de empurrar para o remoto?</p>
           <div class="compare-grid">
             <div class="compare-col">
               <h4>Aula 04, depois do push</h4>
               <ul>
                 <li>MR aberta, revisor olhando o diff</li>
-                <li>Sonar rodando na pipeline</li>
+                <li>Sonar consumido como painel de triagem</li>
                 <li>IA comentando padrão sintático</li>
                 <li>Decisão de merge no final</li>
               </ul>
@@ -415,9 +512,9 @@
               <h4>Aula 05, antes do push</h4>
               <ul>
                 <li>Hook bloqueia commit inválido</li>
-                <li>Lint e teste só nos arquivos tocados</li>
-                <li>Scanner de secret antes do histórico</li>
-                <li>Imagem Docker builda antes do CI</li>
+                <li>TruffleHog varre secret antes do histórico</li>
+                <li>SonarQube via Docker antes do MR</li>
+                <li>Trivy escaneia a imagem que vai subir</li>
               </ul>
             </div>
           </div>
@@ -428,11 +525,54 @@
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 06, A stack que roda antes do push -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>A stack de qualidade, oito caixinhas</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Esse é o conjunto de ferramentas que time maduro tipicamente roda em volta de uma integração contínua de projeto Node. Cada caixa resolve uma fatia diferente, e nenhuma substitui a outra. Hoje vocês rodam três dessas no laptop, via <code>docker run</code>. Na Aula 06 a stack inteira vira pipeline.</p>
+          <div class="stack-overview">
+            <div class="tool-stack">
+              <div class="tool-stack-item active">TruffleHog</div>
+              <div class="tool-stack-item">ESLint</div>
+              <div class="tool-stack-item">Build</div>
+              <div class="tool-stack-item">Hadolint</div>
+              <div class="tool-stack-item">Snyk</div>
+              <div class="tool-stack-item split"><span>Teste</span><span>Unidade/Integração</span></div>
+              <div class="tool-stack-item active">SonarQube</div>
+              <div class="tool-stack-item active">Trivy</div>
+            </div>
+            <div class="stack-notes">
+              <p><strong>O que cada camada cuida.</strong> Secret no histórico (TruffleHog), estilo e bugs triviais (ESLint), artefato compilado (Build), Dockerfile bem escrito (Hadolint), CVE em dependência (Snyk), comportamento (Teste), qualidade e cobertura do código (SonarQube), CVE na imagem (Trivy).</p>
+              <p style="margin-top: 8px;"><strong>Onde a aula de hoje opera.</strong> As três em coral pleno na stack ao lado. Tudo via Docker contra o <code>academic-tracker</code> da Aula 04, sem precisar instalar nada no laptop além do Docker Desktop.</p>
+              <div class="badge-row">
+                <span class="badge">Hands-on A</span>
+                <span class="badge">Hands-on B</span>
+                <span class="badge">Hands-on C</span>
+                <span class="badge muted">Aula 06</span>
+              </div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A leitura de fundo</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Toda ferramenta da stack roda como imagem Docker pública. Isso vira o argumento principal de CI moderna: o que roda no laptop deve rodar idêntico no runner. Container é a unidade de reprodutibilidade entre os dois.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
           <div class="footer-page">05</div>
         </div>
       </section>
 
-      <!-- 06, Três barreiras antes do push -->
+      <!-- 07, Três barreiras antes do push -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
@@ -441,24 +581,24 @@
           <h2>Três barreiras antes do push</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.74em; margin: 0 0 8px;">A aula de hoje está organizada em três camadas de validação local. Cada uma pega um tipo de problema diferente. Quem pula qualquer uma delas está pagando pedágio mais caro na pipeline.</p>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">A aula de hoje está organizada em três blocos práticos, e cada bloco ativa uma fatia da stack. A coluna direita conecta o bloco com as caixas que ele faz piscar no diagrama do slide anterior.</p>
           <div class="three-cards">
             <div class="card">
-              <h4>1, Hook de commit</h4>
-              <p>Formatação, lint, teste rápido e mensagem padronizada. Husky e lint-staged. Roda em segundos, barra o commit se falhar.</p>
+              <h4>Bloco 1, hook + secret</h4>
+              <p>Husky, lint-staged, commitlint na ponta do dedo. <strong>TruffleHog</strong> entra duas vezes, como hook pre-commit e como <code>docker run</code> standalone contra o histórico.</p>
             </div>
             <div class="card">
-              <h4>2, Scanner de secrets</h4>
-              <p>TruffleHog ou Gitleaks como hook. Varre o diff, barra se detectar credencial. Última chance antes do histórico do Git.</p>
+              <h4>Bloco 2, build reprodutível</h4>
+              <p>Dockerfile multi-stage, <code>.dockerignore</code>, cache de camadas. Imagem que builda no laptop builda no runner. Pré-requisito para os dois scans que vêm a seguir.</p>
             </div>
             <div class="card">
-              <h4>3, Build em container</h4>
-              <p>Se a imagem Docker não builda no laptop, não vai buildar no CI. Dockerfile reprodutível elimina "na minha máquina funciona".</p>
+              <h4>Bloco 3, análise estática local</h4>
+              <p><strong>SonarQube</strong> via Docker Compose, scan completo no <code>localhost:9000</code>. <strong>Trivy</strong> via <code>docker run</code> na imagem do Bloco 2. As duas ativas na stack, abertas no terminal.</p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Três barreiras, um mesmo princípio</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Empurrar feedback para o mais cedo possível. O desenvolvedor fica no mesmo contexto, a correção é barata, o ciclo se fecha rápido. Shift-left não é buzzword, é matemática de custo por tempo de detecção.</p>
+            <h4 style="margin: 0 0 2px;">Três blocos, um mesmo princípio</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Empurrar feedback para o mais cedo possível, e fazer isso com containers para o ambiente não importar. O dev fica no mesmo contexto, a correção é barata, o ciclo se fecha rápido. Shift-left não é buzzword, é matemática de custo por tempo de detecção.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -553,39 +693,42 @@
         </div>
       </section>
 
-      <!-- 10, Secrets scanners -->
+      <!-- 11, TruffleHog ativo na stack -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Scanner de secrets, TruffleHog e Gitleaks</h2>
+          <h2>TruffleHog, primeira caixa ativa da stack</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Um <code>AWS_SECRET_ACCESS_KEY</code> vazado no Git é caro de remover depois. BFG, filter-branch, rotacionar a credencial no provedor, tudo isso dá trabalho e assusta auditoria. Melhor barrar antes. Dois scanners dominam o mercado hoje, com filosofias diferentes.</p>
-          <div class="compare-grid">
-            <div class="compare-col">
-              <h4>TruffleHog</h4>
-              <ul>
-                <li>Detecção por <strong>entropia</strong> e por regex</li>
-                <li>Verifica validade das credenciais no provedor</li>
-                <li>Varredura no histórico inteiro do repo</li>
-                <li>Go, standalone, roda em pipeline também</li>
-              </ul>
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Um <code>AWS_SECRET_ACCESS_KEY</code> vazado no Git é caro de remover depois. BFG, filter-branch, rotacionar a credencial, e ainda explicar para auditoria. Melhor barrar antes. TruffleHog roda em três modos, todos disponíveis em uma imagem Docker pública.</p>
+          <div class="tool-stack-layout">
+            <div class="tool-stack">
+              <div class="tool-stack-item active">TruffleHog</div>
+              <div class="tool-stack-item">ESLint</div>
+              <div class="tool-stack-item">Build</div>
+              <div class="tool-stack-item">Hadolint</div>
+              <div class="tool-stack-item">Snyk</div>
+              <div class="tool-stack-item split"><span>Teste</span><span>Un/Integ</span></div>
+              <div class="tool-stack-item">SonarQube</div>
+              <div class="tool-stack-item">Trivy</div>
             </div>
-            <div class="compare-col" style="border-top-color: var(--inteli-dark-green);">
-              <h4>Gitleaks</h4>
-              <ul>
-                <li>Detecção por <strong>regex</strong> com ruleset customizável</li>
-                <li>Baseline para ignorar falsos positivos conhecidos</li>
-                <li>Integra nativamente como hook pre-commit</li>
-                <li>Go, config em TOML, CI amigável</li>
-              </ul>
+            <div class="tool-stack-detail">
+              <div class="detail-text">
+                Detecta credenciais expostas no código <strong>antes</strong> que cheguem ao remoto.
+                Combina <strong>entropia</strong> e <strong>regex</strong>, e ainda verifica se a credencial está viva no provedor (AWS, GCP, GitHub).
+                <strong>Por que usar?</strong> Automatiza a varredura em arquivos, commits e histórico inteiro do repositório.
+              </div>
+              <div class="detail-code"><span class="cmt"># 1) Como hook pre-commit, via Husky</span>
+<span class="kw">npx</span> husky add .husky/pre-commit \
+  <span class="arg">"docker run --rm -v $(pwd):/repo trufflesecurity/trufflehog:latest \
+   git file:///repo --since-commit HEAD --fail"</span>
+
+<span class="cmt"># 2) Standalone no histórico todo do academic-tracker</span>
+<span class="kw">docker run</span> --rm -v <span class="arg">"$PWD"</span>:/repo \
+  trufflesecurity/trufflehog:latest <span class="arg">git file:///repo</span></div>
             </div>
-          </div>
-          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">O que a Sprint usa</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O repositório do módulo vem com TruffleHog configurado como hook pre-commit via Husky. Varre diff, falha se detectar padrão de credencial. No Exercício A vocês ativam, tentam commitar um secret de mentira e veem a barreira cair em ação.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -594,19 +737,19 @@
         </div>
       </section>
 
-      <!-- 11, Exercício A, hands-on hooks -->
+      <!-- 12, Exercício A, hands-on hooks + TruffleHog Docker -->
       <section class="exercise-slide compact">
         <div class="top-bar"></div>
         <span class="exercise-tag">Hands-on A, em dupla, 15 min</span>
-        <h2>Ativar hook e tentar vazar um secret</h2>
+        <h2>Ativar hook e cercar secret por dois lados</h2>
         <ol class="exercise-steps">
-          <li>Clone <code>github.com/josercf/inteli-2026-1B-T13-ES10-S3</code>, rode <code>npm install</code>. O postinstall já ativa o Husky.</li>
-          <li>Abra qualquer arquivo e adicione a linha <code>AWS_SECRET_ACCESS_KEY="AKIA1234567890EXAMPLE"</code>.</li>
-          <li>Tente <code>git add .</code> seguido de <code>git commit -m "wip"</code>. Observe o que acontece na terminal.</li>
-          <li>Conserte: remova a linha do secret, ajuste a mensagem para <code>feat: testar hook</code>, commit de novo.</li>
-          <li>Confirme que o segundo commit passou e anote uma frase sobre o que o hook imprimiu na tela.</li>
+          <li>Clone <code>github.com/josercf/inteli-2026-1B-T13-ES10-S3</code>, rode <code>npm install</code>. O postinstall ativa o Husky.</li>
+          <li>Plante o secret: adicione <code>AWS_SECRET_ACCESS_KEY="AKIA1234567890EXAMPLE"</code> em um arquivo e tente <code>git commit -m "wip"</code>. O hook deve barrar.</li>
+          <li>Conserte: remova o secret, ajuste para <code>feat: testar hook</code>, confirme que o segundo commit passa.</li>
+          <li>Rode TruffleHog standalone via Docker contra o histórico: <code>docker run --rm -v "$PWD":/repo trufflesecurity/trufflehog:latest git file:///repo</code>.</li>
+          <li>Em dupla, compare o que o hook viu com o que o scan standalone viu. Anote uma diferença prática entre os dois.</li>
         </ol>
-        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 14px;">Se o commit vago passar, seu Husky não está ativo. Rode <code>npx husky init</code>, verifique a pasta <code>.husky/</code>, tente de novo.</p>
+        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 14px;">Se o commit vago passar, seu Husky não está ativo. Rode <code>npx husky init</code>. Se o <code>docker run</code> não puxar imagem, confirme se o Docker Desktop está aberto.</p>
       </section>
 
       <!-- 12, Debrief A -->
@@ -857,40 +1000,87 @@ CMD ["node", "dist/app.js"]</code></pre>
         </div>
       </section>
 
-      <!-- 20, Separador Bloco 3 -->
+      <!-- 21, Separador Bloco 3 -->
       <section class="section-slide">
-        <span class="section-number">Bloco 3, 20 min</span>
-        <h2>Registry e vulnerabilidades, onde a imagem vai morar</h2>
-        <p class="section-description">Docker Hub, GHCR, ECR, Trivy. Imagem entra no pipeline, pipeline entra na Aula 06.</p>
+        <span class="section-number">Bloco 3, 35 min</span>
+        <h2>Análise estática local via Docker</h2>
+        <p class="section-description">SonarQube, Trivy, registry rapidinho. A stack que vocês viram no slide da agenda, agora ativa no laptop.</p>
       </section>
 
-      <!-- 21, Registry -->
+      <!-- 22, Registry compacto -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Registry, o GitHub das imagens</h2>
+          <h2>Registry, onde a imagem vai morar (versão curta)</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Registry é servidor de artefato com namespace, autenticação e tag. <code>docker push</code> envia, <code>docker pull</code> traz de volta. A imagem que roda em produção passou por algum registry. Quatro são os mais comuns no mundo real, com tradeoffs diferentes.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Antes de escanear, uma palavra sobre destino. Registry é servidor de artefato com namespace, autenticação e tag. <code>docker push</code> envia, <code>docker pull</code> traz. Três opções dominam o mercado, cada uma com um trade-off claro.</p>
           <div class="three-cards">
             <div class="card">
               <h4>Docker Hub</h4>
-              <p>O mais conhecido, público por default. Ótimo para imagens oficiais e open source. Para privado, conta paga. Rate limit é real.</p>
+              <p>Padrão de fato para imagens públicas. Privado paga, rate limit é real. Origem dos <code>trufflesecurity/trufflehog</code>, <code>aquasec/trivy</code> e <code>sonarqube</code> que a gente usa hoje.</p>
             </div>
             <div class="card">
               <h4>GHCR e GitLab Registry</h4>
               <p>Embutidos no próprio GitHub/GitLab. Permissão herdada do repo, pipeline publica direto. Escolha natural quando o repo já está lá.</p>
             </div>
             <div class="card">
-              <h4>AWS ECR, Azure ACR, GCP AR</h4>
-              <p>Registry do cloud provider. Privado por padrão, integra com IAM, scanner embutido. Opção óbvia se o deploy vai para essa nuvem.</p>
+              <h4>ECR, ACR, Artifact Registry</h4>
+              <p>Registry do cloud provider, privado por padrão, integra com IAM, scanner embutido. Opção óbvia quando o deploy vai para a mesma nuvem.</p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Sobre tag latest e imutabilidade</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Tag <code>latest</code> não é imutável. Duas pessoas fazem <code>docker pull node:latest</code> em dias diferentes e podem receber imagens diferentes. Em produção isso é uma armadilha. Use tags semânticas com versão explícita, ex. <code>academic-tracker:1.4.2</code>, e considere digest SHA para garantir imutabilidade absoluta.</p>
+            <h4 style="margin: 0 0 2px;">Regra de ouro, ainda mais agora</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Nunca rode <code>:latest</code> em produção. Tags semânticas (<code>academic-tracker:1.4.2</code>) ou digest SHA garantem que a imagem que o Trivy escaneou é a mesma que vai subir. Sem isso, a análise estática é gentileza.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 23, SonarQube ativo na stack -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>SonarQube, agora rodando no seu laptop</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Na Aula 04 vocês triaram smells no Sonar como exercício de revisão. Hoje a mesma ferramenta volta com outro papel: <strong>passo da rotina local antes do push</strong>. O <code>academic-tracker</code> já tem o Docker Compose pronto, basta subir.</p>
+          <div class="tool-stack-layout">
+            <div class="tool-stack">
+              <div class="tool-stack-item">TruffleHog</div>
+              <div class="tool-stack-item">ESLint</div>
+              <div class="tool-stack-item">Build</div>
+              <div class="tool-stack-item">Hadolint</div>
+              <div class="tool-stack-item">Snyk</div>
+              <div class="tool-stack-item split"><span>Teste</span><span>Un/Integ</span></div>
+              <div class="tool-stack-item active">SonarQube</div>
+              <div class="tool-stack-item">Trivy</div>
+            </div>
+            <div class="tool-stack-detail">
+              <div class="detail-text">
+                Avalia <strong>métricas de qualidade</strong>, cobertura de testes e possíveis vulnerabilidades no código.
+                Server roda em container, scanner roda em container, painel abre no <strong><code>localhost:9000</code></strong>.
+                <strong>Por que usar?</strong> Garante código limpo, seguro e de fácil manutenção, com histórico por projeto.
+              </div>
+              <div class="detail-code"><span class="cmt"># 1) Sobe servidor (Sonar + Postgres) em background</span>
+<span class="kw">npm run</span> sonar:up        <span class="cmt"># compose up -d</span>
+
+<span class="cmt"># 2) Roda o scanner contra o código local</span>
+<span class="kw">npm run</span> sonar:scan      <span class="cmt"># sonar-scanner em container</span>
+
+<span class="cmt"># 3) Abre o painel, login admin/admin (troca na 1a vez)</span>
+<span class="kw">open</span> http://localhost:9000
+
+<span class="cmt"># 4) Quando terminar, derruba o stack</span>
+<span class="kw">npm run</span> sonar:down</div>
+            </div>
           </div>
         </div>
         <div class="slide-footer">
@@ -899,67 +1089,62 @@ CMD ["node", "dist/app.js"]</code></pre>
         </div>
       </section>
 
-      <!-- 22, Vulnerabilidades em imagens -->
-      <section class="content-slide">
+      <!-- 24, Exercício C, hands-on SonarQube -->
+      <section class="exercise-slide compact">
         <div class="top-bar"></div>
-        <span class="inteli-logo-header inteli-wordmark">inteli</span>
-        <div class="slide-title-area">
-          <div class="accent-bar"></div>
-          <h2>Toda imagem carrega CVEs</h2>
-        </div>
-        <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">A imagem da sua aplicação é feita de três superfícies: o código que você escreveu, as dependências do <code>package.json</code> e a base image. As duas primeiras a gente já escaneia com ferramentas como npm audit. A terceira é o ponto cego. <code>node:20-alpine</code> que você puxou na semana passada pode ter CVE novo que o de hoje já corrige.</p>
-          <div class="three-cards">
-            <div class="card">
-              <h4>O que é CVE</h4>
-              <p>Common Vulnerability and Exposure. Identificador padrão para falha conhecida, tipo <code>CVE-2024-12345</code>. Base image herda CVE do sistema operacional, do OpenSSL, do glibc.</p>
-            </div>
-            <div class="card">
-              <h4>O que Trivy faz</h4>
-              <p>Escaneia a imagem, casa com base de dados de CVE e lista por severidade. CLI aberta, roda em 30 segundos numa imagem pequena. Integra com pipeline.</p>
-            </div>
-            <div class="card">
-              <h4>Decisão, não lista</h4>
-              <p>A saída de scanner sempre assusta. O trabalho é triar: o que é exploitable no meu contexto, o que é falso positivo, o que exige atualizar base image já.</p>
-            </div>
-          </div>
-          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Regra prática</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Reconstrua sua base image toda semana, mesmo sem mudar nada. <code>docker pull node:20-alpine</code> e rebuild da imagem. Isso já elimina 80% dos CVEs que um scanner vai reclamar. O resto é triagem consciente.</p>
-          </div>
-        </div>
-        <div class="slide-footer">
-          <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
-          <div class="footer-page">20</div>
-        </div>
+        <span class="exercise-tag">Hands-on C, em dupla, 15 min</span>
+        <h2>Subir SonarQube e escanear o academic-tracker</h2>
+        <ol class="exercise-steps">
+          <li>Na raiz do <code>academic-tracker</code>, rode <code>npm run sonar:up</code>. Espere o container do Sonar reportar healthy (~30 s).</li>
+          <li>Em outro terminal, dispare <code>npm run sonar:scan</code>. O scanner empacota o código, manda para <code>localhost:9000</code>, espera o relatório.</li>
+          <li>Abra <code>http://localhost:9000</code>, login <code>admin/admin</code>, troque a senha. Entre no projeto <code>academic-tracker</code>.</li>
+          <li>Identifique um <strong>Blocker</strong> ou <strong>Critical</strong> que não tinha aparecido só lendo o diff. Anote arquivo, regra e por que importa.</li>
+          <li>Antes de derrubar, rode <code>npm run sonar:down</code>. Tire um print do painel com o Quality Gate visível e cole no entregável.</li>
+        </ol>
+        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 12px;">Se o scanner falhar com <code>Cannot connect</code>, o Sonar ainda está subindo. Espere mais 20 s. Se o painel ficar vazio, o scan terminou mas o relatório não foi publicado, confira a saída do passo 2.</p>
       </section>
 
-      <!-- 23, Demo Trivy -->
+      <!-- 25, Trivy ativo na stack -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Demo, Trivy na imagem que vocês acabaram de gerar</h2>
+          <h2>Trivy, varrendo a imagem que vocês acabaram de gerar</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 6px;">No projetor, eu rodo <code>trivy image academic-tracker:dev</code> na imagem que a turma produziu no Exercício B. A saída típica num Alpine recente é a seguinte. Preste atenção em severidade, pacote afetado, versão fixada e vetor de ataque.</p>
-          <div class="scan-output"><span class="sev-head">academic-tracker:dev (alpine 3.19)</span>
-=======================================
-Total: 8 (UNKNOWN: 0, <span class="sev-low">LOW: 3</span>, <span class="sev-med">MEDIUM: 2</span>, <span class="sev-high">HIGH: 2</span>, <span class="sev-crit">CRITICAL: 1</span>)
+          <p style="font-size: 0.68em; margin: 0 0 6px;">A imagem do Bloco 2 carrega três superfícies de risco: o código, as dependências do <code>package.json</code> e a <strong>base image</strong> (<code>node:20-alpine</code>). Trivy varre as três de uma só vez, casando com a base de CVEs pública. Roda em container, não precisa instalar nada.</p>
+          <div class="tool-stack-layout">
+            <div class="tool-stack">
+              <div class="tool-stack-item">TruffleHog</div>
+              <div class="tool-stack-item">ESLint</div>
+              <div class="tool-stack-item">Build</div>
+              <div class="tool-stack-item">Hadolint</div>
+              <div class="tool-stack-item">Snyk</div>
+              <div class="tool-stack-item split"><span>Teste</span><span>Un/Integ</span></div>
+              <div class="tool-stack-item">SonarQube</div>
+              <div class="tool-stack-item active">Trivy</div>
+            </div>
+            <div class="tool-stack-detail">
+              <div class="detail-text">
+                Escanea imagens Docker em busca de <strong>vulnerabilidades de segurança</strong> em pacotes OS (Alpine, Debian) e dependências de linguagem (npm, pip, Maven).
+                <strong>Por que usar?</strong> Identifica problemas <strong>antes</strong> do deploy, com fix sugerido na própria saída.
+              </div>
+              <div class="detail-code"><span class="cmt"># Escanear a imagem gerada no Bloco 2</span>
+<span class="kw">docker run</span> --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy:latest <span class="arg">image academic-tracker:dev</span>
 
-<span class="sev-head">┌─────────────┬────────────────┬──────────┬───────────────┐</span>
-│ Library     │ Vulnerability  │ Severity │ Fixed Version │
-<span class="sev-head">├─────────────┼────────────────┼──────────┼───────────────┤</span>
-│ libcrypto3  │ CVE-2024-5535  │ <span class="sev-crit">CRITICAL</span> │ 3.1.4-r6      │
-│ libssl3     │ CVE-2024-4741  │ <span class="sev-high">HIGH    </span> │ 3.1.4-r5      │
-│ busybox     │ CVE-2023-42366 │ <span class="sev-high">HIGH    </span> │ 1.36.1-r15    │
-│ ca-certs    │ CVE-2023-46121 │ <span class="sev-med">MEDIUM  </span> │ 20240226-r0   │
-│ ...         │ ...            │ ...      │ ...           │
-<span class="sev-head">└─────────────┴────────────────┴──────────┴───────────────┘</span></div>
-          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Como ler isso na prática</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">CRITICAL e HIGH exigem ação. Atualizar base image costuma resolver os dois de uma vez. MEDIUM e LOW entram em fila de triagem. Severidade não conta contexto, então o humano ainda decide se um CVE medium em lib interna é blocker ou ruído.</p>
+<span class="cmt"># Filtrar só CRITICAL e HIGH para triagem rápida</span>
+<span class="kw">docker run</span> --rm \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy:latest image \
+    <span class="arg">--severity CRITICAL,HIGH academic-tracker:dev</span></div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 8px; padding: 6px 14px;">
+            <h4 style="margin: 0 0 2px;">Como ler a saída</h4>
+            <p style="font-size: 0.62em; margin: 0; line-height: 1.4;">CRITICAL e HIGH exigem ação, normalmente resolvidas atualizando a base image. MEDIUM e LOW entram em fila de triagem. Reconstruir a base toda semana já elimina ~80% do que o scanner reclamaria.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -977,24 +1162,28 @@ Total: 8 (UNKNOWN: 0, <span class="sev-low">LOW: 3</span>, <span class="sev-med"
           <h2>Gancho para a Aula 06, isso tudo vira gate</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.74em; margin: 0 0 8px;">Até aqui a gente montou as barreiras no laptop. Elas funcionam pela disciplina do dev. Um <code>git commit --no-verify</code> pula tudo. Por isso a Aula 06 pega essas mesmas validações e move para um lugar que ninguém consegue pular, o pipeline remoto.</p>
-          <div class="three-cards">
-            <div class="card">
-              <h4>SAST no pipeline</h4>
-              <p>Sonar, Semgrep, CodeQL. Mesmos apontamentos que a Aula 04 viu localmente, agora bloqueando merge por severidade configurada.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Hoje vocês rodaram três caixas da stack no laptop. As outras cinco (ESLint, Build, Hadolint, Snyk, Teste) ficam de fora porque dependem mais da disciplina do dev. Um <code>git commit --no-verify</code> e um Sonar não-aberto pulam tudo. Por isso na Aula 06 a stack inteira muda de casa: do laptop para o runner.</p>
+          <div class="stack-overview">
+            <div class="tool-stack">
+              <div class="tool-stack-item active">TruffleHog</div>
+              <div class="tool-stack-item active">ESLint</div>
+              <div class="tool-stack-item active">Build</div>
+              <div class="tool-stack-item active">Hadolint</div>
+              <div class="tool-stack-item active">Snyk</div>
+              <div class="tool-stack-item split active"><span>Teste</span><span>Un/Integ</span></div>
+              <div class="tool-stack-item active">SonarQube</div>
+              <div class="tool-stack-item active">Trivy</div>
             </div>
-            <div class="card">
-              <h4>Secrets no runner</h4>
-              <p>TruffleHog ou Gitleaks rodando em job da pipeline. Segundo tiro no mesmo alvo, caso algum dev tenha ignorado o hook local.</p>
+            <div class="stack-notes">
+              <p><strong>Stack inteira ativa, agora como job do pipeline.</strong> Cada caixa vira um step do GitHub Actions, com gate de severidade configurado. O que rodou em <code>docker run</code> hoje roda em <code>uses:</code> ou <code>run: docker run</code> na Aula 06.</p>
+              <p style="margin-top: 8px;"><strong>O que muda na sua cabeça.</strong> "Build verde" deixa de ser só teste passando. Vira código sem smell de segurança, sem secret, com imagem limpa de CVE. Qualidade vira estado observável, não promessa de revisor cansado.</p>
+              <div class="badge-row">
+                <span class="badge">SAST</span>
+                <span class="badge">DAST</span>
+                <span class="badge">Secret scan</span>
+                <span class="badge">Image scan</span>
+              </div>
             </div>
-            <div class="card">
-              <h4>Image scanning</h4>
-              <p>Trivy como step do GitHub Actions. Falha a build se CVE CRITICAL aparece. Política de merge passa a depender do resultado do scan.</p>
-            </div>
-          </div>
-          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">O que muda na sua cabeça</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Depois da Aula 06 você vai entender que "build verde" não é só teste passando. É código sem smell de segurança, sem secret, com imagem limpa de CVE. Qualidade vira estado observável, não promessa de revisor cansado.</p>
           </div>
         </div>
         <div class="slide-footer">
@@ -1032,33 +1221,33 @@ Total: 8 (UNKNOWN: 0, <span class="sev-low">LOW: 3</span>, <span class="sev-med"
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
-          <div class="footer-page">24</div>
+          <div class="footer-page">23</div>
         </div>
       </section>
 
-      <!-- 27, Quiz 2 -->
+      <!-- 28, Quiz 2 -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem 2 de 2, Dockerfile</h2>
+          <h2>Checagem 2 de 2, análise estática local</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question">Você escreveu um Dockerfile começando com <code>FROM node:latest</code>. Sua colega de dupla sugere trocar por <code>FROM node:20.11.1-alpine</code>. Qual é o ganho concreto?</p>
+          <p class="quiz-question">Sua dupla quer escanear o <code>academic-tracker</code> antes do push sem instalar SonarQube nem Trivy no laptop. Qual é a sequência que entrega análise de código e de imagem usando só Docker?</p>
           <ul class="quiz-options">
-            <li data-correct="false">A imagem com <code>latest</code> é mais lenta para buildar</li>
-            <li data-correct="false">Alpine é mais seguro por si só, independente da versão</li>
-            <li data-correct="true">Versão fixa garante build reprodutível. Alpine reduz superfície de ataque e tamanho</li>
-            <li data-correct="false">Docker não aceita mais <code>latest</code> em produção</li>
+            <li data-correct="false"><code>npm audit</code> e depois <code>docker scan</code>, ambos cobrem código e imagem</li>
+            <li data-correct="true"><code>npm run sonar:up</code> + <code>sonar:scan</code> para o código, <code>docker run aquasec/trivy image academic-tracker:dev</code> para a imagem</li>
+            <li data-correct="false">Subir o SonarQube via <code>brew install</code> e rodar Trivy direto no host, sem container</li>
+            <li data-correct="false"><code>docker run sonarqube</code> sozinho já escaneia código e imagem ao mesmo tempo</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Isso. Tag específica evita que a base image mude silenciosamente entre builds. Alpine com menos pacotes reduz superfície e tamanho, mas não é seguro por default."
-               data-incorrect-msg="Releia. O problema com latest é reprodutibilidade: builds em dias diferentes podem puxar imagens diferentes. Alpine ajuda no tamanho e superfície, não na segurança automática."></div>
+               data-correct-msg="Isso. Sonar para qualidade e cobertura do código, Trivy para CVE na imagem. Os dois rodam em container, nada instalado no host além do Docker Desktop."
+               data-incorrect-msg="Releia. SonarQube e Trivy resolvem fatias diferentes da stack. Sonar olha o código-fonte e roda como server + scanner em containers. Trivy olha a imagem buildada e roda como CLI em container."></div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
-          <div class="footer-page">25</div>
+          <div class="footer-page">24</div>
         </div>
       </section>
 
@@ -1071,37 +1260,41 @@ Total: 8 (UNKNOWN: 0, <span class="sev-low">LOW: 3</span>, <span class="sev-med"
           <h2>Checklist antes do push, para grudar no monitor</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.74em; margin: 0 0 8px;">Cinco linhas que a equipe madura roda antes de <code>git push</code> sem nem pensar. Quando vocês fecharem a sprint, essa lista deveria ser automática. Se alguma ficar no manual, vira fila de nit na revisão do parceiro.</p>
-          <div class="three-cards" style="grid-template-columns: repeat(5, 1fr); gap: 8px;">
-            <div class="card" style="padding: 10px 12px;">
-              <h4 style="font-size: 0.72em;">1, Lint</h4>
-              <p style="font-size: 0.58em;">ESLint e Prettier sem warning nos arquivos tocados.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Seis linhas que a equipe madura roda antes de <code>git push</code> sem nem pensar. Os quatro primeiros são gratuitos (hook decide tudo). Os dois últimos custam ~2 min cada, e são a diferença entre "build verde" e "build verde, sem CVE crítica".</p>
+          <div class="three-cards" style="grid-template-columns: repeat(6, 1fr); gap: 6px;">
+            <div class="card" style="padding: 9px 10px;">
+              <h4 style="font-size: 0.66em;">1, Lint</h4>
+              <p style="font-size: 0.54em;">ESLint e Prettier sem warning nos arquivos tocados.</p>
             </div>
-            <div class="card" style="padding: 10px 12px;">
-              <h4 style="font-size: 0.72em;">2, Teste</h4>
-              <p style="font-size: 0.58em;">Unit tests verdes no diff, integração se afeta rota.</p>
+            <div class="card" style="padding: 9px 10px;">
+              <h4 style="font-size: 0.66em;">2, Teste</h4>
+              <p style="font-size: 0.54em;">Unit verdes no diff, integração se afeta rota.</p>
             </div>
-            <div class="card" style="padding: 10px 12px;">
-              <h4 style="font-size: 0.72em;">3, Commit</h4>
-              <p style="font-size: 0.58em;">Mensagem em Conventional, validada por commitlint.</p>
+            <div class="card" style="padding: 9px 10px;">
+              <h4 style="font-size: 0.66em;">3, Commit</h4>
+              <p style="font-size: 0.54em;">Mensagem em Conventional, validada por commitlint.</p>
             </div>
-            <div class="card" style="padding: 10px 12px;">
-              <h4 style="font-size: 0.72em;">4, Secret</h4>
-              <p style="font-size: 0.58em;">TruffleHog ou Gitleaks não achou nada suspeito.</p>
+            <div class="card" style="padding: 9px 10px;">
+              <h4 style="font-size: 0.66em;">4, Secret</h4>
+              <p style="font-size: 0.54em;">TruffleHog (hook + <code>docker run</code>) sem achado.</p>
             </div>
-            <div class="card" style="padding: 10px 12px;">
-              <h4 style="font-size: 0.72em;">5, Imagem</h4>
-              <p style="font-size: 0.58em;"><code>docker build</code> completa sem erro na sua máquina.</p>
+            <div class="card" style="padding: 9px 10px;">
+              <h4 style="font-size: 0.66em;">5, Sonar</h4>
+              <p style="font-size: 0.54em;">Quality Gate verde em <code>localhost:9000</code>.</p>
+            </div>
+            <div class="card" style="padding: 9px 10px;">
+              <h4 style="font-size: 0.66em;">6, Trivy</h4>
+              <p style="font-size: 0.54em;">Imagem sem CRITICAL aberto na severidade.</p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
             <h4 style="margin: 0 0 2px;">A regra do carrinho</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Pipeline que quebra na número 5 quando 1, 2, 3, 4 passaram é pista de que o ambiente local divergiu do runner. Dockerfile bem feito torna esse caso raro. Pipeline que quebra em 1, 2 ou 3 é sinal de que o hook não rodou, ou o dev passou com <code>--no-verify</code>. Nos dois casos, a conversa é outra.</p>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Pipeline que quebra em 5 ou 6 quando 1-4 passaram é pista de que o ambiente local divergiu do runner. Container bem feito torna esse caso raro. Pipeline que quebra em 1, 2 ou 3 é sinal de que o hook não rodou, ou o dev passou com <code>--no-verify</code>. Nos dois casos, a conversa é outra.</p>
           </div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
-          <div class="footer-page">26</div>
+          <div class="footer-page">25</div>
         </div>
       </section>
 
@@ -1135,12 +1328,12 @@ Total: 8 (UNKNOWN: 0, <span class="sev-low">LOW: 3</span>, <span class="sev-med"
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
             <h4 style="margin: 0 0 2px;">Entrega desta aula, para o AdaLove</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Um print do terminal mostrando o hook barrando o secret. Um print do <code>docker images</code> com a imagem do academic-tracker listada e seu tamanho. Uma linha dizendo qual foi o CVE mais sério que o Trivy apontou na sua imagem. Curto, objetivo, vira diagnóstico da sprint.</p>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Quatro prints curtos: (1) hook do Husky barrando secret no terminal, (2) <code>docker images</code> com o <code>academic-tracker:dev</code> e tamanho, (3) painel do SonarQube em <code>localhost:9000</code> com o Quality Gate visível, (4) saída do Trivy filtrada por CRITICAL/HIGH. Uma linha cada, dizendo o que mais surpreendeu.</p>
           </div>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 05, CI parte 1, validações locais e containers, Sprint 02</div>
-          <div class="footer-page">27</div>
+          <div class="footer-page">26</div>
         </div>
       </section>
 
