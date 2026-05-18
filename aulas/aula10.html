@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 10, Esteira de CI como guardiã da qualidade, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li { margin-bottom: 3px; }
+    .compare-col.bad { border-top-color: #d05050; }
+    .compare-col.good { border-top-color: var(--inteli-dark-green); }
+
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Pipeline horizontal */
+    .pipeline-flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .pipeline-step {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border-top: 3px solid var(--inteli-lilac);
+      text-align: center;
+    }
+    .pipeline-step.new {
+      border-top-color: var(--inteli-coral);
+      background: #fff3d4;
+    }
+    .pipeline-step .step-num {
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .pipeline-step h4 {
+      font-size: 0.72em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .pipeline-step p { font-size: 0.56em; margin: 0; line-height: 1.4; }
+
+    /* Hierarquia de gates (vertical) */
+    .gate-stack {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .gate-row {
+      background: var(--inteli-bg-soft);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .gate-row.lint { border-left-color: #aaa; }
+    .gate-row.unit { border-left-color: var(--inteli-dark-green); }
+    .gate-row.sast { border-left-color: var(--inteli-purple); }
+    .gate-row.integration { border-left-color: var(--inteli-lilac); }
+    .gate-row.metrics { border-left-color: #f0a93b; }
+    .gate-row.invariant { border-left-color: var(--inteli-coral); }
+    .gate-row h4 {
+      font-size: 0.75em;
+      margin: 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .gate-row p {
+      font-size: 0.64em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* YAML block */
+    .yaml-block {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .yaml-block pre {
+      margin: 0;
+      font-size: 0.55em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .yaml-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.45;
+    }
+    .yaml-block .annot ol { margin: 0; padding-left: 18px; }
+    .yaml-block .annot li { margin-bottom: 3px; }
+    .yaml-block .annot strong { color: var(--inteli-coral); }
+
+    /* PR comment mock */
+    .pr-comment {
+      background: #fafbfc;
+      border: 1px solid var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.64em;
+      margin-top: 8px;
+    }
+    .pr-comment h4 {
+      font-size: 1.1em;
+      margin: 0 0 8px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .pr-comment table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92em;
+    }
+    .pr-comment table td, .pr-comment table th {
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--inteli-bg-soft);
+      text-align: left;
+    }
+    .pr-comment table th { background: var(--inteli-bg-soft); }
+    .pr-comment .pass { color: var(--inteli-dark-green); font-weight: 700; }
+    .pr-comment .fail { color: #d05050; font-weight: 700; }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 03, CD e métricas</span>
+          <h1>Esteira de CI como guardiã da qualidade</h1>
+          <p class="subtitle">Métricas no PR já temos. Testes bons já temos. Hoje a esteira deixa de ser informativa e vira <strong>obrigatória</strong> — gate vermelho bloqueia merge.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>10 de 14</span>
+            <strong>Data</strong><span>28 de maio de 2026, quinta-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>Hermano Peixoto de Oliveira Junior</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Fechamento da Sprint 03. PR #4 transforma tudo que vocês viram nas aulas 07-09 em gates obrigatórios. Pipeline vira paralelo informativo → sequencial fail-fast. release.yml gera o artefato pra hardware. Promote orquestra ambientes.</p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Check-in da Sprint: PR #2 e PR #3 mergeados?</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>Quality gate como contrato — hierarquia de checks</td><td>20 min</td></tr>
+              <tr><td>10h35, Bloco 2</td><td>Sequencial fail-fast: paralelo informativo → gate-driven</td><td>20 min</td></tr>
+              <tr><td>10h55, Bloco 3</td><td>Walkthrough PR #4: quality_gates.yaml + tools/quality_gates.py</td><td>30 min</td></tr>
+              <tr><td>11h25, Bloco 4</td><td>Release + promote — rollback via re-tag</td><td>25 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo Aula 11</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          PR #2 e PR #3 do grupo mergeados? Algum quality gate quebrou no PR de vocês? Como foi a discussão de "esse threshold faz sentido?". Uma volta rápida.
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim desta aula, cada grupo entende o que diferencia "métrica informativa" de "gate obrigatório", reconhece a hierarquia de checks num pipeline maduro, sabe quando paralelo é melhor que sequencial, e identifica os componentes de um fluxo de promoção de release.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Diferenciar</h4>
+              <p>Métrica informativa (decoração) vs. quality gate (contrato). Sinais práticos pra reconhecer cada um.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Hierarquizar</h4>
+              <p>Mapear a sequência lint → unit → SAST → integration → métricas → invariantes num pipeline real.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Avaliar</h4>
+              <p>Decidir entre paralelo (feedback rápido) e sequencial (fail-fast economia) com base no custo do recurso.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Operar</h4>
+              <p>Reconhecer fluxo dev→staging→prod via re-tag de imagem + ambiente com aprovação manual.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Recap Sprint -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Onde estamos na Sprint 03</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">3 PRs já mergeados. Cada um adicionou uma camada. Hoje fechamos com a camada que torna tudo obrigatório.</p>
+          <div class="gate-stack">
+            <div class="gate-row lint">
+              <h4>PR #1 (Aula 07)</h4>
+              <p>Pipeline mínimo verde — lint, unit, sonar (informativo), build SITL, deploy-dev. Imagem GHCR rastreável por SHA.</p>
+            </div>
+            <div class="gate-row metrics">
+              <h4>PR #2 (Aula 08)</h4>
+              <p>Missão real + extração de KPIs. Comentário automático no PR com tabela de métricas. <strong>Mas merge ainda permitido se métrica regredir.</strong></p>
+            </div>
+            <div class="gate-row integration">
+              <h4>PR #3 (Aula 09)</h4>
+              <p>Fixtures pytest, invariantes físicos parametrizados, testing-philosophy.md. Testes mais rigorosos. <strong>Mas ainda informativos.</strong></p>
+            </div>
+            <div class="gate-row invariant">
+              <h4>PR #4 (Aula 10) — hoje</h4>
+              <p>quality_gates.yaml versionado. Pipeline sequencial fail-fast. Sonar enforcement ON. <strong>Gate vermelho = merge bloqueado.</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 20 min</span>
+        <h2>Quality gate como contrato — hierarquia de checks</h2>
+        <p class="section-description">Métrica que ninguém respeita é decoração. Gate é regra. Hoje atravessamos essa fronteira.</p>
+      </section>
+
+      <!-- 07, métrica vs gate -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Métrica informativa vs. quality gate</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Diferença não é técnica — é política. Mesmo número, mesma extração, mesma tabela. O que muda: a esteira <em>respeita</em> esse número.</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Métrica informativa (até PR #3)</h4>
+              <ul>
+                <li>Aparece no comentário do PR</li>
+                <li>Reviewer <em>pode</em> usar pra decidir</li>
+                <li>Merge não é bloqueado se regredir</li>
+                <li>Em prática: ninguém lê depois da 2ª semana</li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>Quality gate (PR #4)</h4>
+              <ul>
+                <li>Threshold versionado em <code>quality_gates.yaml</code></li>
+                <li>Pipeline falha + GitHub bloqueia botão "Merge"</li>
+                <li>Mudança do threshold passa por PR + revisão</li>
+                <li>Decisão fica registrada (commit + ADR)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A inversão silenciosa</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">O reviewer não precisa mais "checar se passou no padrão". O pipeline faz. Reviewer foca no <em>design</em> da mudança. Code review fica mais barato e mais profundo simultaneamente.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Hierarquia de checks -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>A hierarquia de checks num pipeline maduro</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Não é "quanto mais teste melhor" — é "qual classe de erro cada nível pega". Cada um custa mais e pega coisas que o anterior não viu.</p>
+          <div class="gate-stack">
+            <div class="gate-row lint">
+              <h4>1. Lint + format</h4>
+              <p>Sintaxe, estilo, tipos óbvios. Custo: &lt;5s. Pega 30% dos bugs simples (typo, import errado).</p>
+            </div>
+            <div class="gate-row unit">
+              <h4>2. Unit tests</h4>
+              <p>Lógica isolada de função pura. Custo: &lt;1min. Pega regressão de algoritmo. Cobertura mensurável.</p>
+            </div>
+            <div class="gate-row sast">
+              <h4>3. SAST (Sonar)</h4>
+              <p>Análise estática de segurança + qualidade. Custo: ~30s. Pega code smells, vulnerabilities, complexity.</p>
+            </div>
+            <div class="gate-row integration">
+              <h4>4. Integration tests</h4>
+              <p>Sistema rodando (SITL). Custo: ~8min. Pega bugs de composição, timing, configuração.</p>
+            </div>
+            <div class="gate-row metrics">
+              <h4>5. Mission metrics</h4>
+              <p>KPIs do sistema em execução. Custo: já calculado no #4. Pega regressão de performance.</p>
+            </div>
+            <div class="gate-row invariant">
+              <h4>6. Invariantes físicos / Quality gates</h4>
+              <p>Regras absolutas + thresholds versionados. Custo: ~10s pra avaliar. Pega tudo que escapou.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 09, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 20 min</span>
+        <h2>Sequencial fail-fast: paralelo informativo → gate-driven</h2>
+        <p class="section-description">Quando paralelo é melhor, quando sequencial é melhor, e por que migramos agora.</p>
+      </section>
+
+      <!-- 10, Paralelo vs Sequencial -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Paralelo (PRs #1-#3) vs sequencial (PR #4)</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">A mesma chain de checks, ordem de execução diferente. Trade-off real:</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Paralelo (informativo)</h4>
+              <ul>
+                <li>Lint + Sonar + Build rodam <strong>simultaneamente</strong></li>
+                <li>Feedback rápido: vê 3 erros possíveis em &lt;1min</li>
+                <li>Mesmo se lint falha, build cold (~25min) já gastou recurso</li>
+                <li>Faz sentido enquanto gates são <em>informativos</em></li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>Sequencial fail-fast</h4>
+              <ul>
+                <li>Lint → Sonar → Build → Mission → Gates em <strong>cadeia</strong></li>
+                <li>Lint falha? Sonar nem roda. Sonar falha? Build nem roda. Economia.</li>
+                <li>~30s mais lento quando tudo passa (custo do feedback acumulado)</li>
+                <li>Faz sentido quando gates são <em>obrigatórios</em>: não vale gastar runner se já tá falhando</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que migramos AGORA</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">PR #1-#3 priorizou feedback (gate informativo, paralelismo ajuda). PR #4 prioriza economia + decisão (gate obrigatório — se lint falha, nada do resto importa, e gastar runner self-hosted por 25min é desperdício direto).</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, ci.yml refatorado -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Pipeline antes e depois do PR #4</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Antes (PRs #1-#3): 4 jobs com paralelismo. Depois (PR #4): 5 jobs sequenciais.</p>
+          <div class="pipeline-flow">
+            <div class="pipeline-step">
+              <span class="step-num">1</span>
+              <h4>python-quality</h4>
+              <p>ruff + black + mypy + pytest</p>
+            </div>
+            <div class="pipeline-step">
+              <span class="step-num">2</span>
+              <h4>sonar-scan</h4>
+              <p>SAST + QG enforce</p>
+            </div>
+            <div class="pipeline-step">
+              <span class="step-num">3</span>
+              <h4>sitl-build</h4>
+              <p>imagem GHCR</p>
+            </div>
+            <div class="pipeline-step">
+              <span class="step-num">4</span>
+              <h4>mission-test</h4>
+              <p>missão + KPIs</p>
+            </div>
+            <div class="pipeline-step new">
+              <span class="step-num">5 (novo)</span>
+              <h4>quality-gates</h4>
+              <p>bloqueia merge se algum threshold violado</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">3 mudanças concretas no ci.yml</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">(1) <code>needs:</code> encadeado entre jobs. (2) <code>sonar-scan: continue-on-error: true</code> → <code>false</code>. (3) Novo job <code>quality-gates</code> que executa <code>tools/quality_gates.py</code>.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 30 min</span>
+        <h2>Walkthrough do PR #4 ao vivo</h2>
+        <p class="section-description">quality_gates.yaml, tools/quality_gates.py, ci.yml refatorado, e o comentário automático com pass/fail.</p>
+      </section>
+
+      <!-- 13, quality_gates.yaml -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>quality_gates.yaml</code> — thresholds versionados</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">coverage:
+  min_line_coverage: 0.80     # 80% — pragmático
+
+mission_metrics:
+  max_trajectory_rms_error_m: 2.0
+  max_acceleration_m_s2: 15.0   # limite mecânico x500
+  max_mission_duration_s: 180   # baseline ~85s + folga
+  min_altitude_stability_m: 0.5
+  max_battery_drop_per_minute_pct: 8.0
+
+sonar:
+  require_quality_gate_passed: true
+  max_new_blocker_issues: 0
+  max_new_critical_issues: 0
+  max_new_security_hotspots_to_review: 0</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Decisões na escolha</p>
+              <ol>
+                <li><strong>Conservador inicial</strong>: melhor passar mais que falsificar. Apertar com dados.</li>
+                <li><strong>15 m/s²</strong>: mesmo valor do invariante físico de PR #3 (alinhamento).</li>
+                <li><strong>180s</strong>: 2x o baseline observado (~85s). Folga pra ruído.</li>
+                <li><strong>Sonar Quality Gate</strong>: delegamos pro Sonar "Sonar Way". Mudar lá afeta aqui.</li>
+                <li><strong>Versionado</strong>: <code>git log quality_gates.yaml</code> mostra histórico de decisões.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, tools/quality_gates.py -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>tools/quality_gates.py</code> — o avaliador</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python">def evaluate(gates_yaml, metrics_json, coverage_xml,
+             sonar_host, sonar_token, sonar_project_key):
+    config = yaml.safe_load(gates_yaml.read_text())
+    results = []
+
+    # 1. Coverage
+    cov_threshold = config["coverage"]["min_line_coverage"]
+    results.append(check_coverage(coverage_xml, cov_threshold))
+
+    # 2. Mission metrics
+    results.extend(
+        check_mission_metrics(metrics_json,
+                              config["mission_metrics"])
+    )
+
+    # 3. Sonar (consulta API)
+    results.append(
+        check_sonar(sonar_host, sonar_token,
+                    sonar_project_key,
+                    require=config["sonar"]["require_quality_gate_passed"])
+    )
+
+    all_passed = all(r.passed for r in results)
+    return GatesReport(all_passed=all_passed, results=results, ...)</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">3 fontes, 1 resultado</p>
+              <ol>
+                <li><strong>coverage.xml</strong>: gerado pelo pytest-cov; parser Cobertura standard.</li>
+                <li><strong>metrics.json</strong>: gerado pelo tools/extract_metrics.py (PR #2).</li>
+                <li><strong>Sonar API</strong>: <code>/api/qualitygates/project_status</code> — devolve OK ou ERROR.</li>
+                <li><strong>exit code</strong>: 0 se todos passam, !=0 se qualquer um falha.</li>
+                <li><strong>11 testes unit</strong>: cobrem cada check em isolado + orquestração.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 15, ci.yml quality-gates job -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Job <code>quality-gates</code> no ci.yml</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">quality-gates:
+  needs: mission-test    # ÚLTIMO da chain
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - run: pip install -r requirements-dev.txt
+
+    - uses: actions/download-artifact@v4
+      with: { name: coverage-xml }
+    - uses: actions/download-artifact@v4
+      with: { name: mission-metrics, path: reports/ }
+
+    - name: Evaluate quality gates
+      env:
+        SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
+      run: |
+        python -m tools.quality_gates \
+          --gates quality_gates.yaml \
+          --metrics reports/metrics.json \
+          --coverage coverage.xml \
+          --output reports/quality_gates_result.json</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Por que esse job vem por último</p>
+              <ol>
+                <li><strong>needs: mission-test</strong>: precisa do metrics.json gerado.</li>
+                <li><strong>artifacts consumidos</strong>: coverage do job 1, mission do job 4.</li>
+                <li><strong>Sonar via secrets</strong>: pipeline consulta Sonar do instrutor via token.</li>
+                <li><strong>output JSON</strong>: vira artifact próprio + comentário no PR (step seguinte).</li>
+                <li><strong>exit != 0 bloqueia merge</strong>: GitHub branch protection deve marcar <code>quality-gates</code> como required check.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, comentário PR -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>O comentário de quality gates no PR</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Mesmo padrão do PR #2 (métricas), mas agora cada linha é um gate com pass/fail explícito.</p>
+          <div class="pr-comment">
+            <h4>✅ Quality Gates — 5/5 gates passaram</h4>
+            <table>
+              <thead>
+                <tr><th></th><th>Gate</th><th>Detalhe</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="pass">✅</td><td><code>coverage.min_line_coverage</code></td><td>line coverage 92.5% ≥ threshold 80%</td></tr>
+                <tr><td class="pass">✅</td><td><code>mission_metrics.max_acceleration_m_s2</code></td><td>max_acceleration_m_s2 = 11.05 ≤ threshold 15.0</td></tr>
+                <tr><td class="pass">✅</td><td><code>mission_metrics.max_mission_duration_s</code></td><td>mission_duration_s = 81.45 ≤ threshold 180</td></tr>
+                <tr><td class="pass">✅</td><td><code>mission_metrics.min_altitude_stability_m</code></td><td>std_altitude_cruise_m = 0.31 ≤ threshold 0.5</td></tr>
+                <tr><td class="pass">✅</td><td><code>sonar.require_quality_gate_passed</code></td><td>Sonar Quality Gate status = OK</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Quando um gate falha</h4>
+            <p style="font-size: 0.64em; margin: 0; line-height: 1.4;">Comentário fica vermelho no gate específico, botão "Merge" do GitHub desabilita (se branch protection configurado com required check). Reviewer NÃO consegue forçar merge — só após corrigir a regressão.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, Separador Bloco 4 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 4, 25 min</span>
+        <h2>Release + promote — rollback via re-tag</h2>
+        <p class="section-description">Como sair do "PR mergeado" pra "binário voando" — com rollback de 30 segundos.</p>
+      </section>
+
+      <!-- 18, release.yml -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>release.yml</code> — quando uma tag git vira firmware</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Até agora o pipeline produzia <strong>imagem SITL</strong> (pra simulador). Pra deployar em drone real, precisamos do <strong>binário hardware</strong> — saída diferente do mesmo código.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Trigger</h4>
+              <p><code>on: push: tags: ['v*']</code>. Quando alguém faz <code>git tag v0.1.0 &amp;&amp; git push --tags</code>, o workflow dispara.</p>
+            </div>
+            <div class="card">
+              <h4>Build hardware</h4>
+              <p><code>make px4_fmu-v6x_default</code> — diferente de <code>px4_sitl_default</code>. Produz binário pra Pixhawk físico.</p>
+            </div>
+            <div class="card">
+              <h4>GitHub Release</h4>
+              <p>Anexa <code>.px4</code> (flasheável) + <code>.sha256</code> (checksum). Vira "download oficial" da versão.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Decisão importante</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Só dá pra criar tag <code>v*</code> de um commit que está em <code>main</code>. <code>main</code> só recebe merge se quality gates passaram (PR #4). Logo: toda release publicada passou pelos gates. Cadeia inquebrável.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 19, promote.yml -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>promote.yml</code> — dev → staging → prod</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">on:
+  workflow_dispatch:    # manual
+    inputs:
+      source_tag:       # ex.: dev-abc123
+        required: true
+      target_env:
+        type: choice
+        options: [staging, prod]
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target_env }}  # APROVAÇÃO HUMANA
+    steps:
+      - name: Promote (retag)
+        run: |
+          python -m tools.promote_release \
+            --image ghcr.io/josercf/px4-sitl \
+            --from ${{ inputs.source_tag }} \
+            --to ${{ steps.tag.outputs.target_tag }}</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Mecânica</p>
+              <ol>
+                <li><strong>workflow_dispatch</strong>: humano vai em Actions → Run workflow.</li>
+                <li><strong>environment: staging</strong>: GitHub pausa pra aprovação dos reviewers configurados em Settings → Environments.</li>
+                <li><strong>promote_release.py</strong>: <code>docker pull SRC; docker tag SRC DST; docker push DST</code>. Mesma imagem byte-a-byte.</li>
+                <li><strong>Custo</strong>: ~10s por promoção. Não é build.</li>
+                <li><strong>Rollback</strong>: re-tag inverso — em &lt;30s a imagem antiga volta a responder pela tag <code>prod-</code>.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 20, Rollback -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Rollback em 30 segundos</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Drone caiu em campo. Suspeita: regressão na versão <code>prod-abc123</code>. Procedimento de rollback documentado:</p>
+          <pre style="font-size: 0.6em; line-height: 1.4; padding: 12px 14px; background: #1d1829; color: #e6eaeb; border-radius: 8px;"><code class="language-bash"># 1. Identifica a versão anterior que estava em prod
+gh release list --limit 5
+
+# 2. Re-tag GHCR: prod-OLD aponta pra SHA antigo
+python -m tools.promote_release \
+  --image ghcr.io/josercf/px4-sitl \
+  --from <span style="color: #89cea5;">prod-old_sha</span> \
+  --to <span style="color: #ffd580;">prod-CURRENT</span>
+
+# 3. Pipeline de OTA pega prod-CURRENT na próxima janela
+#    (ou força via gateway/OpenChoreo)</code></pre>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que isso funciona</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">A imagem velha NUNCA foi deletada — só apontamos o "ponteiro" prod-CURRENT pra ela. Rollback é gratuito porque preservamos histórico no registry. ADR-004 explicita essa estratégia.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, gate vs threshold</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Sua equipe descobriu que <code>max_acceleration_m_s2</code> está sempre próximo do limite (14.8 de 15). Cada novo PR passa por um fio. Qual é a abordagem mais saudável?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Aumentar threshold pra 20 m/s² — assim ninguém bloqueia</li>
+            <li data-correct="false">Deletar o gate — está virando ruído</li>
+            <li data-correct="true">Manter threshold, mas investigar a causa raiz (provavelmente sintonia agressiva do controlador)</li>
+            <li data-correct="false">Trocar gate por warning informativo</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. Threshold próximo do limite SEMPRE é sintoma — não problema do threshold, é problema do sistema convergindo pro limite. Subir threshold ou remover gate esconde a regressão lenta. ADR-005 documenta esse processo: ajuste com dados, não com ansiedade."
+               data-incorrect-msg="Releia. Aumentar threshold porque está chato é o caminho mais curto pra perder o valor do gate. Cada vez que vocês fazem isso, o sistema fica mais perto do limite físico real (15 m/s² é mecânica do x500). A pergunta certa é 'por que estamos chegando perto?', não 'como evitar bloqueio?'."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, rollback</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Drone caiu em produção. Versão suspeita: <code>prod-abc123</code>. Versão anterior estável: <code>prod-xyz789</code>. Qual é o rollback CORRETO no nosso esquema?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Rebuildar o commit anterior do <code>main</code>, publicar nova imagem</li>
+            <li data-correct="false"><code>git revert</code> do commit, esperar pipeline novo</li>
+            <li data-correct="true">Re-taguear a imagem GHCR: <code>prod-xyz789</code> ganha tag <code>prod-CURRENT</code></li>
+            <li data-correct="false">Deletar a release no GitHub e criar nova</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. ADR-004 é explícito: promoção (e rollback) é re-tag, nunca rebuild. A imagem velha ainda está no GHCR. Apontamos prod-CURRENT pra ela. Custo: ~10s. Rebuild seria ~20min e introduziria risco de não-determinismo."
+               data-incorrect-msg="Pense na imutabilidade: o binário que vocês validaram está lá, intacto, no GHCR. Por que reconstruir? Re-tag é instantâneo, determinístico, auditável. As outras opções introduzem novos artefatos — perdemos a propriedade 'mesma imagem que passou nos testes está em prod'."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Checklist final -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist do CD maduro — fim da Sprint 03</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">5 critérios pra dizer que vocês têm CD que seguraria firmware crítico. Não é "tudo on dia 1" — é "ter mapa do que falta".</p>
+          <div class="three-cards" style="grid-template-columns: repeat(5, 1fr); gap: 8px;">
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">1, Imutabilidade</h4>
+              <p style="font-size: 0.58em;">Imagem por SHA. Mesma imagem em todos os ambientes.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">2, Métricas no PR</h4>
+              <p style="font-size: 0.58em;">Reviewer vê KPIs antes de aprovar. Decisão tem dado.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">3, Bons testes</h4>
+              <p style="font-size: 0.58em;">FIRST. Invariantes físicos. Fixtures reutilizáveis.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">4, Quality gates</h4>
+              <p style="font-size: 0.58em;">Thresholds versionados. Merge bloqueado se regrediu.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">5, Rollback &lt; 1min</h4>
+              <p style="font-size: 0.58em;">Re-tag de imagem anterior. Testado, não suposto.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Sprint 03: completaram os 5</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">PR #1 (1), PR #2 (2), PR #3 (3), PR #4 (4+5). Vocês têm o material que separa "pipeline funcional" de "pipeline de produção crítica".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Auto-estudo Aula 11 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Sprint 04</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Sprint 03 fechou. Sprint 04 abre com performance + IaC. Três provocações pra Aula 11 (Hermano, 03/06):</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, "Latency Numbers Every Programmer Should Know"</h4>
+              <p>Jeff Dean tabela atualizada. 15 min. Calibra intuição sobre custo de operações comuns (L1 cache vs disk vs network).</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, perf no PX4</h4>
+              <p>PX4 docs sobre <code>perf_counter</code> e estimativa de jitter no loop de controle. 20 min.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, "Performance is a Feature"</h4>
+              <p>Talk Strangeloop, ~30 min. Como performance vira contrato (não obra de arte) num pipeline.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega final da Sprint 03, para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Print do comentário de quality-gates do PR de vocês + uma frase respondendo: "qual gate foi mais útil pra detectar regressão real durante a Sprint?".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">24</div>
+        </div>
+      </section>
+
+      <!-- 25, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Fim da Sprint 03</h2>
+        <p>Sprint 04 abre 03/06 — Performance e IaC</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>
