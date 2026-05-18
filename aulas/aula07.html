@@ -236,7 +236,56 @@
       font-style: italic;
       margin-top: 4px;
     }
+
+    /* Screenshots reais (capturados via demo) */
+    .real-shot {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--inteli-lilac);
+      background: var(--inteli-bg-soft);
+      max-width: 100%;
+      position: relative;
+    }
+    .real-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .real-shot figcaption {
+      font-size: 0.6em;
+      padding: 6px 10px;
+      background: var(--inteli-purple-deep);
+      color: white;
+      font-family: var(--inteli-mono, monospace);
+    }
+    /* Placeholder elegante enquanto o print não está disponível */
+    .real-shot.pending {
+      min-height: 80px;
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .real-shot.pending::after {
+      content: "📸 print pendente: " attr(data-name);
+      color: var(--inteli-gray-dark);
+      font-style: italic;
+      font-size: 0.7em;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending img { display: none; }
   </style>
+  <script>
+    // Quando uma <img> dentro de .real-shot falha (404), marca o pai como pending
+    // pra mostrar o placeholder textual em vez do ícone quebrado do navegador.
+    window.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && e.target.closest('.real-shot')) {
+        e.target.closest('.real-shot').classList.add('pending');
+      }
+    }, true);
+  </script>
 </head>
 <body>
   <div class="reveal">
@@ -715,6 +764,10 @@
             <h4 style="margin: 0 0 2px;">Decisão importante neste PR</h4>
             <p style="font-size: 0.66em; margin: 0; line-height: 1.4;"><code>sonar-scan</code> tem <code>continue-on-error: true</code>. Significa: análise roda e gera dashboard, mas se a qualidade cair o merge <strong>não</strong> é bloqueado. Isso é deliberado — Sonar como observação primeiro, como guardião depois. O enforcement vira gate obrigatório na Aula 10.</p>
           </div>
+          <figure class="real-shot" data-name="01-pipeline-verde.png">
+            <img src="assets/img/aula07/01-pipeline-verde.png" alt="Aba Actions do PR #1 mostrando 4 checks verdes">
+            <figcaption>PR #1 — todos os 4 checks verdes na aba Actions</figcaption>
+          </figure>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 03</div>
@@ -809,6 +862,10 @@
               </ol>
             </div>
           </div>
+          <figure class="real-shot" data-name="02-sitl-build-steps.png">
+            <img src="assets/img/aula07/02-sitl-build-steps.png" alt="Job sitl-build aberto mostrando tempo de cada step">
+            <figcaption>Job sitl-build — steps com tempos (cold ~25min, warm ~3min)</figcaption>
+          </figure>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 03</div>
@@ -843,6 +900,10 @@ f87350b: Pulling from josercf/px4-sitl
             <h4 style="margin: 0 0 2px;">Conceito-chave</h4>
             <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Esse mesmo binário, byte por byte, é o que vai pra todos os ambientes futuros — staging, prod, drone físico. Promoção entre ambientes é só re-tag, nunca recompilação. Esse contrato é a base da segurança operacional do CD.</p>
           </div>
+          <figure class="real-shot" data-name="03-ghcr-tags.png">
+            <img src="assets/img/aula07/03-ghcr-tags.png" alt="GHCR mostrando tags do px4-sitl publicadas por commit SHA">
+            <figcaption>Pacote px4-sitl no GHCR — uma tag imutável por commit</figcaption>
+          </figure>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 07, Hello World, Continuous Deployment, Sprint 03</div>
@@ -859,7 +920,7 @@ f87350b: Pulling from josercf/px4-sitl
           <h2>O dashboard do Sonar (instância do instrutor)</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.74em; margin: 0 0 8px;">URL: <code>http://20.206.111.75:9000/dashboard?id=inteli-px4-cicd-demo</code></p>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">URL: <code>http://20.206.111.75:9000/dashboard?id=inteli-px4-cicd-demo</code> &nbsp; · &nbsp; Login leitor: <code>aluno-t13</code> (senha com instrutor)</p>
           <div class="three-cards">
             <div class="card">
               <h4>Bugs &amp; Code Smells</h4>
@@ -877,6 +938,16 @@ f87350b: Pulling from josercf/px4-sitl
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
             <h4 style="margin: 0 0 2px;">Quality Gate "Sonar Way"</h4>
             <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Configurado no projeto desde o início. Hoje aparece como informação no PR. Na Aula 10, vira gate obrigatório: PR fica vermelho se o Quality Gate falhar.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
+            <figure class="real-shot" data-name="04-sonar-dashboard.png">
+              <img src="assets/img/aula07/04-sonar-dashboard.png" alt="Dashboard SonarQube do projeto inteli-px4-cicd-demo">
+              <figcaption>Dashboard Sonar — Quality Gate Passed</figcaption>
+            </figure>
+            <figure class="real-shot" data-name="05-pytest-passed.png">
+              <img src="assets/img/aula07/05-pytest-passed.png" alt="Output do deploy-dev: 1 passed in 0.55s, tester exited code 0">
+              <figcaption>deploy-dev: pytest passou + tester saiu OK</figcaption>
+            </figure>
           </div>
         </div>
         <div class="slide-footer">

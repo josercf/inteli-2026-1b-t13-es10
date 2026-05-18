@@ -1,2 +1,10 @@
 node_modules
 .DS_Store
+
+# Arquivos locais (credenciais, notas do instrutor) — não vão pro git
+*.local.md
+*.local.txt
+credenciais-*.md
+**/credenciais.md
+.env
+.env.local
