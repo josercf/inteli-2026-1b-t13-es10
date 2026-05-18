@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 09, Você escreve (bons) testes de integração?, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li { margin-bottom: 3px; }
+    .compare-col.bad { border-top-color: #d05050; }
+    .compare-col.good { border-top-color: var(--inteli-dark-green); }
+
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* FIRST grid */
+    .first-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .first-card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .first-card h4 {
+      font-size: 0.72em;
+      margin: 0 0 2px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .first-card .letter {
+      font-size: 1.4em;
+      font-weight: 800;
+      color: var(--inteli-coral);
+      display: block;
+      margin-bottom: 2px;
+      line-height: 1;
+    }
+    .first-card p { font-size: 0.6em; margin: 0; line-height: 1.4; }
+
+    /* Pirâmide vs Trofeu visual */
+    .testshape-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 8px;
+    }
+    .testshape {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+    .testshape h4 {
+      font-size: 0.88em;
+      margin: 0 0 6px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .testshape .ascii {
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.6em;
+      white-space: pre;
+      line-height: 1.2;
+      margin: 6px 0;
+    }
+    .testshape p {
+      font-size: 0.62em;
+      margin: 6px 0 0;
+      line-height: 1.4;
+    }
+
+    /* Bloco YAML/Python */
+    .yaml-block {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .yaml-block pre {
+      margin: 0;
+      font-size: 0.55em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .yaml-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.45;
+    }
+    .yaml-block .annot ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .yaml-block .annot li { margin-bottom: 3px; }
+    .yaml-block .annot strong { color: var(--inteli-coral); }
+
+    /* Bad vs Good code blocks */
+    .badgood-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .badgood-col pre {
+      font-size: 0.56em;
+      line-height: 1.4;
+      padding: 10px 12px;
+      margin: 0;
+    }
+    .badgood-col .label {
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.62em;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px 6px 0 0;
+      display: block;
+    }
+    .badgood-col .label.bad { background: #d05050; color: white; }
+    .badgood-col .label.good { background: var(--inteli-dark-green); color: white; }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Screenshots reais */
+    .real-shot {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--inteli-lilac);
+      background: var(--inteli-bg-soft);
+      max-width: 100%;
+      position: relative;
+    }
+    .real-shot img { display: block; width: 100%; height: auto; }
+    .real-shot figcaption {
+      font-size: 0.6em;
+      padding: 6px 10px;
+      background: var(--inteli-purple-deep);
+      color: white;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending {
+      min-height: 80px;
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .real-shot.pending::after {
+      content: "📸 print pendente: " attr(data-name);
+      color: var(--inteli-gray-dark);
+      font-style: italic;
+      font-size: 0.7em;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending img { display: none; }
+  </style>
+  <script>
+    window.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && e.target.closest('.real-shot')) {
+        e.target.closest('.real-shot').classList.add('pending');
+      }
+    }, true);
+  </script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 03, CD e métricas</span>
+          <h1>Você escreve (bons) testes de integração?</h1>
+          <p class="subtitle">Métricas no PR vocês já têm. Mas que tipo de teste produz métricas confiáveis? Hoje a gente disseca a suite SITL do demo PR #3 — fixtures, invariantes, antipatterns.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>09 de 14</span>
+            <strong>Data</strong><span>26 de maio de 2026, terça-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>Hermano Peixoto de Oliveira Junior</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Aula 08 fechou com tabela de métricas no PR. Hoje atacamos a base: quão confiáveis são esses testes que produzem essas métricas? FIRST + Trofeu + 4 antipatterns. Walkthrough do PR #3.</p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Check-in: comentário de métricas no PR ajudou a revisar?</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>O que é (bom) teste de integração — FIRST, pirâmide vs trofeu</td><td>25 min</td></tr>
+              <tr><td>10h40, Bloco 2</td><td>Antipatterns que matam suite — bad vs good code lado a lado</td><td>30 min</td></tr>
+              <tr><td>11h10, Bloco 3</td><td>Walkthrough do PR #3 — conftest, invariantes físicos, parametrização</td><td>25 min</td></tr>
+              <tr><td>11h35, Bloco 4</td><td>Hands-on: identifique antipattern num teste ruim</td><td>15 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo Aula 10</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily Time -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Vocês conseguiram interpretar o comentário de métricas no PR do grupo? Identificaram algo "estranho"? Quem teve teste flaky (passou às vezes, falhou outras) na Sprint até agora?
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim desta aula, cada grupo identifica quando um teste é "bom" pelos critérios FIRST, escolhe entre forma pirâmide ou trofeu pra seu contexto, reconhece os 4 antipatterns mais comuns, e sabe estruturar fixtures pytest reutilizáveis.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Avaliar</h4>
+              <p>Aplicar FIRST (Fast, Independent, Repeatable, Self-validating, Timely) num teste qualquer e identificar pontos de melhoria.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Escolher</h4>
+              <p>Decidir entre pirâmide e trofeu com base no contexto do projeto (firmware, web, batch). Não há resposta única.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Reconhecer</h4>
+              <p>Identificar antipatterns: sleep arbitrário, estado compartilhado, asserções sem diagnóstico, baseline vs invariante misturados.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Estruturar</h4>
+              <p>Escrever fixture pytest com escopo correto (session/function), teardown explícito, e parametrização que vale a pena.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Recap PR #2 e por onde vamos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Onde paramos na Aula 08 — e onde tem problema</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">PR #2 deu pipeline com missão real e métricas no PR. Mas se vocês olharem a suite SITL ANTES do PR #3, ela tem vários problemas que só apareceriam quando o repo crescer. Hoje arrumamos isso pré-emptivamente.</p>
+          <div class="compare-grid">
+            <div class="compare-col bad">
+              <h4>Suite SITL do PR #2 (refator pendente)</h4>
+              <ul>
+                <li>Setup MAVSDK inline em cada teste — DRY violado</li>
+                <li>Glob de ULog hardcoded em cada teste</li>
+                <li>Sem cleanup explícito entre testes</li>
+                <li>Baseline thresholds e invariantes misturados no mesmo arquivo</li>
+                <li>Adicionar teste novo = copiar+colar ~30 linhas de setup</li>
+              </ul>
+            </div>
+            <div class="compare-col good">
+              <h4>Suite SITL do PR #3 (refatorada)</h4>
+              <ul>
+                <li><code>conftest.py</code> centraliza fixtures (DRY)</li>
+                <li><code>latest_ulog_path</code> fixture reutilizável</li>
+                <li>Fixture <code>mavsdk_system</code> com teardown <code>land()</code></li>
+                <li>Invariantes em arquivo separado, parametrizados por missão</li>
+                <li>Teste novo = 1 função, fixtures cuidam do resto</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A lição que abre a aula</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Refactor de testes raramente é urgente. Sempre é importante. Quando vira urgência, é porque a suite já está flaky e atrasando entregas.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 25 min</span>
+        <h2>O que é (bom) teste de integração — FIRST + Trofeu</h2>
+        <p class="section-description">Critérios objetivos pra avaliar um teste em isolado, e teorias sobre como distribuir tipos de teste numa suite.</p>
+      </section>
+
+      <!-- 07, FIRST grid -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>FIRST: 5 critérios pra avaliar qualquer teste</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Robert Martin, <em>Clean Code</em>. 5 atributos que um teste decente tem. Aplique em qualquer teste do seu repo — se algum cai, é débito técnico que vai cobrar juros.</p>
+          <div class="first-grid">
+            <div class="first-card">
+              <span class="letter">F</span>
+              <h4>Fast</h4>
+              <p>Rápido o suficiente pra rodar a cada save. Unit: &lt;1s. Integration: aceita ~minutos, mas isolar em job próprio.</p>
+            </div>
+            <div class="first-card">
+              <span class="letter">I</span>
+              <h4>Independent</h4>
+              <p>Ordem não importa. Cada teste limpa o que sujou. Sem globais mutáveis.</p>
+            </div>
+            <div class="first-card">
+              <span class="letter">R</span>
+              <h4>Repeatable</h4>
+              <p>Mesmo input → mesmo resultado. Sem <code>sleep()</code> arbitrário. Espera por estado, não por tempo.</p>
+            </div>
+            <div class="first-card">
+              <span class="letter">S</span>
+              <h4>Self-validating</h4>
+              <p>Pass/fail binário. Sem inspeção manual. Mensagem de falha explica o quê e por quê.</p>
+            </div>
+            <div class="first-card">
+              <span class="letter">T</span>
+              <h4>Timely</h4>
+              <p>Escrito junto (ou antes) do código. Não 6 meses depois "quando der tempo".</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Como aplicamos no demo</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Cada um dos 5 está documentado no header do <code>conftest.py</code> do PR #3 — qual decisão da fixture corresponde a qual letra. Vide auto-estudo: <code>docs/testing-philosophy.md</code> tem a tabela completa.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Pirâmide vs Trofeu -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Pirâmide vs Trofeu — como distribuir tipos de teste</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Auto-estudo cobriu Fowler (2012, Pirâmide) e Dodds (2018, Trofeu). Recap visual + nossa escolha.</p>
+          <div class="testshape-grid">
+            <div class="testshape">
+              <h4>Pirâmide (Fowler, 2012)</h4>
+              <div class="ascii">     ▲ E2E   (poucos)
+    ███
+   █████  Integration (alguns)
+  ███████
+ █████████ Unit (muitos)
+</div>
+              <p>Lógica: testes integration/E2E são caros, lentos, flaky. Concentre cobertura em unit. Privilegia <em>velocidade de feedback</em>.</p>
+            </div>
+            <div class="testshape">
+              <h4>Trofeu (Dodds, 2018)</h4>
+              <div class="ascii">    ▲ E2E   (alguns)
+   ████
+  ████████ Integration (muitos!)
+   ████
+    ▼▼ Unit (poucos)
+   ━━━━━━━━ Static (lint, types)
+</div>
+              <p>Lógica: muito mock em unit testa só seu mock. Integration testa o sistema. Privilegia <em>confiança real</em>.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Decisão no demo: trofeu para firmware</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Lógica pura em firmware (geometria, conversões) é pouca. Valor real está na composição (PX4 + simulador + controle). Pirâmide forçaria muito mock que não detecta nada. Trofeu reconhece isso. Vide <code>docs/testing-philosophy.md</code> seção "Pirâmide vs Trofeu".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 09, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 30 min</span>
+        <h2>Antipatterns que matam suite</h2>
+        <p class="section-description">4 erros que toda suite "envelhecida" tem. Cada um com bad vs good lado a lado.</p>
+      </section>
+
+      <!-- 10, Antipattern 1: sleep -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Antipattern 1: <code>sleep()</code> arbitrário</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Adicionar <code>sleep(5)</code> "pra dar tempo" é o pecado original do teste flaky. Funciona local, quebra em CI lento, quebra em runner sobrecarregado, quebra em Friday afternoon.</p>
+          <div class="badgood-grid">
+            <div class="badgood-col">
+              <span class="label bad">❌ Bad</span>
+<pre><code class="language-python">def test_arm_and_takeoff():
+    drone.arm()
+    time.sleep(5)  # "tempo pra armar"
+    drone.takeoff()
+    time.sleep(10)  # "tempo pra subir"
+    assert drone.altitude > 5
+</code></pre>
+            </div>
+            <div class="badgood-col">
+              <span class="label good">✓ Good</span>
+<pre><code class="language-python">async def test_arm_and_takeoff(mavsdk_system):
+    await _wait_armable(mavsdk_system)  # estado
+    await _arm_with_retry(mavsdk_system)
+    await mavsdk_system.action.takeoff()
+    await _wait_altitude(mavsdk_system, target=5.0, timeout=30)
+    # asserção implícita: chegou a 5m sem timeout
+</code></pre>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Princípio</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Espere por <strong>estado observável</strong> (telemetria, log, exit code), nunca por tempo. Use timeout duro como rede de segurança — não como evento esperado.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, Antipattern 2: estado compartilhado -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Antipattern 2: estado compartilhado entre testes</h2>
+        </div>
+        <div class="slide-body">
+          <div class="badgood-grid">
+            <div class="badgood-col">
+              <span class="label bad">❌ Bad</span>
+<pre><code class="language-python">DRONE = None  # global mutável
+
+def test_arm():
+    global DRONE
+    DRONE = create_system()
+    DRONE.arm()
+
+def test_takeoff():
+    DRONE.takeoff()  # depende de test_arm
+                     # rodar primeiro
+</code></pre>
+            </div>
+            <div class="badgood-col">
+              <span class="label good">✓ Good</span>
+<pre><code class="language-python">@pytest.fixture
+def armed_drone(mavsdk_system):
+    asyncio.run(_arm_with_retry(mavsdk_system))
+    yield mavsdk_system
+    # teardown: land + disarm
+    asyncio.run(mavsdk_system.action.land())
+
+def test_takeoff(armed_drone):
+    # estado fresh, sem ordem
+    armed_drone.takeoff()
+</code></pre>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Sinal de alarme</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Se rodar <code>pytest --randomly-order</code> quebra sua suite, você tem estado compartilhado. Bom teste passa em qualquer ordem.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Antipattern 3: asserções sem diagnóstico -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Antipattern 3: asserções sem diagnóstico</h2>
+        </div>
+        <div class="slide-body">
+          <div class="badgood-grid">
+            <div class="badgood-col">
+              <span class="label bad">❌ Bad</span>
+<pre><code class="language-python">def test_max_accel():
+    metrics = run_mission()
+    assert metrics["max_accel"] < 15
+    # quando falha:
+    # AssertionError: assert 17.3 &lt; 15
+    # ...e agora? que regra é essa? por que 15?
+</code></pre>
+            </div>
+            <div class="badgood-col">
+              <span class="label good">✓ Good</span>
+<pre><code class="language-python">def test_max_accel():
+    metrics = run_mission()
+    assert metrics["max_accel"] < 15.0, (
+        f"violação de invariante: aceleração máxima "
+        f"{metrics['max_accel']:.2f} m/s² excede limite "
+        f"mecânico de 15 m/s² (nominal x500)"
+    )
+</code></pre>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que importa</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Em 3 meses, quando esse teste falhar, o dev (talvez você mesmo) não vai lembrar por que 15. A mensagem é o link entre regra física e código. Toda asserção do <code>test_physical_invariants.py</code> do PR #3 segue esse padrão.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, Antipattern 4: baseline vs invariante -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Antipattern 4: misturar baseline com invariante</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Dois tipos de asserção parecidos, regras de mudança totalmente diferentes:</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Baseline threshold (mudável)</h4>
+              <ul>
+                <li><strong>O que é:</strong> "missão dura entre 30s e 240s — fora disso é provavelmente bug"</li>
+                <li><strong>Quando muda:</strong> hardware muda, missão muda, equipe ajusta calibração</li>
+                <li><strong>Mudança:</strong> PR comum, com justificativa no commit</li>
+                <li><strong>Demo:</strong> <code>test_metrics_within_baseline_thresholds</code></li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>Invariante físico (imutável)</h4>
+              <ul>
+                <li><strong>O que é:</strong> "aceleração nunca passa de 15 m/s² — em <em>nenhuma</em> missão"</li>
+                <li><strong>Quando muda:</strong> só se o hardware mudar fundamentalmente (motores maiores, frame diferente)</li>
+                <li><strong>Mudança:</strong> ADR + revisão de engenharia mecânica</li>
+                <li><strong>Demo:</strong> <code>test_physical_invariants.py</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Consequência prática</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Misturar = baseline ficar "imutável" por confusão (ninguém ajusta com medo de quebrar invariante), OU invariante virar "mudável" e perder o papel de gate de segurança. PR #3 separa em arquivos distintos.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 25 min</span>
+        <h2>Walkthrough do PR #3 ao vivo</h2>
+        <p class="section-description">conftest.py, test_physical_invariants.py, parametrização, testing-philosophy.md.</p>
+      </section>
+
+      <!-- 15, conftest.py -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>conftest.py</code> — coração do PR #3</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python">@pytest.fixture(scope="session")
+def repo_root() -> Path:
+    return Path(__file__).resolve().parents[2]
+
+@pytest.fixture
+async def mavsdk_system(mavsdk_server_host, mavsdk_server_port):
+    """MAVSDK conectado e armable. Teardown: best-effort land."""
+    drone = System(mavsdk_server_address=mavsdk_server_host,
+                   port=mavsdk_server_port)
+    await drone.connect(system_address="udpin://0.0.0.0:14540")
+    await _wait_connection(drone, timeout_s=30)
+    await _wait_armable(drone, timeout_s=90)
+    yield drone
+    with contextlib.suppress(Exception):
+        await asyncio.wait_for(drone.action.land(), timeout=10)
+
+@pytest.fixture
+def run_mission(repo_root):
+    """Factory: retorna função que executa missão arbitrária."""
+    def _factory(yaml_path, timeout_s=300):
+        result = subprocess.run([...], timeout=timeout_s)
+        if result.returncode != 0:
+            pytest.fail(f"run_mission falhou ({result.stderr[-1500:]})")
+        return result
+    return _factory</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Decisões de scope</p>
+              <ol>
+                <li><strong>scope="session"</strong> em <code>repo_root</code>, URLs, ports: imutáveis durante a run.</li>
+                <li><strong>scope default (function)</strong> em <code>mavsdk_system</code>: cada teste tem drone limpo.</li>
+                <li><strong>yield + cleanup</strong>: land best-effort. Se teste deixou drone voando, próximo não herda estado.</li>
+                <li><strong>Factory pattern</strong> em <code>run_mission</code>: 1 fixture vira N testes com missões diferentes.</li>
+                <li><strong>pytest.fail com diagnóstico</strong>: falha não vira "exit 1 misterioso", vira mensagem que ajuda debugar.</li>
+              </ol>
+            </div>
+          </div>
+          <figure class="real-shot" data-name="02-conftest.png">
+            <img src="assets/img/aula09/02-conftest.png" alt="conftest.py no GitHub mostrando docstring com FIRST e imports">
+            <figcaption>tests/sitl/conftest.py — docstring FIRST visível no topo</figcaption>
+          </figure>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, test_physical_invariants -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>test_physical_invariants.py</code> + parametrização</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python">MISSIONS = [
+    pytest.param("missions/square_50m.yaml", id="square_50m"),
+    # Adicionar nova missão = nova linha aqui
+]
+
+@pytest.fixture
+def mission_telemetry(request, run_mission, latest_ulog_path, repo_root):
+    """Executa a missão indicada e retorna telemetria bruta."""
+    mission_yaml = request.param
+    run_mission(mission_yaml)
+    return _extract_full_telemetry(repo_root, latest_ulog_path)
+
+@pytest.mark.parametrize("mission_telemetry", MISSIONS, indirect=True)
+def test_max_acceleration_within_hardware_limit(mission_telemetry):
+    accels = mission_telemetry["accel_modules"]
+    max_accel = max(accels)
+    assert max_accel < 15.0, (
+        f"violação de invariante: aceleração máxima "
+        f"{max_accel:.2f} m/s² excede limite mecânico de 15 m/s²"
+    )</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Padrões da parametrização</p>
+              <ol>
+                <li><strong>indirect=True</strong>: o valor parametrizado vai pra fixture (não pro teste). Fixture executa a missão.</li>
+                <li><strong>id="square_50m"</strong>: identificador legível nos relatórios pytest (vs <code>test_x[0]</code>).</li>
+                <li><strong>1 invariante, N missões</strong>: adicionar missão nova = 1 linha em MISSIONS. Todos os testes rodam contra ela.</li>
+                <li><strong>Mensagem de assertion</strong>: contextualiza qual missão, qual valor, qual regra. Tudo no único <code>assert</code>.</li>
+                <li><strong>skip se ULog vazio</strong>: ausência de dado não é falha do teste — é falha de setup que precisa ser tratada distintamente.</li>
+              </ol>
+            </div>
+          </div>
+          <figure class="real-shot" data-name="04-mission-test-job.png">
+            <img src="assets/img/aula09/04-mission-test-job.png" alt="Job mission-test do PR #3 com todos os steps verdes em 6m55s">
+            <figcaption>PR #3 — mission-test executa 5 testes (1 smoke + 4 invariantes) em 6m55s</figcaption>
+          </figure>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, docs/testing-philosophy.md -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>docs/testing-philosophy.md</code> — referência</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Documento versionado no repo que explica como pensamos sobre testes. Quando alguém abrir PR adicionando teste novo, o reviewer aponta pra esse doc. Não vira "ah, esqueci de seguir o padrão" — vira "olha aqui o critério".</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>FIRST aplicado</h4>
+              <p>Tabela com cada letra + como aplicamos no demo. Reviewer checa: "esse PR respeita os 5?"</p>
+            </div>
+            <div class="card">
+              <h4>4 antipatterns</h4>
+              <p>Bad vs good code lado a lado pros 4 mais comuns. Vale como checklist de PR review.</p>
+            </div>
+            <div class="card">
+              <h4>4 perguntas pré-merge</h4>
+              <p>"Esse teste tem valor?" — 4 critérios que decidem aceitar ou recusar teste novo.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que doc versionado &gt; convenção oral</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Convenção oral se perde quando dev sai do time. Doc no repo entra como contexto que o próximo dev encontra. Auto-estudo da Aula 10 vai usar esse doc como base pra discussão sobre quality gates.</p>
+          </div>
+          <figure class="real-shot" data-name="03-testing-philosophy.png">
+            <img src="assets/img/aula09/03-testing-philosophy.png" alt="docs/testing-philosophy.md renderizado no GitHub">
+            <figcaption>docs/testing-philosophy.md — referência versionada, não convenção oral</figcaption>
+          </figure>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 18, Separador Bloco 4 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 4, 15 min</span>
+        <h2>Hands-on: caçar antipatterns</h2>
+        <p class="section-description">Um teste real (de outro projeto) com 4 problemas. Identifique cada um.</p>
+      </section>
+
+      <!-- 19, Hands-on -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Exercício, em duplas, 12 min</span>
+        <h2>Encontre os 4 antipatterns</h2>
+        <p style="font-size: 0.7em; margin: 0 0 8px;">O código abaixo tem (pelo menos) 4 problemas dos que vimos. Em duplas, identifiquem cada um e proponham fix. Apresentação: 1 dupla por antipattern, 60s cada.</p>
+        <pre style="font-size: 0.62em; line-height: 1.35; padding: 12px 14px; background: #1d1829; color: #e6eaeb; border-radius: 10px;"><code class="language-python">SETUP_DONE = False
+DRONE = None
+
+def test_drone_works():
+    global SETUP_DONE, DRONE
+    if not SETUP_DONE:
+        DRONE = mavsdk.System()
+        DRONE.connect()
+        time.sleep(8)
+        SETUP_DONE = True
+    DRONE.arm()
+    time.sleep(3)
+    DRONE.takeoff()
+    time.sleep(15)
+    assert DRONE.altitude > 0
+    metrics = run_mission(DRONE, "square.yaml")
+    assert metrics["accel"] < 15
+    assert metrics["duration"] < 200
+    DRONE.disarm()</code></pre>
+        <p class="hint-caption" style="margin-top: 10px;">Dicas: hierarquia de antipatterns vista hoje (sleep, estado compartilhado, asserção sem diag, baseline vs invariante misturados). Bônus: tem um 5º — qual?</p>
+      </section>
+
+      <!-- 20, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, FIRST</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Um teste de integração roda em 45 segundos no laptop do dev, mas só 1 em cada 5 execuções no CI. Qual letra de FIRST está mais violada?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">F (Fast) — 45s é muito</li>
+            <li data-correct="true">R (Repeatable) — comportamento depende do ambiente</li>
+            <li data-correct="false">I (Independent) — outros testes interferem</li>
+            <li data-correct="false">S (Self-validating) — não dá pra saber se passou</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. 45s pra integration é razoável. O sintoma é flakiness: o mesmo input não dá o mesmo output (1 em 5 falha). Isso é R — Repeatable. Causa típica: sleep arbitrário ou espera por tempo em vez de estado."
+               data-incorrect-msg="Releia o cenário. Fast (45s) é aceitável pra integration test. Self-validating o teste é (passa ou falha). Independent não tem evidência. A flakiness 'às vezes passa às vezes falha com mesmo input' é exatamente o que R (Repeatable) atacaria."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, invariante vs baseline</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Sua equipe troca os motores do drone por modelos mais potentes. Naturalmente, o pico de aceleração aumenta. Qual das mudanças abaixo deveria ser MAIS difícil (exigir ADR, revisão de eng. mecânica)?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Ajustar baseline de <code>mission_duration_s</code> (missão ficou mais rápida)</li>
+            <li data-correct="false">Ajustar baseline de <code>max_battery_drop_pct</code> (motor consome mais)</li>
+            <li data-correct="true">Ajustar invariante <code>max_acceleration_m_s2 &lt; 15</code> (motor potente excede)</li>
+            <li data-correct="false">Adicionar nova missão de teste pra cenário de carga</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Baseline mudou porque hardware mudou — natural, basta documentar. Invariante físico (15 m/s²) era limite mecânico do x500 antigo; novo motor pode requerer 18 ou 20 m/s². Mudança = revisão de engenharia + ADR, não PR comum. Por isso separamos os dois."
+               data-incorrect-msg="Pense na hierarquia: baseline = 'esperamos isso, mas pode mudar'. Invariante = 'isso NUNCA deveria acontecer com nosso hardware'. Quando hardware muda fundamentalmente, invariante muda — e essa mudança precisa de processo mais pesado (ADR, eng. mecânica) que ajuste de baseline."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Checklist -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist do PR — usem antes de pedir review</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">5 perguntas que vocês podem fazer ao próprio PR antes do reviewer perguntar. Cobertura média desses 5 separa "PR sério" de "PR Friday".</p>
+          <div class="three-cards" style="grid-template-columns: repeat(5, 1fr); gap: 8px;">
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">1, FIRST</h4>
+              <p style="font-size: 0.58em;">Cada teste novo passa nos 5? Ou um deles tem sleep, ou estado, ou mensagem fraca?</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">2, Fixture</h4>
+              <p style="font-size: 0.58em;">Setup duplicado entre 2+ testes? Extraia. Scope correto? Teardown explícito?</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">3, Baseline vs invariante</h4>
+              <p style="font-size: 0.58em;">Asserção é ajustável ("threshold") ou imutável ("lei física")? Arquivo certo?</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">4, Mensagem</h4>
+              <p style="font-size: 0.58em;">Quando falhar, alguém em 3 meses entende a regra violada? Ou só vê <code>AssertionError</code>?</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">5, Valor</h4>
+              <p style="font-size: 0.58em;">Que regressão real esse teste pega? Se não souber dar exemplo concreto, talvez não precise existir.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Aplicação imediata</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Próximo PR do grupo: rodar esses 5 checks no próprio PR antes de marcar "ready for review". Reviewer vai apontar muito menos.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Auto-estudo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 10</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Aula 10 (Hermano, 28/05) é a última da sprint: <strong>esteira como guardiã da qualidade</strong>. Vai pegar tudo que vocês construíram (PR #1 verde, PR #2 com métricas, PR #3 com bons testes) e transformar em quality gates obrigatórios. Três provocações:</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, Continuous Delivery (Humble &amp; Farley)</h4>
+              <p>Capítulo 5, "Anatomia do pipeline de deployment". 30 min. Foco na seção sobre commit stage e acceptance test stage.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, GitHub Environments + branch protection</h4>
+              <p>Docs oficiais sobre required reviewers, required status checks, environments com approval. 20 min.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo, SonarQube quality gates</h4>
+              <p>"Configuring Quality Gates" — 18 min. Como Sonar bloqueia merge se métrica regrediu.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega desta aula, para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Print de um teste do grupo com a mensagem de asserção informativa (não-genérica) + uma frase respondendo: "qual antipattern foi mais comum no histórico de PRs do grupo?".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 09, Bons testes de integração, Sprint 03</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Até a próxima</h2>
+        <p>Aula 10, Esteira de CI como guardiã da qualidade, 28/05</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>

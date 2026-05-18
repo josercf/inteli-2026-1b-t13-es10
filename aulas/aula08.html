@@ -20,16 +20,7 @@
   <link rel="stylesheet" href="assets/css/inteli-print.css" />
 
   <style>
-    /* Layout local da Aula 08 */
-
-    .hint-caption {
-      color: var(--inteli-gray-dark);
-      font-size: 0.65em;
-      font-style: italic;
-      margin-top: 4px;
-    }
-
-    /* Grid 2 colunas comparativo */
+    /* Layout local da Aula 08 (PX4 + extração de métricas) */
     .compare-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -55,7 +46,6 @@
     }
     .compare-col li { margin-bottom: 3px; }
 
-    /* Grid 3 cards padrão */
     .three-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -80,265 +70,199 @@
     }
     .three-cards .card code { font-size: 0.88em; }
 
-    /* Grid 4 cards (4 métricas DORA) */
-    .four-cards {
+    /* DORA 4 keys grid */
+    .dora-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-top: 8px;
     }
-    .four-cards .card {
+    .dora-card {
       background: var(--inteli-bg-soft);
       border-radius: 10px;
-      padding: 10px 14px;
-      border-left: 3px solid var(--inteli-lilac);
+      padding: 10px 12px;
+      border-top: 3px solid var(--inteli-lilac);
     }
-    .four-cards .card .icon-num {
-      display: inline-block;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: var(--inteli-coral);
-      color: var(--inteli-white);
-      font-family: var(--inteli-mono, 'Space Mono', monospace);
-      font-size: 0.7em;
-      font-weight: 700;
-      text-align: center;
-      line-height: 26px;
-      margin-bottom: 4px;
-    }
-    .four-cards .card h4 {
-      font-size: 0.78em;
-      margin: 0 0 2px 0;
-      color: var(--inteli-purple-deep);
-      line-height: 1.2;
-    }
-    .four-cards .card .tag {
+    .dora-card.elite { border-top-color: var(--inteli-dark-green); }
+    .dora-card .label {
+      font-family: var(--inteli-mono, monospace);
       font-size: 0.55em;
       color: var(--inteli-gray-dark);
-      letter-spacing: 0.06em;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
       display: block;
       margin-bottom: 4px;
     }
-    .four-cards .card p {
-      font-size: 0.6em;
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    /* Métrica destacada (Big Stat) */
-    .metric-hero {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 18px;
-      margin-top: 8px;
-      align-items: stretch;
-    }
-    .metric-hero .stat {
-      background: linear-gradient(135deg, var(--inteli-purple-deep), var(--inteli-purple));
-      color: var(--inteli-white);
-      border-radius: 14px;
-      padding: 20px 22px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .metric-hero .stat .label {
-      font-family: var(--inteli-mono, 'Space Mono', monospace);
-      font-size: 0.6em;
-      color: var(--inteli-lilac);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .metric-hero .stat .value {
-      font-size: 1.6em;
-      font-weight: 800;
-      line-height: 1.05;
-      margin: 0 0 6px 0;
-      color: var(--inteli-white);
-    }
-    .metric-hero .stat .subtitle {
-      font-size: 0.66em;
-      color: rgba(255, 255, 255, 0.85);
-      line-height: 1.4;
-      margin: 0;
-    }
-    .metric-hero .body {
-      background: var(--inteli-bg-soft);
-      border-radius: 14px;
-      padding: 14px 18px;
-    }
-    .metric-hero .body h4 {
+    .dora-card h4 {
       font-size: 0.78em;
-      color: var(--inteli-coral);
       margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
     }
-    .metric-hero .body p {
-      font-size: 0.66em;
-      margin: 0 0 6px 0;
-      line-height: 1.45;
-    }
-    .metric-hero .body ul {
-      margin: 4px 0 0 0;
-      padding-left: 18px;
+    .dora-card p {
       font-size: 0.62em;
-      line-height: 1.45;
+      margin: 0;
+      line-height: 1.4;
     }
 
-    /* Bloco de pipeline coletor (com YAML/código) */
-    .pipeline-block {
+    /* Bloco YAML/JSON */
+    .yaml-block {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 12px;
       margin-top: 6px;
     }
-    .pipeline-block pre {
+    .yaml-block pre {
       margin: 0;
-      max-height: 540px;
-      overflow: hidden;
-      align-self: start;
+      font-size: 0.56em;
+      line-height: 1.4;
+      padding: 12px 14px;
     }
-    .pipeline-block pre code {
-      font-size: 0.55em !important;
-      line-height: 1.4 !important;
-      padding: 10px 14px !important;
-    }
-    .pipeline-block .annot {
+    .yaml-block .annot {
       background: var(--inteli-bg-soft);
       border-radius: 10px;
-      padding: 10px 14px;
+      padding: 8px 12px;
       font-size: 0.62em;
       line-height: 1.45;
     }
-    .pipeline-block .annot ol {
+    .yaml-block .annot ol {
       margin: 0;
       padding-left: 18px;
     }
-    .pipeline-block .annot li {
-      margin-bottom: 3px;
-    }
-    .pipeline-block .annot strong {
-      color: var(--inteli-coral);
-    }
+    .yaml-block .annot li { margin-bottom: 3px; }
+    .yaml-block .annot strong { color: var(--inteli-coral); }
 
-    /* Tabela DORA performers */
-    .dora-table {
+    /* Tabela de métricas (ULog → KPI) */
+    .metrics-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 8px;
-      font-size: 0.62em;
+      font-size: 0.66em;
     }
-    .dora-table th {
-      background: var(--inteli-purple-deep);
-      color: var(--inteli-white);
-      padding: 7px 10px;
-      text-align: left;
-      font-size: 0.92em;
-      letter-spacing: 0.04em;
-    }
-    .dora-table th.center, .dora-table td.center { text-align: center; }
-    .dora-table td {
+    .metrics-table th, .metrics-table td {
       padding: 6px 10px;
-      border-bottom: 1px solid var(--inteli-gray-light);
-      vertical-align: middle;
+      border-bottom: 1px solid var(--inteli-bg-soft);
+      text-align: left;
     }
-    .dora-table tr.elite td  { background: rgba(137, 206, 165, 0.18); }
-    .dora-table tr.high td   { background: rgba(144, 165, 229, 0.16); }
-    .dora-table tr.medium td { background: rgba(255, 213, 128, 0.18); }
-    .dora-table tr.low td    { background: rgba(255, 122, 122, 0.16); }
-    .dora-table .perf-tag {
-      font-family: var(--inteli-mono, 'Space Mono', monospace);
+    .metrics-table th {
+      background: var(--inteli-bg-soft);
+      color: var(--inteli-purple-deep);
       font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
       font-size: 0.95em;
     }
-    .dora-table .perf-elite  { color: var(--inteli-dark-green); }
-    .dora-table .perf-high   { color: var(--inteli-lilac); }
-    .dora-table .perf-medium { color: #c08a18; }
-    .dora-table .perf-low    { color: var(--inteli-coral); }
-
-    /* Output simulado de coletor */
-    .metric-output {
-      background: #1d1829;
-      color: #e6eaeb;
+    .metrics-table code {
       font-family: var(--inteli-mono, monospace);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 0.55em;
-      line-height: 1.45;
-      margin-top: 6px;
-      white-space: pre;
-      overflow-x: auto;
-    }
-    .metric-output .head { color: var(--inteli-lilac); font-weight: 700; }
-    .metric-output .ok   { color: #89cea5; font-weight: 700; }
-    .metric-output .warn { color: #ffd580; font-weight: 700; }
-    .metric-output .bad  { color: #ff7a7a; font-weight: 700; }
-    .metric-output .num  { color: #c586c0; }
-
-    /* Compact exercise */
-    .exercise-slide.compact {
-      padding: 48px 60px 40px 60px;
-    }
-    .exercise-slide.compact h2 {
-      font-size: 1.4em;
-      margin: 0 0 10px 0;
-    }
-    .exercise-slide.compact .exercise-tag {
-      margin-bottom: 8px;
-    }
-    .exercise-slide.compact .exercise-steps li {
-      padding: 7px 10px 7px 46px;
-      margin-bottom: 6px;
-      font-size: 0.66em;
-      line-height: 1.45;
-    }
-    .exercise-slide.compact .exercise-steps li::before {
-      width: 24px; height: 24px;
-      top: 7px; left: 12px;
-      font-size: 0.8em;
-    }
-    .exercise-slide.compact .hint-caption {
-      font-size: 0.62em;
-      margin-top: 10px !important;
+      font-size: 0.92em;
+      color: var(--inteli-coral);
     }
 
-    /* Anti-padrões grid */
-    .anti-grid {
+    /* Pipeline com novo stage destacado */
+    .pipeline-flow {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
       margin-top: 8px;
     }
-    .anti-card {
+    .pipeline-step {
       background: var(--inteli-bg-soft);
       border-radius: 10px;
-      padding: 10px 14px;
-      border-top: 3px solid var(--inteli-coral);
+      padding: 10px 12px;
+      border-top: 3px solid var(--inteli-lilac);
     }
-    .anti-card h4 {
-      font-size: 0.74em;
-      margin: 0 0 4px 0;
-      color: var(--inteli-purple-deep);
+    .pipeline-step.new {
+      border-top-color: var(--inteli-coral);
+      background: #fff3d4;
     }
-    .anti-card .tag {
-      font-size: 0.52em;
-      color: var(--inteli-coral);
+    .pipeline-step .step-num {
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       display: block;
-      margin-bottom: 3px;
-      font-weight: 700;
+      margin-bottom: 4px;
     }
-    .anti-card p {
+    .pipeline-step h4 {
+      font-size: 0.74em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .pipeline-step p { font-size: 0.58em; margin: 0; line-height: 1.4; }
+
+    /* Comentário PR mockup */
+    .pr-comment {
+      background: #fafbfc;
+      border: 1px solid var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.66em;
+      margin-top: 8px;
+    }
+    .pr-comment h4 {
+      font-size: 1.1em;
+      margin: 0 0 8px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .pr-comment table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92em;
+    }
+    .pr-comment table td, .pr-comment table th {
+      padding: 4px 8px;
+      border-bottom: 1px solid var(--inteli-bg-soft);
+    }
+    .pr-comment table th { background: var(--inteli-bg-soft); }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Screenshots reais */
+    .real-shot {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--inteli-lilac);
+      background: var(--inteli-bg-soft);
+      max-width: 100%;
+      position: relative;
+    }
+    .real-shot img { display: block; width: 100%; height: auto; }
+    .real-shot figcaption {
       font-size: 0.6em;
-      margin: 0;
-      line-height: 1.4;
+      padding: 6px 10px;
+      background: var(--inteli-purple-deep);
+      color: white;
+      font-family: var(--inteli-mono, monospace);
     }
+    .real-shot.pending {
+      min-height: 80px;
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .real-shot.pending::after {
+      content: "📸 print pendente: " attr(data-name);
+      color: var(--inteli-gray-dark);
+      font-style: italic;
+      font-size: 0.7em;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending img { display: none; }
   </style>
+  <script>
+    window.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && e.target.closest('.real-shot')) {
+        e.target.closest('.real-shot').classList.add('pending');
+      }
+    }, true);
+  </script>
 </head>
 <body>
   <div class="reveal">
@@ -348,9 +272,9 @@
       <section class="cover-slide">
         <div class="top-bar"></div>
         <div class="cover-content">
-          <span class="sprint-tag">Sprint 03, Observabilidade e métricas</span>
+          <span class="sprint-tag">Sprint 03, CD e métricas</span>
           <h1>Extraindo métricas do pipeline de CI/CD</h1>
-          <p class="subtitle">Hello World no ar, pipeline verde, deploy automático. Próxima pergunta inevitável: como saber se a esteira está boa? DORA aplicado no que vocês acabaram de construir.</p>
+          <p class="subtitle">Pipeline verde já temos. Agora: o drone voou ou não? A trajetória ficou boa? Quanto custou? Hoje extraímos KPIs reais do ULog do PX4 e plugamos no pipeline.</p>
           <div class="cover-meta">
             <strong>Aula</strong><span>08 de 14</span>
             <strong>Data</strong><span>22 de maio de 2026, sexta-feira, 10h00 às 12h00</span>
@@ -370,22 +294,23 @@
           <h2>Agenda da aula</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 10px;">Vocês leram os 4 auto-estudos (CI/CD da Atlassian, métricas DevOps, Four Keys e o post sobre testes de integração). Hoje a gente pega DORA, que apareceu na Aula 03 como conceito, e aplica na esteira concreta que o Hermano fechou na Aula 07.</p>
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Aula 07 fechou com pipeline verde + imagem GHCR. Hoje pegamos a saída desse pipeline (binário SITL) e extraímos métricas operacionais reais — tanto métricas de processo (DORA) quanto de domínio (drone). Walkthrough do PR #2.</p>
           <table>
             <thead>
               <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
             </thead>
             <tbody>
-              <tr><td>10h00, Daily Time</td><td>Check-in da Sprint 03, cronômetro de 15 min</td><td>15 min</td></tr>
-              <tr><td>10h15, Bloco 1</td><td>As 4 métricas DORA aplicadas no pipeline real</td><td>25 min</td></tr>
-              <tr><td>10h40, Bloco 2</td><td>Como extrair: API GitLab, GitHub Actions, hands-on</td><td>50 min</td></tr>
-              <tr><td>11h30, Bloco 3</td><td>Decidir com base no número, classificação DORA, anti-padrões</td><td>20 min</td></tr>
-              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo da Aula 09</td><td>10 min</td></tr>
+              <tr><td>10h00, Daily Time</td><td>Check-in: rodaram o PR #1? Esteira ficou verde no fork?</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>Por que medir o pipeline — DORA + métricas de domínio</td><td>25 min</td></tr>
+              <tr><td>10h40, Bloco 2</td><td>ULog: como o PX4 grava + pyulog parser + KPIs</td><td>25 min</td></tr>
+              <tr><td>11h05, Bloco 3</td><td>Walkthrough do PR #2 — mission-test + PR comment</td><td>30 min</td></tr>
+              <tr><td>11h35, Bloco 4</td><td>Hands-on: interpretar métricas reais de um PR</td><td>15 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo Aula 09</td><td>10 min</td></tr>
             </tbody>
           </table>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">02</div>
         </div>
       </section>
@@ -395,7 +320,7 @@
         <span class="daily-tag">Daily, 15 min</span>
         <h2>Daily Time</h2>
         <p class="daily-subtitle">
-          Sprint 03 começou. Quem teve trabalho pra subir o Hello World do Hermano fala primeiro. Quem ainda está com pipeline travado fala em seguida. Uma frase por grupo, sem rodeio.
+          Vocês exploraram o demo da Aula 07? Conseguiram clonar/fork? Rodaram o pipeline no próprio fork? Achado mais interessante quando abriram o PR? Uma volta rápida, uma frase por grupo.
         </p>
         <div class="inteli-timer" data-minutes="15">
           <div class="inteli-timer-display">15:00</div>
@@ -416,826 +341,717 @@
           <h2>Objetivos de aprendizagem</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim da aula, cada grupo sai com as 4 métricas DORA calculadas a partir do próprio repositório, um número de cada uma anotado em planilha e a cabeça calibrada para decidir o que fazer com isso. Quatro verbos, quatro entregas.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim desta aula, cada grupo entende a diferença entre métricas de processo (DORA) e de domínio, identifica os 4 keys DORA aplicados ao demo, lê uma análise ULog e consegue interpretar a tabela de KPIs que aparece como comentário no PR.</p>
           <div class="concept-cards">
             <div class="concept-card">
-              <h4>Definir</h4>
-              <p>Explicar as 4 métricas DORA (Lead Time, Deploy Frequency, Change Failure Rate, MTTR) em uma frase cada, com fonte de dado correspondente no pipeline.</p>
+              <h4>Distinguir</h4>
+              <p>Separar métricas de processo (DORA, "como o time entrega") de métricas de domínio ("como o produto se comporta").</p>
             </div>
             <div class="concept-card">
-              <h4>Extrair</h4>
-              <p>Coletar dados da API do GitLab ou do GitHub Actions e calcular um valor real para cada métrica do projeto da sprint.</p>
+              <h4>Identificar</h4>
+              <p>Mapear os 4 keys DORA — Deployment Frequency, Lead Time, MTTR, Change Failure Rate — em sinais visíveis do pipeline do demo.</p>
             </div>
             <div class="concept-card">
-              <h4>Classificar</h4>
-              <p>Posicionar o resultado do grupo na tabela DORA (elite, high, medium, low) e justificar a posição em uma frase.</p>
+              <h4>Ler</h4>
+              <p>Interpretar tópicos do ULog (vehicle_local_position, vehicle_acceleration, battery_status) e os KPIs derivados.</p>
             </div>
             <div class="concept-card">
-              <h4>Decidir</h4>
-              <p>Identificar a métrica mais fraca e propor uma ação concreta de melhoria para a próxima sprint.</p>
+              <h4>Reconhecer</h4>
+              <p>Identificar quando uma métrica está sinalizando regressão real vs ruído normal do simulador.</p>
             </div>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">03</div>
-        </div>
-      </section>
-
-      <!-- 05, Ponte com Aulas anteriores -->
-      <section class="content-slide">
-        <div class="top-bar"></div>
-        <span class="inteli-logo-header inteli-wordmark">inteli</span>
-        <div class="slide-title-area">
-          <div class="accent-bar"></div>
-          <h2>O que vocês acabaram de construir, em uma linha</h2>
-        </div>
-        <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Cinco aulas para chegar até aqui. Da Aula 03 vocês trazem DORA como ideia. Das Aulas 05, 06 e 07 vocês trazem uma esteira que faz commit, lint, scan, build, push e deploy. Hoje DORA deixa de ser slide do livro e vira número do projeto.</p>
-          <div class="three-cards">
-            <div class="card">
-              <h4>Aula 03, conceito</h4>
-              <p>4 métricas, 4 chaves, classificação por performance. Tudo no quadro, nada no código. Vocês entenderam, mas não mediram.</p>
-            </div>
-            <div class="card">
-              <h4>Aulas 05 e 06, CI</h4>
-              <p>Hook local, scan de secret, SAST no pipeline, build em container, gate de qualidade. Cada commit gera dado mensurável.</p>
-            </div>
-            <div class="card">
-              <h4>Aula 07, CD</h4>
-              <p>GitHub Actions sobe o build pra EC2 sem mão humana. Cada deploy é um evento gravado com timestamp.</p>
-            </div>
-          </div>
-          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A virada de hoje</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Cada job do pipeline registra início, fim, status, branch, autor. Cada deployment registra commit, ambiente, sucesso. Esses dados existem. A pergunta não é "tem como medir?", é "vocês estão olhando?". Spoiler: a maioria das equipes não está.</p>
-          </div>
-        </div>
-        <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">04</div>
         </div>
       </section>
 
-      <!-- 06, Por que medir -->
+      <!-- 05, Recap Aula 07 -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Por que medir o pipeline, mesmo</h2>
+          <h2>Onde paramos na Aula 07</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Tem time bom que não mede e segue funcionando. Tem time medindo a coisa errada e tomando decisão pior. Por que vale o trabalho? Três motivos pragmáticos, sem discurso de gestão.</p>
-          <div class="three-cards">
-            <div class="card">
-              <h4>Visibilidade</h4>
-              <p>Sem dado, "está tudo bem" é vibe. Com dado, você sabe que o lead time dobrou na semana, que change failure rate subiu de 8% pra 22%, que tem deploy quebrando às quintas.</p>
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Pipeline mínimo de 4 jobs: lint, sonar, build SITL, deploy-dev. Imagem PX4 publicada no GHCR a cada commit. <strong>Mas nenhuma daquelas etapas mediu o sistema rodando.</strong> Build "verde" só significa "compilou + 1 teste de heartbeat passou". Saúde real do drone é outra coisa.</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>O que o pipeline da Aula 07 já garantia</h4>
+              <ul>
+                <li>Código passa em ruff/black/mypy</li>
+                <li>Testes unit verdes</li>
+                <li>Imagem PX4 SITL builda</li>
+                <li>MAVSDK conecta no PX4 (heartbeat)</li>
+              </ul>
             </div>
-            <div class="card">
-              <h4>Argumento</h4>
-              <p>Pedir tempo pra refatorar sem número é fácil de negar. Pedir tempo pra refatorar dizendo que MTTR subiu para 4h é conversa diferente. Métrica é alavanca de prioridade.</p>
-            </div>
-            <div class="card">
-              <h4>Aprendizado</h4>
-              <p>Comparar Sprint atual com Sprint anterior só funciona se você guardou o número. Memória humana é péssima nisso. Métrica é memória externa do time.</p>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>O que NÃO sabíamos ainda</h4>
+              <ul>
+                <li>Drone decola e pousa direito?</li>
+                <li>Trajetória bate com waypoints planejados?</li>
+                <li>Altitude oscila demais em cruzeiro?</li>
+                <li>Gasto de bateria está fora do baseline?</li>
+                <li>Tem regressão de performance no controle?</li>
+              </ul>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Cuidado já avisado</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Toda métrica vira meta de jeito errado se você não tomar cuidado. A Lei de Goodhart fala isso: "quando uma medida vira alvo, ela deixa de ser uma boa medida". A gente volta nesse ponto no Bloco 3, com anti-padrões reais.</p>
+            <h4 style="margin: 0 0 2px;">A pergunta que abre a aula</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Build verde é necessário. Não é suficiente. Como medir aquilo que o pipeline construiu de fato? É o tema de hoje.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">05</div>
         </div>
       </section>
 
-      <!-- 07, Separador Bloco 1 -->
+      <!-- 06, Separador Bloco 1 -->
       <section class="section-slide">
         <span class="section-number">Bloco 1, 25 min</span>
-        <h2>As 4 métricas DORA, agora com endereço</h2>
-        <p class="section-description">Cada métrica, definição em uma frase, fonte exata de dado no pipeline e o que ela detecta cedo.</p>
+        <h2>Por que medir o pipeline — DORA + domínio</h2>
+        <p class="section-description">Métricas de processo (como o time entrega) e métricas de domínio (como o produto se comporta). Não basta um só.</p>
       </section>
 
-      <!-- 08, Visão geral DORA aplicado -->
+      <!-- 07, Build verde vs realidade -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Quatro métricas, dois eixos, uma régua</h2>
+          <h2>"Pipeline verde" engana</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">DORA reduz a saúde de uma esteira a 4 números. Duas medem velocidade de entrega, duas medem estabilidade. Time saudável vai bem nos 4. Quem está enviesado em um eixo geralmente está sacrificando o outro.</p>
-          <div class="four-cards">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">Pipeline verde diz "o build não quebrou e os testes que você escreveu passaram". Não diz nada sobre regressão de performance, energia, comportamento dinâmico. Em firmware, isso é a diferença entre passar no QA e cair em campo.</p>
+          <div class="three-cards">
             <div class="card">
-              <span class="icon-num">1</span>
-              <span class="tag">velocidade</span>
-              <h4>Lead Time for Changes</h4>
-              <p>Tempo entre commit no main e o mesmo código em produção. Mede quanto leva pra ideia virar release.</p>
+              <h4>Caso clássico 1</h4>
+              <p>Build verde, lint verde. Mas controle de altitude oscila 1.5m mais que antes. Drone fica menos estável em vento real. <strong>Pipeline não vê.</strong></p>
             </div>
             <div class="card">
-              <span class="icon-num">2</span>
-              <span class="tag">velocidade</span>
-              <h4>Deployment Frequency</h4>
-              <p>Quantos deploys de produção por dia, semana, mês. Mede ritmo do time em entregar valor.</p>
+              <h4>Caso clássico 2</h4>
+              <p>Testes unit verdes, SAST verde. Mas missão demora 12% mais que baseline. Bateria não chega na próxima missão. Custo de operação aumenta. <strong>Pipeline não vê.</strong></p>
             </div>
             <div class="card">
-              <span class="icon-num">3</span>
-              <span class="tag">estabilidade</span>
-              <h4>Change Failure Rate</h4>
-              <p>Porcentagem de deploys que precisaram de hotfix, rollback ou patch de incidente. Mede qualidade do que sobe.</p>
-            </div>
-            <div class="card">
-              <span class="icon-num">4</span>
-              <span class="tag">estabilidade</span>
-              <h4>Time to Restore (MTTR)</h4>
-              <p>Tempo entre alerta de incidente e serviço de volta no ar. Mede capacidade de reagir quando quebra.</p>
+              <h4>Caso clássico 3</h4>
+              <p>SITL conecta, drone arma. Mas aceleração instantânea durante curva chegou em 18 m/s² (limite mecânico: 15). Hardware desgasta mais rápido. <strong>Pipeline não vê.</strong></p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A pergunta que estes números respondem</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">"Esse time entrega rápido?" (1 e 2). "Esse time entrega bem?" (3 e 4). Time de elite faz os dois, e a literatura DORA mostra que essa combinação é um indicador forte de produtividade do negócio inteiro, não só do dev.</p>
+            <h4 style="margin: 0 0 2px;">A inversão da aula</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Em vez de pedir que o dev "rode o simulador e olhe", colocamos a métrica como artefato do pipeline. Quem propõe a mudança vê o impacto medido no PR. Sem isso, todo julgamento de "está bom?" é opinativo.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">06</div>
-        </div>
-      </section>
-
-      <!-- 09, Lead Time for Changes -->
-      <section class="content-slide">
-        <div class="top-bar"></div>
-        <span class="inteli-logo-header inteli-wordmark">inteli</span>
-        <div class="slide-title-area">
-          <div class="accent-bar"></div>
-          <h2>Métrica 1, Lead Time for Changes</h2>
-        </div>
-        <div class="slide-body">
-          <div class="metric-hero">
-            <div class="stat">
-              <span class="label">Lead Time</span>
-              <p class="value">commit → prod</p>
-              <p class="subtitle">Tempo cronológico, da mesclagem no main até a build estar atendendo tráfego em produção.</p>
-            </div>
-            <div class="body">
-              <h4>Como calcular no projeto da Sprint</h4>
-              <p>Para cada commit que entrou no main nas últimas 4 semanas, anote o timestamp do merge e o timestamp do deployment do Hello World que continha aquele commit. A diferença é o lead time daquele commit. Lead time da equipe = mediana dos valores.</p>
-              <ul>
-                <li><strong>Fonte t1:</strong> evento de merge (GitLab MR, GitHub PR)</li>
-                <li><strong>Fonte t2:</strong> evento de deploy bem-sucedido (workflow run com status success no env de prod)</li>
-                <li><strong>Fórmula:</strong> mediana(t2 - t1) sobre os últimos 30 dias</li>
-              </ul>
-            </div>
-          </div>
-          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Por que mediana e não média</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Lead time é uma distribuição assimétrica. A maioria dos commits sobe rápido, alguns ficam parados por release window, feature flag, fila do QA. Uma média é puxada pelos outliers. Mediana representa a experiência típica do dev.</p>
-          </div>
-        </div>
-        <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">07</div>
         </div>
       </section>
 
-      <!-- 10, Deployment Frequency -->
+      <!-- 08, DORA 4 keys -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Métrica 2, Deployment Frequency</h2>
+          <h2>DORA: os 4 keys que medem como o time entrega</h2>
         </div>
         <div class="slide-body">
-          <div class="metric-hero">
-            <div class="stat" style="background: linear-gradient(135deg, var(--inteli-coral), var(--inteli-purple-deep));">
-              <span class="label">Deploy Frequency</span>
-              <p class="value">deploys / dia</p>
-              <p class="subtitle">Frequência com que o time consegue colocar mudança nova em produção, com sucesso.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">DORA Research Program (Google Cloud) é o framework mais usado pra medir performance de engenharia. 4 métricas, agrupadas em duas dimensões (velocidade e estabilidade). Elite teams brilham nas 4.</p>
+          <div class="dora-grid">
+            <div class="dora-card">
+              <span class="label">Velocidade</span>
+              <h4>Deployment Frequency</h4>
+              <p>Quantas vezes por semana/dia você consegue deployar. Elite: várias por dia. Nosso demo: 1× por PR mergeado.</p>
             </div>
-            <div class="body">
-              <h4>Como calcular no projeto da Sprint</h4>
-              <p>Conte quantos workflow runs do GitHub Actions (ou pipelines do GitLab) terminaram com status <code>success</code> e tiveram step de deploy nas últimas 4 semanas. Divida pelo número de dias úteis. Aproximação boa de "quantas vezes por dia o time consegue subir mudança".</p>
-              <ul>
-                <li><strong>Numerador:</strong> deployments_success_count(últimos 30 dias)</li>
-                <li><strong>Denominador:</strong> dias úteis no período</li>
-                <li><strong>Cuidado:</strong> deploy só de doc não conta, deploy de hotfix conta</li>
-              </ul>
+            <div class="dora-card">
+              <span class="label">Velocidade</span>
+              <h4>Lead Time for Changes</h4>
+              <p>Tempo entre commit e código em produção. Elite: &lt;1h. Demo: ~5min (lint + build + deploy).</p>
+            </div>
+            <div class="dora-card elite">
+              <span class="label">Estabilidade</span>
+              <h4>Change Failure Rate</h4>
+              <p>% de deploys que causam incidente. Elite: &lt;15%. Demo: 0% até agora (PR #1 verde).</p>
+            </div>
+            <div class="dora-card elite">
+              <span class="label">Estabilidade</span>
+              <h4>MTTR (Time to Restore)</h4>
+              <p>Tempo de detectar + corrigir um incidente. Elite: &lt;1h. Demo: rollback via re-tag GHCR (~2min).</p>
             </div>
           </div>
-          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A leitura correta</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Deploy frequency alto sozinho não significa nada. Time pode subir 20 deploys por dia e cada um quebrando. O número só faz sentido cruzado com Change Failure Rate. Quando os dois andam bem, aí vocês têm sinal de saúde de verdade.</p>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Onde DORA falha sozinho</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">DORA mede o <em>processo</em>. Não mede <em>se o software faz a coisa certa</em>. Em firmware, "deployei 5× hoje" sem medir o drone voando é estatística vazia. Por isso adicionamos métricas de domínio.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">08</div>
         </div>
       </section>
 
-      <!-- 11, Change Failure Rate -->
+      <!-- 09, Métricas de domínio (drone) -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Métrica 3, Change Failure Rate</h2>
+          <h2>Métricas de domínio: drone-specific</h2>
         </div>
         <div class="slide-body">
-          <div class="metric-hero">
-            <div class="stat" style="background: linear-gradient(135deg, var(--inteli-purple), var(--inteli-coral));">
-              <span class="label">CFR</span>
-              <p class="value">% deploys ruins</p>
-              <p class="subtitle">Porção dos deploys de produção que precisaram de patch, rollback ou hotfix dentro de uma janela curta.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">DORA cuida do "como o time entrega". Métricas de domínio cuidam do "o que foi entregue se comporta como deveria". No demo de hoje, são extraídas do ULog gerado pelo PX4 durante a missão automática.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Performance física</h4>
+              <p><code>max_acceleration_m_s2</code> — pico de aceleração instantânea. Excede limite mecânico? Hardware desgasta mais rápido.</p>
             </div>
-            <div class="body">
-              <h4>Como calcular no projeto da Sprint</h4>
-              <p>Marcar todo deploy que foi seguido por outro com a tag <code>fix:</code> ou <code>hotfix:</code> em até 24 horas, ou que disparou rollback. Dividir pelo total de deploys. Convenção de commit semântico (Aula 02) é o que torna isso medível sem trabalho manual.</p>
-              <ul>
-                <li><strong>Sinal forte:</strong> rollback automático no workflow</li>
-                <li><strong>Sinal médio:</strong> commit com tipo <code>fix:</code> em &lt;24h</li>
-                <li><strong>Sinal fraco:</strong> issue aberta marcada como bug</li>
-              </ul>
+            <div class="card">
+              <h4>Qualidade de controle</h4>
+              <p><code>std_altitude_cruise_m</code> — desvio padrão de altitude em cruzeiro. Alto = controlador instável, drone oscila visivelmente.</p>
+            </div>
+            <div class="card">
+              <h4>Eficiência</h4>
+              <p><code>max_battery_drop_pct</code> — maior queda de bateria entre amostras. Cresce → controle gastando mais energia → autonomia cai.</p>
             </div>
           </div>
-          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A faixa saudável</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">DORA Report 2023 coloca elite abaixo de 5%. Time mediano vive entre 16% e 30%. Acima de 30%, é bem provável que o pipeline esteja deixando passar coisa que SAST e teste de integração deveriam pegar. Vai dialogar com a Aula 09 do Hermano.</p>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Princípio operacional</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Cada métrica desses precisa ter <em>baseline</em> (valor esperado) e <em>threshold</em> (limite que aciona alarme). Sem isso, número é só decoração. A Aula 10 (Hermano) transforma esses thresholds em gates obrigatórios.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">09</div>
         </div>
       </section>
 
-      <!-- 12, MTTR -->
-      <section class="content-slide">
-        <div class="top-bar"></div>
-        <span class="inteli-logo-header inteli-wordmark">inteli</span>
-        <div class="slide-title-area">
-          <div class="accent-bar"></div>
-          <h2>Métrica 4, Time to Restore Service (MTTR)</h2>
-        </div>
-        <div class="slide-body">
-          <div class="metric-hero">
-            <div class="stat" style="background: linear-gradient(135deg, var(--inteli-dark-green), var(--inteli-purple-deep));">
-              <span class="label">MTTR</span>
-              <p class="value">alerta → ok</p>
-              <p class="subtitle">Tempo médio entre o serviço entrar em estado de incidente e voltar a operar normalmente.</p>
-            </div>
-            <div class="body">
-              <h4>Como calcular no projeto da Sprint</h4>
-              <p>Para cada incidente registrado (CFR &gt; 0), anote o timestamp do detect (alerta, issue, log) e o timestamp do recovered (deploy de fix com sucesso). MTTR = mediana(t_recover - t_detect). No projeto da sprint, o &quot;alerta&quot; pode ser simplesmente "horário em que alguém percebeu".</p>
-              <ul>
-                <li><strong>t_detect:</strong> primeiro sinal (issue aberta, alarme, ping no Slack)</li>
-                <li><strong>t_recover:</strong> deploy bem-sucedido que resolve</li>
-                <li><strong>Coleta manual:</strong> tabela simples já serve no início</li>
-              </ul>
-            </div>
-          </div>
-          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A pegadinha do MTTR</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">MTTR baixo não significa que sua aplicação é robusta. Significa que vocês reagem rápido. Aplicação que nunca quebra tem MTTR indefinido (e é o caso desejado). MTTR vale como contrapeso de Change Failure Rate: se CFR é inevitavelmente alto em algum trecho, MTTR baixo segura o estrago.</p>
-          </div>
-        </div>
-        <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">10</div>
-        </div>
-      </section>
-
-      <!-- 13, Separador Bloco 2 -->
+      <!-- 10, Separador Bloco 2 -->
       <section class="section-slide">
-        <span class="section-number">Bloco 2, 50 min</span>
-        <h2>Como extrair, na prática</h2>
-        <p class="section-description">Onde os dados moram, como pedir via API e como rodar o coletor no pipeline do grupo.</p>
+        <span class="section-number">Bloco 2, 25 min</span>
+        <h2>ULog: como o PX4 grava + pyulog + KPIs</h2>
+        <p class="section-description">Onde a telemetria mora, como ler binário do PX4 em Python, e como reduzir séries temporais em KPIs do PR comment.</p>
       </section>
 
-      <!-- 14, Onde os dados moram -->
+      <!-- 11, O que é ULog -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Onde os dados de DORA já estão guardados</h2>
+          <h2>O que é ULog</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Boa notícia: nenhum dado novo precisa ser inventado. As 4 métricas saem todas de coisas que o pipeline já registra hoje. A questão é saber em qual API perguntar e como filtrar.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">ULog é o formato de log binário do PX4 — extensão <code>.ulg</code>. Não é texto: é estruturado, com header, schema de tópicos, e arrays binários de amostras. Cada subsystema do PX4 emite seu tópico em frequência própria. Após uma missão, o arquivo tem centenas de tópicos, milhares de amostras cada.</p>
           <div class="three-cards">
             <div class="card">
-              <h4>Plataforma de CI/CD</h4>
-              <p>GitLab pipelines, GitHub Actions workflow runs, CircleCI jobs. Cada execução tem id, status, started_at, finished_at, ref, commit. Lead time e Deploy Frequency saem daqui.</p>
+              <h4>Estrutura</h4>
+              <p>Header → definições de tópicos (cada um vira uma "tabela") → fluxo de mensagens cronológicas. Compacto: missão de 90s gera ~2-5MB.</p>
             </div>
             <div class="card">
-              <h4>Convenção de commit</h4>
-              <p>Conventional Commits (Aula 02). Tipo <code>fix:</code>, <code>hotfix:</code>, footer <code>BREAKING CHANGE</code>. CFR depende dessa disciplina pra funcionar sem catalogação manual.</p>
+              <h4>Onde mora</h4>
+              <p>SITL: <code>build/px4_sitl_default/rootfs/log/&lt;data&gt;/&lt;hora&gt;.ulg</code>. Hardware: cartão SD do controlador. Nosso docker compose monta volume compartilhado.</p>
             </div>
             <div class="card">
-              <h4>Sistema de incidente</h4>
-              <p>Issue tracker (GitLab Issues, GitHub Issues, Jira). Label <code>incident</code> ou <code>p0</code>, timestamp de open e close. MTTR sai daqui na primeira aproximação.</p>
+              <h4>Quem usa</h4>
+              <p>Toda análise pós-voo: flight review online (logs.px4.io), nossa pipeline. Estrutura aberta — qualquer um pode parsear sem PX4 instalado.</p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Estratégia de hoje</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Pra Aula 08 vamos focar nos 2 primeiros (CI/CD platform + convenção de commit). Eles entregam 3 das 4 métricas. MTTR a gente faz manual na planilha, suficiente pra discussão. Sistema de incidente robusto fica pra quando vocês forem para Sprint 04.</p>
+            <h4 style="margin: 0 0 2px;">Auto-estudo cobriu o formato</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">A doc oficial do ULog format (PX4 docs) descreve o layout binário em detalhes. Para o demo, não precisamos do baixo nível — usamos <code>pyulog</code>, biblioteca Python que abstrai tudo.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">11</div>
         </div>
       </section>
 
-      <!-- 15, API GitLab -->
+      <!-- 12, Tópicos que importam -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>API do GitLab, pipelines e jobs</h2>
+          <h2>Os 3 tópicos PX4 que usamos</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.7em; margin: 0 0 6px;">GitLab expõe REST simples em <code>/api/v4</code>. Token pessoal com escopo <code>read_api</code> resolve. A chamada abaixo lista as últimas 30 execuções e devolve os campos que importam pra DORA.</p>
-          <div class="pipeline-block">
-            <pre><code class="language-bash"># Lista pipelines recentes do projeto
-GL=https://gitlab.inteli.edu.br/api/v4
-curl -H "PRIVATE-TOKEN: $TOKEN" \
-  "$GL/projects/$PID/pipelines?per_page=30&amp;ref=main"
-
-# Resposta (recortada)
-[
-  {
-    "id": 1247,
-    "status": "success",
-    "ref": "main",
-    "sha": "a3f9c1b",
-    "created_at": "2026-05-19T10:14:22Z",
-    "updated_at": "2026-05-19T10:21:08Z",
-    "web_url": "..."
-  },
-  ...
-]</code></pre>
-            <div class="annot">
-              <p style="margin: 0 0 6px; font-weight: 700;">O que tirar disto</p>
-              <ol>
-                <li><strong>status</strong>: filtrar por <code>success</code> pra contar deploy</li>
-                <li><strong>created_at, updated_at</strong>: duração do pipeline</li>
-                <li><strong>sha</strong>: cruzar com timestamp de merge do MR</li>
-                <li><strong>ref</strong>: filtrar só <code>main</code> pra DORA</li>
-              </ol>
-              <p style="font-size: 0.92em; margin: 6px 0 0; color: var(--inteli-gray-dark);">Endpoint <code>/projects/:id/merge_requests/:iid</code> dá <code>merged_at</code>. É o t1 do Lead Time.</p>
-            </div>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">PX4 v1.16 grava ~70 tópicos por missão. Para os 5 KPIs do PR #2, precisamos só de 3.</p>
+          <table class="metrics-table">
+            <thead>
+              <tr>
+                <th>Tópico ULog</th>
+                <th>Campos usados</th>
+                <th>KPI derivado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>vehicle_local_position</code></td>
+                <td><code>timestamp</code> (us), <code>z</code> (m, NED — negativo = altitude)</td>
+                <td><code>mission_duration_s</code>, <code>max_altitude_m</code>, <code>mean_altitude_m</code>, <code>std_altitude_cruise_m</code></td>
+              </tr>
+              <tr>
+                <td><code>vehicle_acceleration</code></td>
+                <td><code>xyz[0..2]</code> (m/s²)</td>
+                <td><code>max_acceleration_m_s2</code> = pico do módulo √(x²+y²+z²)</td>
+              </tr>
+              <tr>
+                <td><code>battery_status</code></td>
+                <td><code>remaining</code> (0.0-1.0)</td>
+                <td><code>max_battery_drop_pct</code> = maior delta consecutivo</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que altitude é "z negativo"</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">PX4 usa convenção NED (North-East-Down). <code>z</code> aponta para baixo. Drone subindo → z diminui → altitude positiva = <code>-z</code>. Detalhe que pega muito dev iniciante.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">12</div>
         </div>
       </section>
 
-      <!-- 16, API GitHub Actions -->
+      <!-- 13, pyulog parser -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>API do GitHub Actions, workflow runs</h2>
+          <h2>pyulog: o parser que faz o trabalho duro</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.7em; margin: 0 0 6px;">Mesma ideia, sintaxe diferente. A esteira do Hermano (Aula 07) roda em GitHub Actions. Token de Personal Access (escopo <code>actions:read</code>) e a chamada abaixo entrega os dados.</p>
-          <div class="pipeline-block">
-            <pre><code class="language-bash"># Lista runs do workflow de deploy
-GH=https://api.github.com
-curl -H "Authorization: Bearer $TOKEN" \
-  "$GH/repos/$REPO/actions/workflows/deploy.yml/runs?per_page=30&amp;branch=main"
+          <div class="yaml-block">
+<pre><code class="language-python"># tools/extract_metrics.py — trecho
+from pyulog import ULog
 
-# Resposta (recortada)
-{
-  "workflow_runs": [
-    {
-      "id": 8821534,
-      "name": "Deploy to EC2",
-      "status": "completed",
-      "conclusion": "success",
-      "head_sha": "a3f9c1b",
-      "run_started_at": "2026-05-20T14:02:11Z",
-      "updated_at": "2026-05-20T14:09:47Z"
-    }
-  ]
-}</code></pre>
+log = ULog(str(ulog_path))
+
+def get_topic(name: str):
+    for d in log.data_list:
+        if d.name == name:
+            return d
+    return None
+
+pos = get_topic("vehicle_local_position")
+if pos is not None:
+    timestamps_s = [t / 1e6 for t in pos.data["timestamp"].tolist()]
+    # z é NED → altitude = -z
+    altitudes_m = [-z for z in pos.data["z"].tolist()]
+
+accel = get_topic("vehicle_acceleration")
+if accel is not None:
+    xs = accel.data["xyz[0]"].tolist()
+    ys = accel.data["xyz[1]"].tolist()
+    zs = accel.data["xyz[2]"].tolist()
+    accel_modules = [math.sqrt(x*x + y*y + z*z)
+                     for x, y, z in zip(xs, ys, zs)]</code></pre>
             <div class="annot">
-              <p style="margin: 0 0 6px; font-weight: 700;">Diferenças que importam</p>
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Padrões na leitura</p>
               <ol>
-                <li><strong>conclusion</strong> = <code>success</code> é o filtro real</li>
-                <li><strong>run_started_at, updated_at</strong>: duração do run</li>
-                <li><strong>head_sha</strong>: igual ao GitLab, cruza com PR</li>
-                <li><strong>workflow_id</strong>: filtra só o de deploy</li>
+                <li><strong>get_topic helper</strong>: pyulog devolve uma lista. Não tem dicionário direto por nome.</li>
+                <li><strong>timestamp / 1e6</strong>: PX4 usa microssegundos. Convertemos pra segundos pra ficar legível.</li>
+                <li><strong>NED → altitude</strong>: <code>-z</code>. Detalhe crítico — confundir aqui faz o KPI ficar negativo.</li>
+                <li><strong>módulo da aceleração</strong>: √(x²+y²+z²). Norma euclidiana — magnitude independente da direção.</li>
+                <li><strong>cada lista pode ter centenas a milhares de amostras</strong> — reduzimos para 1 número via redução estatística (max, std, etc).</li>
               </ol>
-              <p style="font-size: 0.92em; margin: 6px 0 0; color: var(--inteli-gray-dark);">PR merged_at vem de <code>/repos/:owner/:repo/pulls/:n</code>. Se vocês usam o GitHub Actions do Hermano, é por aí.</p>
             </div>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">13</div>
         </div>
       </section>
 
-      <!-- 17, Coleta na prática (script) -->
+      <!-- 14, Cálculo dos KPIs -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Script de coleta, em 30 linhas de Python</h2>
+          <h2>De séries temporais a 6 números no PR</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.68em; margin: 0 0 6px;">Estrutura mínima do coletor que o exercício pede. Pega runs do GitHub Actions, calcula Deploy Frequency e Lead Time mediano, joga em CSV. Sem framework, sem dashboard. Para a primeira coleta, planilha já serve.</p>
-          <div class="pipeline-block">
-            <pre><code class="language-python">import os, requests
-from datetime import datetime as dt
-from statistics import median
+          <p style="font-size: 0.72em; margin: 0 0 6px;">Tópico = lista grande. KPI = um número. A redução vira política: que tipo de comportamento queremos detectar?</p>
+          <div class="yaml-block">
+<pre><code class="language-python"># compute_metrics_from_data() — coração da redução
+duration = timestamps_s[-1] - timestamps_s[0]
+max_alt = max(altitudes_m)
+mean_alt = sum(altitudes_m) / len(altitudes_m)
 
-GH = "https://api.github.com"
-H  = {"Authorization": f"Bearer {os.environ['TOKEN']}"}
-R  = os.environ["REPO"]
+# Cruise window: só amostras com altitude >= 5m
+# (decolagem e pouso poluem o cálculo de estabilidade)
+cruise = [a for a in altitudes_m if a >= 5.0]
+std_alt_cruise = _std(cruise)  # std amostral
 
-# 1) Últimos 30 deploys success na main
-runs = requests.get(
-    f"{GH}/repos/{R}/actions/workflows/deploy.yml/runs",
-    params={"branch": "main", "status": "success"},
-    headers=H,
-).json()["workflow_runs"][:30]
+max_accel = max(accelerations_m_s2)
 
-# 2) Deploy Frequency, deploys / dia útil
-df = len(runs) / 22
-
-# 3) Lead Time, mediana(deploy_at - merge_at) em horas
-lead = []
-for r in runs:
-    p = requests.get(
-        f"{GH}/repos/{R}/commits/{r['head_sha']}/pulls", headers=H
-    ).json()
-    if p and p[0].get("merged_at"):
-        m = dt.fromisoformat(p[0]["merged_at"][:-1])
-        d = dt.fromisoformat(r["updated_at"][:-1])
-        lead.append((d - m).total_seconds() / 3600)
-
-print(f"deploy_freq={df:.2f}/dia, lead_time={median(lead):.1f}h")</code></pre>
+# Bateria: maior queda entre amostras consecutivas
+# (recuperação por ruído NAO conta)
+diffs = [battery_pct[i-1] - battery_pct[i]
+         for i in range(1, len(battery_pct))]
+max_drop = max(diffs) if diffs else 0.0</code></pre>
             <div class="annot">
-              <p style="margin: 0 0 6px; font-weight: 700;">Roteiro mental</p>
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Decisões escondidas em cada linha</p>
               <ol>
-                <li><strong>requests</strong> faz a chamada, REST puro</li>
-                <li><strong>filtra</strong> só success, branch main, último mês</li>
-                <li><strong>deploy frequency</strong> = contagem / dias úteis</li>
-                <li><strong>lead time</strong> = mediana das diferenças</li>
-                <li><strong>CFR e MTTR</strong>: ficam pro próximo passo</li>
+                <li><strong>duration = last - first</strong>: não <code>len(timestamps) / freq</code> — diferentes tópicos rodam em freqs diferentes.</li>
+                <li><strong>max vs percentil 99</strong>: <code>max</code> é sensível a outlier único. Em produção real, p99 é mais robusto. Aqui usamos max pra detectar valores impossíveis.</li>
+                <li><strong>cruise window &gt;= 5m</strong>: heurística. Take-off e landing têm transientes; queremos avaliar voo estável.</li>
+                <li><strong>std amostral (ddof=1)</strong>: dividir por <code>n-1</code>, não <code>n</code>. Estimativa não-viesada com amostra finita.</li>
+                <li><strong>battery: max(diffs)</strong> filtra recuperações (ruído positivo). Maior queda real = mais agressivo o consumo num instante.</li>
               </ol>
-              <p style="font-size: 0.92em; margin: 6px 0 0; color: var(--inteli-gray-dark);">22 dias úteis aproxima 1 mês comercial. Pra Sprint, dividam pelo número real de dias úteis no período.</p>
             </div>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">14</div>
         </div>
       </section>
 
-      <!-- 18, Exercício D, hands-on -->
-      <section class="exercise-slide compact">
-        <div class="top-bar"></div>
-        <span class="exercise-tag">Hands-on D, em grupo, 30 min</span>
-        <h2>Calcule as 4 métricas DORA do seu projeto</h2>
-        <ol class="exercise-steps">
-          <li>Em grupo, gerem um Personal Access Token do GitHub com escopo <code>actions:read</code>. Coloquem no <code>.env</code> local. Não comitem o token.</li>
-          <li>Rodem o script da página anterior (ou adaptação) contra o repo da sprint. Anotem os 2 valores que ele cospe (Deploy Frequency, Lead Time mediano).</li>
-          <li>Para CFR, listem manualmente os deploys de prod das últimas 4 semanas. Marquem aqueles seguidos de <code>fix:</code> em até 24h. CFR = marcados / total.</li>
-          <li>Para MTTR, peguem a issue ou ping do Slack mais recente que reportou bug em prod. Anotem horário de detecção e horário do deploy de fix. MTTR estimado = essa diferença.</li>
-          <li>Preencham a planilha compartilhada do módulo (link no AdaLove). Anotem os 4 números do grupo numa linha. Coloquem suas iniciais.</li>
-        </ol>
-        <p class="hint-caption" style="color: rgba(255,255,255,0.7); margin-top: 14px;">Se o grupo tem só 5 ou 6 deploys, lead time mediano vai ter ruído alto. Está tudo bem. O exercício é fazer o cálculo fluir, não chegar em valor estatisticamente robusto. Sprint 04 vocês têm dado pra valer.</p>
+      <!-- 15, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 30 min</span>
+        <h2>Walkthrough do PR #2 ao vivo</h2>
+        <p class="section-description">Repo, arquivos novos, job mission-test, e o comentário automático aparecendo no PR. Tudo no projetor.</p>
       </section>
 
-      <!-- 19, Debrief D -->
+      <!-- 16, Pipeline com mission-test -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Debrief D, três armadilhas que sempre aparecem</h2>
+          <h2>Pipeline ganhou um novo estágio</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Em toda turma que faz a primeira coleta, três coisas dão errado. Pra economizar 20 minutos de cada grupo, mapeio aqui de saída.</p>
-          <div class="three-cards">
-            <div class="card">
-              <h4>1, Token sem escopo</h4>
-              <p>API devolve 404 mesmo com token válido. Quase sempre é escopo errado. Para GitHub Actions, vocês precisam de <code>actions:read</code> e <code>repo</code> se o repo é privado.</p>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">PR #1 tinha 4 jobs. PR #2 mantém os 3 primeiros + substitui deploy-dev por <strong>mission-test</strong>. Esse novo job executa missão real, não só checa heartbeat.</p>
+          <div class="pipeline-flow">
+            <div class="pipeline-step">
+              <span class="step-num">JOB 1</span>
+              <h4>python-quality</h4>
+              <p>lint + unit + coverage</p>
             </div>
-            <div class="card">
-              <h4>2, Timezone do timestamp</h4>
-              <p>API devolve em UTC, mas alguém comparou com horário de São Paulo. Lead time deu negativo. Sempre converta tudo para UTC antes de subtrair.</p>
+            <div class="pipeline-step">
+              <span class="step-num">JOB 2</span>
+              <h4>sonar-scan</h4>
+              <p>análise estática</p>
             </div>
-            <div class="card">
-              <h4>3, Deploys que não são deploy</h4>
-              <p>Workflow run de testes ou de lint conta como success também. Filtre pelo nome do workflow (<code>deploy.yml</code>) e pelo evento. Senão, deploy frequency fica inflado em 5x.</p>
+            <div class="pipeline-step">
+              <span class="step-num">JOB 3</span>
+              <h4>sitl-build</h4>
+              <p>imagem GHCR</p>
+            </div>
+            <div class="pipeline-step new">
+              <span class="step-num">JOB 4 (novo)</span>
+              <h4>mission-test</h4>
+              <p>missão real + extração de KPIs no self-hosted</p>
+            </div>
+            <div class="pipeline-step">
+              <span class="step-num">PR</span>
+              <h4>comment automático</h4>
+              <p>tabela KPI no PR via GitHub Script</p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A pergunta que fica</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Vocês acharam um número. E agora? O número sozinho não diz se é bom ou ruim. Precisa de referência (a tabela DORA do Bloco 3) e de comparação no tempo (mesmo time, semana passada). Métrica isolada é ruído. Métrica em série temporal é informação.</p>
+            <h4 style="margin: 0 0 2px;">Por que self-hosted?</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Missão completa demanda PX4 + jmavsim + tester rodando ~2 min sob o mesmo network namespace. Runner GitHub-hosted pendurava no shutdown de processos Java do jmavsim. Self-hosted (VM srv-simulador) tem cleanup robusto e cache local da imagem SITL — execução fecha em ~8min ponta-a-ponta.</p>
           </div>
+          <figure class="real-shot" data-name="01-pipeline-verde.png">
+            <img src="assets/img/aula08/01-pipeline-verde.png" alt="PR #2 com 4 jobs verdes: python-quality, sonar-scan, sitl-build, mission-test">
+            <figcaption>PR #2 — 4 jobs verdes em 8m54s, com novo mission-test</figcaption>
+          </figure>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">15</div>
-        </div>
-      </section>
-
-      <!-- 20, Visualização -->
-      <section class="content-slide">
-        <div class="top-bar"></div>
-        <span class="inteli-logo-header inteli-wordmark">inteli</span>
-        <div class="slide-title-area">
-          <div class="accent-bar"></div>
-          <h2>Visualização, da planilha ao painel</h2>
-        </div>
-        <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 6px;">Visualização é hierarquia, não escolha. Comece simples, evolua quando o número justificar. Subir de degrau cedo demais gasta sprint inteira mantendo dashboard que ninguém olha.</p>
-          <div class="metric-output"><span class="head">DORA snapshot, t13-grupo3, 2026-05-22</span>
-=================================================
-deploy_frequency    : <span class="num">1.4</span>/dia      <span class="ok">[high]</span>
-lead_time_median    : <span class="num">3.2</span>h         <span class="ok">[high]</span>
-change_failure_rate : <span class="num">14</span>%          <span class="warn">[medium]</span>
-mttr_median         : <span class="num">22</span>min        <span class="ok">[high]</span>
-
-trend (vs last sprint)
-  deploy_frequency   <span class="ok">↑</span> +0.3/dia
-  lead_time          <span class="ok">↓</span> -1.1h
-  change_failure_rate <span class="bad">↑</span> +6%
-  mttr               <span class="ok">↓</span> -8min</div>
-          <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Os três degraus</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;"><strong>1) Planilha</strong>, uma linha por sprint, 4 colunas. Resolve para grupo de 5 alunos. <strong>2) Markdown no README</strong>, atualizado no fim da sprint pelo dono da entrega. Resolve até 20 pessoas. <strong>3) Dashboard ao vivo</strong> (Grafana, Datadog, dashboard custom). Quando o time tem dezenas de devs e medir vira contínuo.</p>
-          </div>
-        </div>
-        <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">16</div>
         </div>
       </section>
 
-      <!-- 21, Anti-padrões -->
+      <!-- 17, Repo overview -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Três anti-padrões em medição de pipeline</h2>
+          <h2>O que entrou no PR #2 (arquivos novos)</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Métrica é como antibiótico, mal usada cria mais problema do que resolve. Os três casos abaixo são reais, vistos em time de empresa grande, com nome trocado.</p>
-          <div class="anti-grid">
-            <div class="anti-card">
-              <span class="tag">Goodhart</span>
-              <h4>Bonificar deploy frequency</h4>
-              <p>Líder amarra bônus em deploys/dia. Time começa a quebrar PR em 5 menores pra inflar contagem. Métrica subiu, valor entregue caiu. Métrica virou alvo.</p>
-            </div>
-            <div class="anti-card">
-              <span class="tag">vaidade</span>
-              <h4>Métrica isolada do contexto</h4>
-              <p>"Nosso lead time é 2 horas." Beleza. Mas e o CFR? Deploy de qualquer coisa pra prod em 2h sem teste decente é receita de incidente. Reportar uma sem as outras três é vaidade.</p>
-            </div>
-            <div class="anti-card">
-              <span class="tag">métrica errada</span>
-              <h4>Lines of code per commit</h4>
-              <p>Clássico anti-padrão. Mede nada de útil, incentiva código verboso. DORA explicitamente abandona métricas de output (linhas, commits) e foca em outcome (entrega real e estável).</p>
-            </div>
-          </div>
+          <pre style="font-size: 0.58em; line-height: 1.4; padding: 12px 14px; margin: 0;">inteli-px4-cicd-demo/
+├── libs/drone_modeling/
+│   ├── geometry.py             ← haversine, NED↔lat/lon, RMS error
+│   └── mission.py              ← load_mission(YAML) → Mission dataclass
+├── missions/
+│   └── square_50m.yaml         ← 4 waypoints quadrado + RTL
+├── tools/
+│   ├── run_mission.py          ← CLI MAVSDK (via mavsdk_server externo)
+│   └── extract_metrics.py      ← parser pyulog → metrics.json
+├── tests/sitl/
+│   └── test_mission_square.py  ← end-to-end + thresholds baseline
+├── docker/
+│   └── entrypoint-tester.sh    ← sobe mavsdk_server bg antes do pytest
+├── docs/adrs/
+│   └── ADR-007-jmavsim-no-pr2-gazebo-postponed.md
+└── .github/workflows/
+    └── ci.yml                  ← novo job mission-test + PR comment</pre>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">Regra prática</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Apresente as 4 sempre juntas. Olhe a tendência, não o valor absoluto. Compare time consigo mesmo, não com benchmark de outra empresa. Use o número pra fazer pergunta, não pra distribuir prêmio. Faça isso e a chance de virar Goodhart cai para perto de zero.</p>
+            <h4 style="margin: 0 0 2px;">Separação de responsabilidades</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;"><code>libs/</code> = lógica pura testável unit (geometry, mission). <code>tools/</code> = CLIs orquestradores (MAVSDK, pyulog). <code>missions/</code> = dados versionados. Tests unit cobrem 100% de libs/, integration tests cobrem tools/ via SITL.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">17</div>
         </div>
       </section>
 
-      <!-- 22, Separador Bloco 3 -->
-      <section class="section-slide">
-        <span class="section-number">Bloco 3, 20 min</span>
-        <h2>Decidir com base no número</h2>
-        <p class="section-description">Tabela DORA, ações por categoria, e quando vale parar de medir.</p>
-      </section>
-
-      <!-- 23, Tabela DORA -->
+      <!-- 18, run_mission flow -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Onde meu time se encaixa, segundo DORA 2023</h2>
+          <h2><code>tools/run_mission.py</code> — fluxo MAVSDK</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Tabela do Accelerate State of DevOps Report 2023, simplificada. Use como bússola, não como meta. A diferença entre <em>elite</em> e <em>high</em> é menor do que parece, e o salto de <em>low</em> para <em>medium</em> é onde mora a maior alavanca.</p>
-          <table class="dora-table">
-            <thead>
-              <tr>
-                <th>Performer</th>
-                <th>Deploy Frequency</th>
-                <th>Lead Time</th>
-                <th class="center">Change Failure Rate</th>
-                <th>Time to Restore</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="elite">
-                <td><span class="perf-tag perf-elite">elite</span></td>
-                <td>Sob demanda, várias vezes ao dia</td>
-                <td>Menos de 1 dia</td>
-                <td class="center">0% a 5%</td>
-                <td>Menos de 1 hora</td>
-              </tr>
-              <tr class="high">
-                <td><span class="perf-tag perf-high">high</span></td>
-                <td>1 vez por dia a 1 vez por semana</td>
-                <td>1 dia a 1 semana</td>
-                <td class="center">5% a 10%</td>
-                <td>Menos de 1 dia</td>
-              </tr>
-              <tr class="medium">
-                <td><span class="perf-tag perf-medium">medium</span></td>
-                <td>1 vez por semana a 1 vez por mês</td>
-                <td>1 semana a 1 mês</td>
-                <td class="center">10% a 15%</td>
-                <td>1 dia a 1 semana</td>
-              </tr>
-              <tr class="low">
-                <td><span class="perf-tag perf-low">low</span></td>
-                <td>1 vez por mês a 1 vez por semestre</td>
-                <td>1 mês a 6 meses</td>
-                <td class="center">Acima de 15%</td>
-                <td>Mais de 1 semana</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="hint-caption" style="margin-top: 6px;">Fonte: Accelerate State of DevOps Report, Google Cloud, 2023. Em 2026 a faixa segue praticamente igual.</p>
+          <div class="yaml-block">
+<pre><code class="language-python">async def run(...):
+    m = load_mission(mission_path)
+    drone = System(mavsdk_server_address="127.0.0.1", port=50051)
+    await drone.connect(system_address="udpin://0.0.0.0:14540")
+
+    await _wait_connected(drone, timeout_s=30)
+    await _wait_armable(drone, timeout_s=90)
+
+    items = _build_mission_items(m)
+    await drone.mission.set_return_to_launch_after_mission(True)
+    await drone.mission.upload_mission(MissionPlan(items))
+
+    await _arm_with_retry(drone)  # 5 tentativas, 3s delay
+    await drone.mission.start_mission()
+
+    async for progress in drone.mission.mission_progress():
+        if progress.current == progress.total:
+            return  # done</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Lições da iteração</p>
+              <ol>
+                <li><strong>mavsdk_server externo</strong>: MAVSDK 2.x Python tem bug bootstrap do server interno. Workaround: server roda em bg via entrypoint, Python conecta gRPC localhost.</li>
+                <li><strong>_wait_armable</strong>: arm() retorna COMMAND_DENIED se EKF2 não convergiu. Esperamos <code>health.is_armable=True</code>.</li>
+                <li><strong>_arm_with_retry</strong>: mesmo com armable=True, primeiras 1-2 tentativas falham por preflight transiente. Retry 5×3s resolve.</li>
+                <li><strong>RTL automatic</strong>: <code>set_return_to_launch_after_mission(True)</code> faz drone voltar pra home depois do último waypoint.</li>
+              </ol>
+            </div>
+          </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">18</div>
         </div>
       </section>
 
-      <!-- 24, Como agir -->
+      <!-- 19, mission-test no ci.yml -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Achei minha categoria, agora o que faço</h2>
+          <h2><code>mission-test</code> no ci.yml + PR comment</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Cada faixa tem uma alavanca clássica. Não é receita fechada, é um lugar onde começar a investigar. Sempre passe pelo <em>identifique a métrica mais fraca, ataque ela primeiro</em>.</p>
-          <div class="four-cards">
-            <div class="card" style="border-left-color: var(--inteli-coral);">
-              <span class="icon-num" style="background: var(--inteli-coral);">L</span>
-              <span class="tag">low</span>
-              <h4>Automatizar o deploy</h4>
-              <p>Provável causa raiz: deploy ainda é manual. Investir em CD (Aula 07) tira a maior fricção e melhora 3 das 4 métricas de uma vez.</p>
-            </div>
-            <div class="card" style="border-left-color: #c08a18;">
-              <span class="icon-num" style="background: #c08a18;">M</span>
-              <span class="tag">medium</span>
-              <h4>Encurtar PR</h4>
-              <p>PRs grandes são o gargalo número 1. Quebrar entrega em PRs de no máximo 200 linhas reduz lead time direto, sem trocar nada na infra.</p>
-            </div>
-            <div class="card" style="border-left-color: var(--inteli-lilac);">
-              <span class="icon-num" style="background: var(--inteli-lilac);">H</span>
-              <span class="tag">high</span>
-              <h4>Reduzir CFR</h4>
-              <p>Investir em teste de integração e SAST (Aulas 06 e 09). É onde mora a transição de high para elite. Velocidade já está, falta robustez.</p>
-            </div>
-            <div class="card" style="border-left-color: var(--inteli-dark-green);">
-              <span class="icon-num" style="background: var(--inteli-dark-green);">E</span>
-              <span class="tag">elite</span>
-              <h4>Não regredir</h4>
-              <p>Manter elite é mais difícil do que chegar. Foco em observabilidade, feature flags e rollback automático. Crescimento de time é o maior inimigo.</p>
+          <div class="yaml-block">
+<pre><code class="language-yaml">mission-test:
+  needs: sitl-build
+  runs-on: [self-hosted, px4-sitl]
+  timeout-minutes: 20
+  environment: dev
+  steps:
+    - uses: actions/checkout@v4
+    - name: Run mission compose
+      env:
+        SITL_IMAGE: ghcr.io/.../px4-sitl:${{ github.sha }}
+      run: |
+        docker compose -f docker-compose.ci.yml up \
+          --build --abort-on-container-exit \
+          --exit-code-from tester --timeout 5
+        docker compose ... cp tester:/app/reports ./reports
+        docker compose ... kill
+
+    - name: Comment metrics on PR
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const m = JSON.parse(fs.readFileSync('reports/metrics.json'))
+          await github.rest.issues.createComment({ ..., body: ... })</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Anatomia</p>
+              <ol>
+                <li><strong>runs-on: [self-hosted, px4-sitl]</strong>: roda na VM dedicada (label customizada). Imagem SITL cacheada localmente, sem re-pull.</li>
+                <li><strong>--abort-on-container-exit</strong>: quando tester sai (após pytest), compose para tudo.</li>
+                <li><strong>docker compose cp</strong>: copia <code>reports/metrics.json</code> do container tester pro workspace antes do down.</li>
+                <li><strong>github-script</strong>: monta tabela markdown e usa GitHub API pra criar comment no PR. Roda apenas em pull_request events.</li>
+              </ol>
             </div>
           </div>
-          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A escolha que vocês têm hoje</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Como projeto da Sprint começou ontem (deploy automático com Hello World), vocês muito provavelmente vão cair em <em>medium</em> ou <em>low</em> no primeiro cálculo. Está tudo certo. O exercício é estabelecer o ponto zero, não chegar em elite na primeira tentativa.</p>
-          </div>
+          <figure class="real-shot" data-name="02-mission-test-steps.png">
+            <img src="assets/img/aula08/02-mission-test-steps.png" alt="Job mission-test com todos os steps verdes em 8m24s">
+            <figcaption>Job mission-test no Actions — 8 steps em 8m24s</figcaption>
+          </figure>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">19</div>
         </div>
       </section>
 
-      <!-- 25, Quando NÃO medir -->
+      <!-- 20, PR comment ao vivo -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Quando faz sentido NÃO medir</h2>
+          <h2>O comentário automático no PR</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 8px;">Métrica é overhead. Se o ganho dela é menor que o esforço, está virando burocracia. Três casos onde DORA atrapalha mais que ajuda. Saber quando não medir é tão importante quanto saber medir.</p>
-          <div class="three-cards">
-            <div class="card">
-              <h4>Volume baixo demais</h4>
-              <p>Time deploya 2 vezes por mês. Lead time mediano de 3 deploys é piada estatística. Espere acumular pelo menos 20 deploys antes de levar números a sério.</p>
-            </div>
-            <div class="card">
-              <h4>Produto não-recorrente</h4>
-              <p>Aplicação que sobe uma vez e morre (campanha, MVP descartável). DORA é ferramenta de regime contínuo. Em produto de janela curta, foque em testar a hipótese, não otimizar a esteira.</p>
-            </div>
-            <div class="card">
-              <h4>Crise aguda</h4>
-              <p>Time sob fogo de incidente em produção. Adicionar coleta DORA no meio do caos é distração. Apague o incêndio primeiro, instale o detector depois.</p>
-            </div>
-          </div>
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Após mission-test passar, esse comentário aparece automaticamente no PR. Exemplo do PR #2 do demo:</p>
+          <figure class="real-shot" data-name="03-pr-comment.png">
+            <img src="assets/img/aula08/03-pr-comment.png" alt="Comentário automático no PR #2 com tabela de métricas reais">
+            <figcaption>PR #2 — comentário automático com a tabela de KPIs (valores reais do CI)</figcaption>
+          </figure>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
-            <h4 style="margin: 0 0 2px;">A regra prática</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Comece a medir DORA quando duas condições baterem: time consegue passar uma sprint inteira sem incidente <em>e</em> volume de deploy é maior que 5 por sprint. Antes disso, vocês estão otimizando algo que ainda não existe direito.</p>
+            <h4 style="margin: 0 0 2px;">O que esse comentário muda</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Reviewer não precisa rodar simulador local pra opinar "essa mudança degradou o controle?". Olha a tabela, compara com PR anterior, decide. Decisão de merge tem dado, não opinião.</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
           <div class="footer-page">20</div>
         </div>
       </section>
 
-      <!-- 26, Separador Fechamento -->
+      <!-- 21, Separador Bloco 4 -->
       <section class="section-slide">
-        <span class="section-number">Fechamento, 10 min</span>
-        <h2>Checagem, checklist, próxima aula</h2>
-        <p class="section-description">Duas perguntas, uma checklist de 4 linhas, três provocações para a Aula 09 com o Hermano.</p>
+        <span class="section-number">Bloco 4, 15 min</span>
+        <h2>Hands-on: interpretar métricas reais</h2>
+        <p class="section-description">Abre o PR #2 do demo, lê a tabela, responde 3 perguntas. Sem código, só leitura crítica.</p>
       </section>
 
-      <!-- 27, Quiz 1 -->
+      <!-- 22, Exercício -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Exercício, em duplas, 12 min</span>
+        <h2>Leia, julgue, justifique</h2>
+        <p style="font-size: 0.72em; margin: 0 0 8px;">Abra o comentário de métricas do PR #2 do demo (<code>github.com/josercf/inteli-px4-cicd-demo/pull/2</code>). Em duplas, respondam:</p>
+        <ol class="exercise-steps">
+          <li><strong>Diagnóstico:</strong> a métrica <code>std_altitude_cruise_m</code> está em ~0.31m. Isso é "bom" ou "ruim"? Justifique com base no comportamento esperado de um quadcopter em cruzeiro horizontal a 10m.</li>
+          <li><strong>Detecção de regressão:</strong> se em um PR futuro essa métrica subir pra 1.2m, qual seria a primeira hipótese? E se subir pra 0.05m?</li>
+          <li><strong>Proposta:</strong> sugira UMA métrica adicional que você acha que faltou. Onde no ULog ela viria? Que problema operacional ela detectaria?</li>
+        </ol>
+        <p class="hint-caption" style="margin-top: 8px;">Apresentações: 1 dupla por bloco, 60s cada. Resposta certa não existe — argumentação convincente sim.</p>
+      </section>
+
+      <!-- 23, Quiz 1 -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem 1 de 2, leitura de número</h2>
+          <h2>Checagem 1 de 2, DORA</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question">Time A reporta deploy frequency de 4/dia e change failure rate de 35%. Time B reporta 1/semana e CFR de 4%. Qual leitura é a mais correta?</p>
+          <p class="quiz-question">Um time deploya 2 vezes por dia. Cada deploy leva 10 minutos do commit até produção. Quando algo quebra, leva 4 horas pra restaurar. 8% dos deploys causam incidente. Em quais dimensões DORA esse time está em padrão "Elite"?</p>
           <ul class="quiz-options">
-            <li data-correct="false">Time A é melhor, pois deploya muito mais</li>
-            <li data-correct="false">Time B é melhor, pois quebra menos</li>
-            <li data-correct="true">Os dois números só fazem sentido juntos, A é rápido mas instável, B é estável mas lento</li>
-            <li data-correct="false">Não dá para comparar, são contextos diferentes</li>
+            <li data-correct="false">Em todas as 4 (deployment frequency, lead time, MTTR, change failure rate)</li>
+            <li data-correct="true">Em 3: deployment frequency, lead time e change failure rate. MTTR de 4h não é elite (limite: 1h)</li>
+            <li data-correct="false">Em 2: lead time e MTTR</li>
+            <li data-correct="false">Nenhuma — 8% change failure rate descarta automaticamente</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Certo. As 4 métricas DORA são um conjunto. Velocidade sem estabilidade é caos, estabilidade sem velocidade é gargalo. A leitura da saúde é o equilíbrio entre os dois eixos, não o destaque de um."
-               data-incorrect-msg="Releia. Um time só rápido entrega bug em produção. Um time só estável entrega tarde. A interpretação correta é cruzar os dois eixos. Sem o par, qualquer métrica é vaidade."></div>
+               data-correct-msg="Exato. DORA elite: deployment freq várias/dia ✓, lead time &lt;1h ✓, MTTR &lt;1h ✗ (esse time tem 4h), change failure rate &lt;15% ✓ (esse tem 8%). 3 de 4. Pra ser elite full, precisa atacar MTTR."
+               data-incorrect-msg="Releia os thresholds de 'Elite' do DORA: deployment frequency on demand (várias/dia), lead time &lt;1h, MTTR &lt;1h, change failure rate &lt;15%. O time descrito atinge 3 dos 4 — MTTR de 4h fica fora."></div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">21</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
+          <div class="footer-page">23</div>
         </div>
       </section>
 
-      <!-- 28, Quiz 2 -->
+      <!-- 24, Quiz 2 -->
       <section class="quiz-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
         <div class="slide-title-area">
           <div class="accent-bar"></div>
-          <h2>Checagem 2 de 2, fonte de dado</h2>
+          <h2>Checagem 2 de 2, métrica vs ULog</h2>
         </div>
         <div class="quiz-container">
-          <p class="quiz-question">Você precisa calcular Lead Time for Changes do projeto. Quais dois timestamps você cruza?</p>
+          <p class="quiz-question">Você quer adicionar um KPI que detecta "drone está consumindo mais bateria por metro voado" (eficiência energética). Qual combinação de tópicos ULog você usaria?</p>
           <ul class="quiz-options">
-            <li data-correct="false">Hora do commit local e hora do push</li>
-            <li data-correct="true">Hora do merge no main (PR/MR <code>merged_at</code>) e hora do deploy bem-sucedido em produção</li>
-            <li data-correct="false">Hora de abertura do PR e hora de fechamento do PR</li>
-            <li data-correct="false">Hora do início do workflow de teste e hora do fim</li>
+            <li data-correct="false">Só <code>battery_status</code>, calcular drop total</li>
+            <li data-correct="false">Só <code>vehicle_local_position</code>, calcular distância total</li>
+            <li data-correct="true"><code>battery_status</code> + <code>vehicle_local_position</code>: bateria gasta dividida por distância 3D percorrida</li>
+            <li data-correct="false"><code>vehicle_acceleration</code> + <code>battery_status</code>: aceleração * bateria</li>
           </ul>
           <div class="quiz-feedback"
-               data-correct-msg="Isso. O lead time DORA é commit-em-main → entregue-em-prod. Por isso a fonte t1 é o evento de merge (não o commit local) e t2 é o deploy de produção (não o teste passando)."
-               data-incorrect-msg="Releia. Hora do commit local não chega até a API, e tempo do PR é outra métrica (cycle time). DORA exige cruzar evento de produção com evento de merge no main."></div>
+               data-correct-msg="Correto. Eficiência energética = energia/distância. Bateria sozinha não diz nada (drone parado também gasta). Posição sozinha não diz energia. Combinação dos dois — bateria gasta / distância acumulada — é a métrica certa."
+               data-incorrect-msg="Pense no que a métrica precisa medir: 'bateria por metro'. Logo, precisa dos DOIS — quanto de bateria foi gasto E quanto o drone andou. Outras combinações não respondem à pergunta."></div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">22</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
+          <div class="footer-page">24</div>
         </div>
       </section>
 
-      <!-- 29, Auto-estudo Aula 09 -->
+      <!-- 25, Checklist final -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist do pipeline com métricas</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 8px;">5 itens que separam "pipeline que mede" de "pipeline que adorna". Não precisa de tudo na Sprint 03, precisa saber qual está cobrindo e qual ficou para depois, com justificativa.</p>
+          <div class="three-cards" style="grid-template-columns: repeat(5, 1fr); gap: 8px;">
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">1, Métricas no PR</h4>
+              <p style="font-size: 0.58em;">Reviewer vê os KPIs ANTES de aprovar. Não em dashboard separado.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">2, DORA + domínio</h4>
+              <p style="font-size: 0.58em;">DORA sozinho é incompleto. Domínio sozinho ignora processo.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">3, Baseline versionado</h4>
+              <p style="font-size: 0.58em;">Threshold = arquivo no repo, revisável via PR. Não config oral.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">4, Artefato persistido</h4>
+              <p style="font-size: 0.58em;">metrics.json upload artifact pra evolução histórica.</p>
+            </div>
+            <div class="card" style="padding: 10px 12px;">
+              <h4 style="font-size: 0.72em;">5, Repetível local</h4>
+              <p style="font-size: 0.58em;"><code>docker compose up</code> roda mesma análise sem GitHub.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">O que esta aula entregou</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Itens 1, 2, 4, 5 plenamente. Item 3 (baseline thresholds versionado em <code>quality_gates.yaml</code>) entra na Aula 10 quando viram <strong>gates obrigatórios</strong>.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, Auto-estudo Aula 09 -->
       <section class="content-slide">
         <div class="top-bar"></div>
         <span class="inteli-logo-header inteli-wordmark">inteli</span>
@@ -1244,37 +1060,37 @@ trend (vs last sprint)
           <h2>Auto-estudo para a Aula 09</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.72em; margin: 0 0 6px;">Aula 09 é com o prof Hermano (26/05). Tema: Você escreve (bons) testes de integração? Existe relação direta com a métrica que pesa mais no Change Failure Rate de hoje. Três materiais para chegar pronto.</p>
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Aula 09 (Hermano Peixoto, 26/05) ataca a qualidade dos testes em si. Métricas do pipeline são úteis, mas a base é "esses testes detectam regressões reais?". Três provocações:</p>
           <div class="concept-cards">
             <div class="concept-card">
-              <h4>Leitura, Testes de integração</h4>
-              <p>Post da Atlassian "Integration Test". 15 min. Foque na diferença entre teste unitário, de integração e end-to-end. Esse vocabulário define o resto.</p>
+              <h4>Leitura, princípios FIRST</h4>
+              <p>Robert Martin, "Clean Code", capítulo de testes. FIRST = Fast, Independent, Repeatable, Self-validating, Timely. 15 min.</p>
             </div>
             <div class="concept-card">
-              <h4>Leitura, Como preparar o ambiente</h4>
-              <p>Material institucional do Inteli sobre setup de banco e mocks para integração. 20 min. Vai economizar muito retrabalho na Sprint 03.</p>
+              <h4>Leitura, pirâmide vs trofeu</h4>
+              <p>Post do Martin Fowler "TestPyramid" + counter de Kent Dodds "Trophy Pattern". 25 min. Quando privilegiar unit, integration, e2e?</p>
             </div>
             <div class="concept-card">
-              <h4>Vídeo, Software Testing Tutorial</h4>
-              <p>Tutorial introdutório de teste de unidade e integração, em torno de 30 min. Bom pra alinhar o time todo no mesmo nível antes da próxima aula.</p>
+              <h4>Vídeo, antipattern flaky tests</h4>
+              <p>Talk "Eradicating Non-Determinism in Tests" (Martin Fowler) — 25 min. Como matar testes que falham aleatório.</p>
             </div>
           </div>
           <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
             <h4 style="margin: 0 0 2px;">Entrega desta aula, para o AdaLove</h4>
-            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Os 4 números DORA do grupo, anotados na planilha do módulo. Uma frase identificando a métrica mais fraca e a hipótese do grupo sobre causa raiz. Uma frase com o plano de ação concreto pra próxima sprint. Sem floreio, sem promessa vaga, com verbo no infinitivo.</p>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Print do comentário de métricas do PR #2 do grupo + uma frase respondendo: "qual KPI vocês adicionariam que ainda não está no demo, e por quê?".</p>
           </div>
         </div>
         <div class="slide-footer">
-          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline de CI/CD, Sprint 03</div>
-          <div class="footer-page">23</div>
+          <div class="footer-bar">Aula 08, Extraindo métricas do pipeline, Sprint 03</div>
+          <div class="footer-page">26</div>
         </div>
       </section>
 
-      <!-- 30, Encerramento -->
+      <!-- 27, Encerramento -->
       <section class="end-slide">
         <span class="inteli-wordmark light">inteli</span>
         <h2>Até a próxima</h2>
-        <p>Aula 09, Você escreve (bons) testes de integração?, 26/05, com prof Hermano</p>
+        <p>Aula 09, Você escreve (bons) testes de integração?, 26/05</p>
       </section>
 
     </div>
