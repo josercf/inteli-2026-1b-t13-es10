@@ -197,7 +197,49 @@
       font-style: italic;
       margin-top: 4px;
     }
+
+    /* Screenshots reais */
+    .real-shot {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--inteli-lilac);
+      background: var(--inteli-bg-soft);
+      max-width: 100%;
+      position: relative;
+    }
+    .real-shot img { display: block; width: 100%; height: auto; }
+    .real-shot figcaption {
+      font-size: 0.6em;
+      padding: 6px 10px;
+      background: var(--inteli-purple-deep);
+      color: white;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending {
+      min-height: 80px;
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .real-shot.pending::after {
+      content: "📸 print pendente: " attr(data-name);
+      color: var(--inteli-gray-dark);
+      font-style: italic;
+      font-size: 0.7em;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending img { display: none; }
   </style>
+  <script>
+    window.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && e.target.closest('.real-shot')) {
+        e.target.closest('.real-shot').classList.add('pending');
+      }
+    }, true);
+  </script>
 </head>
 <body>
   <div class="reveal">
@@ -517,6 +559,10 @@
             <h4 style="margin: 0 0 2px;">3 mudanças concretas no ci.yml</h4>
             <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">(1) <code>needs:</code> encadeado entre jobs. (2) <code>sonar-scan: continue-on-error: true</code> → <code>false</code>. (3) Novo job <code>quality-gates</code> que executa <code>tools/quality_gates.py</code>.</p>
           </div>
+          <figure class="real-shot" data-name="02-pipeline-sequential.png" style="max-width: 80%; margin: 10px auto 0;">
+            <img src="assets/img/aula10/02-pipeline-sequential.png" alt="GitHub Actions mostrando os 5 jobs do PR #4 em cadeia, todos verdes">
+            <figcaption>PR #4, run #21 — 5 jobs sequenciais, 18m30s total, todos verdes</figcaption>
+          </figure>
         </div>
         <div class="slide-footer">
           <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
@@ -542,13 +588,13 @@
         <div class="slide-body">
           <div class="yaml-block">
 <pre><code class="language-yaml">coverage:
-  min_line_coverage: 0.80     # 80% — pragmático
+  min_line_coverage: 0.55     # baseline atual; meta 0.80 (ratchet em Sprint 04)
 
 mission_metrics:
   max_trajectory_rms_error_m: 2.0
   max_acceleration_m_s2: 15.0   # limite mecânico x500
   max_mission_duration_s: 180   # baseline ~85s + folga
-  min_altitude_stability_m: 0.5
+  min_altitude_stability_m: 1.0 # baseline jmavsim ~0.8; gz-sim deve reduzir
   max_battery_drop_per_minute_pct: 8.0
 
 sonar:
@@ -689,22 +735,11 @@ sonar:
           <h2>O comentário de quality gates no PR</h2>
         </div>
         <div class="slide-body">
-          <p style="font-size: 0.7em; margin: 0 0 6px;">Mesmo padrão do PR #2 (métricas), mas agora cada linha é um gate com pass/fail explícito.</p>
-          <div class="pr-comment">
-            <h4>✅ Quality Gates — 5/5 gates passaram</h4>
-            <table>
-              <thead>
-                <tr><th></th><th>Gate</th><th>Detalhe</th></tr>
-              </thead>
-              <tbody>
-                <tr><td class="pass">✅</td><td><code>coverage.min_line_coverage</code></td><td>line coverage 92.5% ≥ threshold 80%</td></tr>
-                <tr><td class="pass">✅</td><td><code>mission_metrics.max_acceleration_m_s2</code></td><td>max_acceleration_m_s2 = 11.05 ≤ threshold 15.0</td></tr>
-                <tr><td class="pass">✅</td><td><code>mission_metrics.max_mission_duration_s</code></td><td>mission_duration_s = 81.45 ≤ threshold 180</td></tr>
-                <tr><td class="pass">✅</td><td><code>mission_metrics.min_altitude_stability_m</code></td><td>std_altitude_cruise_m = 0.31 ≤ threshold 0.5</td></tr>
-                <tr><td class="pass">✅</td><td><code>sonar.require_quality_gate_passed</code></td><td>Sonar Quality Gate status = OK</td></tr>
-              </tbody>
-            </table>
-          </div>
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Mesmo padrão do PR #2 (métricas) + uma linha por gate com pass/fail. Print abaixo é do PR #4 mergeado.</p>
+          <figure class="real-shot" data-name="01-quality-gates-green.png" style="max-width: 78%; margin: 0 auto;">
+            <img src="assets/img/aula10/01-quality-gates-green.png" alt="Comentário do bot github-actions no PR #4 com tabela 5/5 gates passaram em verde">
+            <figcaption>PR #4 — comentário automático do job quality-gates após CI verde</figcaption>
+          </figure>
           <div class="callout" style="margin-top: 8px; padding: 8px 14px;">
             <h4 style="margin: 0 0 2px;">Quando um gate falha</h4>
             <p style="font-size: 0.64em; margin: 0; line-height: 1.4;">Comentário fica vermelho no gate específico, botão "Merge" do GitHub desabilita (se branch protection configurado com required check). Reviewer NÃO consegue forçar merge — só após corrigir a regressão.</p>
