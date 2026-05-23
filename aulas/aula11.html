@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 11, Performance no SITL e CI, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li { margin-bottom: 3px; }
+    .compare-col.bad { border-top-color: #d05050; }
+    .compare-col.good { border-top-color: var(--inteli-dark-green); }
+
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Pipeline horizontal */
+    .pipeline-flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .pipeline-step {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border-top: 3px solid var(--inteli-lilac);
+      text-align: center;
+    }
+    .pipeline-step.new {
+      border-top-color: var(--inteli-coral);
+      background: #fff3d4;
+    }
+    .pipeline-step.cached {
+      border-top-color: var(--inteli-dark-green);
+      background: #e7f3ec;
+    }
+    .pipeline-step .step-num {
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.55em;
+      color: var(--inteli-gray-dark);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .pipeline-step h4 {
+      font-size: 0.72em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .pipeline-step p { font-size: 0.56em; margin: 0; line-height: 1.4; }
+
+    /* Hierarquia de gates (vertical), reaproveitada para "camadas de cache" */
+    .gate-stack {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .gate-row {
+      background: var(--inteli-bg-soft);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .gate-row.pip { border-left-color: #aaa; }
+    .gate-row.sonar { border-left-color: var(--inteli-purple); }
+    .gate-row.buildx { border-left-color: var(--inteli-coral); }
+    .gate-row.px4 { border-left-color: var(--inteli-dark-green); }
+    .gate-row.cold { border-left-color: #d05050; }
+    .gate-row.docker { border-left-color: var(--inteli-coral); }
+    .gate-row.mavsdk { border-left-color: var(--inteli-lilac); }
+    .gate-row.waits { border-left-color: #f0a93b; }
+    .gate-row h4 {
+      font-size: 0.75em;
+      margin: 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .gate-row p {
+      font-size: 0.64em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* YAML/code block */
+    .yaml-block {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .yaml-block pre {
+      margin: 0;
+      font-size: 0.55em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .yaml-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.45;
+    }
+    .yaml-block .annot ol { margin: 0; padding-left: 18px; }
+    .yaml-block .annot li { margin-bottom: 3px; }
+    .yaml-block .annot strong { color: var(--inteli-coral); }
+
+    /* Tabela de duração antes/depois */
+    .perf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.68em;
+      margin-top: 8px;
+    }
+    .perf-table th, .perf-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--inteli-bg-soft);
+      text-align: left;
+    }
+    .perf-table th {
+      background: var(--inteli-bg-soft);
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.85em;
+    }
+    .perf-table td.delta-good { color: var(--inteli-dark-green); font-weight: 700; }
+    .perf-table td.delta-bad { color: #d05050; font-weight: 700; }
+    .perf-table td code { font-size: 0.92em; }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Screenshots reais */
+    .real-shot {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--inteli-lilac);
+      background: var(--inteli-bg-soft);
+      max-width: 100%;
+      position: relative;
+    }
+    .real-shot img { display: block; width: 100%; height: auto; }
+    .real-shot figcaption {
+      font-size: 0.6em;
+      padding: 6px 10px;
+      background: var(--inteli-purple-deep);
+      color: white;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending {
+      min-height: 80px;
+      border-style: dashed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+    .real-shot.pending::after {
+      content: "📸 print pendente: " attr(data-name);
+      color: var(--inteli-gray-dark);
+      font-style: italic;
+      font-size: 0.7em;
+      font-family: var(--inteli-mono, monospace);
+    }
+    .real-shot.pending img { display: none; }
+  </style>
+  <script>
+    window.addEventListener('error', function(e) {
+      if (e.target && e.target.tagName === 'IMG' && e.target.closest('.real-shot')) {
+        e.target.closest('.real-shot').classList.add('pending');
+      }
+    }, true);
+  </script>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 04, Performance e IaC</span>
+          <h1>Pipeline correto não é pipeline rápido</h1>
+          <p class="subtitle">Aula 10 entregou gates obrigatórios. O mission-test agora leva ~8 minutos. Hoje cortamos pela metade — sem afrouxar nenhum gate. Cache no CI, fixtures session-scope, xdist em paralelo.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>11 de 14</span>
+            <strong>Data</strong><span>3 de junho de 2026, quarta-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>Hermano Peixoto de Oliveira Junior</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Sprint 03 fechou com pipeline rigoroso. Custo: mission-test em ~8min. Hoje aplicamos 4 camadas de cache no CI + SITL "warm" (fixtures session-scope, await em vez de sleep, xdist paralelo) pra cortar a duração pela metade — sem mexer em nenhum quality gate.</p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Check-in da Sprint 04: PR #4 mergeado? quality gates de vocês passaram?</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>Por que está lento? Profile real do mission-test</td><td>20 min</td></tr>
+              <tr><td>10h35, Bloco 2</td><td>4 camadas de cache no CI — pip, sonar, buildx, submódulo PX4</td><td>25 min</td></tr>
+              <tr><td>11h00, Bloco 3</td><td>SITL warm — fixtures session-scope, await condition, pytest-xdist</td><td>30 min</td></tr>
+              <tr><td>11h30, Bloco 4</td><td>Hands-on: clonar PR #7, rodar antes e depois, medir</td><td>20 min</td></tr>
+              <tr><td>11h50, Fechamento</td><td>Quiz, checklist, auto-estudo Aula 12 (Terraform)</td><td>10 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Volta rápida pelo grupo. PR #4 (quality gates) de vocês mergeou? Quais gates foram mais úteis? Algum threshold ficou sob suspeita? Como sentem o tempo do mission-test hoje — incomoda?
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim da aula, cada grupo sabe identificar onde um pipeline gasta tempo, escolhe a camada de cache certa para cada custo recorrente, refatora fixtures pytest para reuso de sessão, e usa paralelismo sem flake.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Profilar</h4>
+              <p>Ler o log do GitHub Actions, identificar top-3 gargalos de tempo no mission-test e justificar com dado, não com palpite.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Cachear</h4>
+              <p>Aplicar 4 camadas de cache (pip, sonar, buildx, submódulo PX4) escolhendo chaves que invalidam quando devem e só quando devem.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Reaproveitar</h4>
+              <p>Promover fixtures de <code>function</code> para <code>session</code> sem quebrar isolamento. Substituir <code>sleep</code> por <code>await condition</code>.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Paralelizar</h4>
+              <p>Rodar missões em paralelo com <code>pytest-xdist</code>, identificar onde colisões de porta MAVLink podem causar flake.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Recap A10 + ponto de dor -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Aula 10 fechou a Sprint 03. E deixou uma dor visível.</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">O pipeline está rigoroso. Mas ele ficou <strong>lento</strong>. O custo dos gates obrigatórios virou um custo de feedback do desenvolvedor.</p>
+          <table class="perf-table">
+            <thead>
+              <tr><th>Job</th><th>Duração média</th><th>O que faz</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>python-quality</code></td><td>~25s</td><td>ruff + black + mypy + pytest unit</td></tr>
+              <tr><td><code>sonar-scan</code></td><td>~35s</td><td>SAST + Quality Gate enforce</td></tr>
+              <tr><td><code>sitl-build</code></td><td>~25s</td><td>imagem GHCR (em cache se SHA já existe)</td></tr>
+              <tr><td><code>mission-test</code></td><td class="delta-bad">~8min</td><td>SITL + Gazebo + missão real + extração de KPIs</td></tr>
+              <tr><td><code>quality-gates</code></td><td>~25s</td><td>avalia thresholds versionados</td></tr>
+              <tr><td colspan="2"><strong>Total ponta-a-ponta</strong></td><td><strong>~10 min</strong> (sequencial, fail-fast desde PR #4)</td></tr>
+            </tbody>
+          </table>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A meta de hoje</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Reduzir <code>mission-test</code> de ~8min para ≤4min. Sem trocar simulador, sem trocar hardware do runner, sem afrouxar gate. Só uso correto de cache + reuso de estado entre testes.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 20 min</span>
+        <h2>Por que está lento? Profile do mission-test</h2>
+        <p class="section-description">Antes de otimizar, medir. Onde os 8 minutos vão de verdade — não onde a gente acha que vão.</p>
+      </section>
+
+      <!-- 07, Breakdown dos 8 minutos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Os 8 minutos do <code>mission-test</code>, quebrados</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Lendo o log do PR #4, run #21, com <code>actions/timing-summary</code>: o tempo NÃO está distribuído como achávamos.</p>
+          <div class="gate-stack">
+            <div class="gate-row docker">
+              <h4>1. Pull SITL image</h4>
+              <p><strong>~95s</strong>. GHCR puxa a imagem do PX4-SITL (~1.2GB) toda vez. Sem cache de layer.</p>
+            </div>
+            <div class="gate-row cold">
+              <h4>2. Cold-start SITL</h4>
+              <p><strong>~70s</strong>. PX4 inicia, Gazebo carrega modelo do x500, sensores se calibram. Toda missão paga isso de novo.</p>
+            </div>
+            <div class="gate-row mavsdk">
+              <h4>3. MAVSDK handshake</h4>
+              <p><strong>~40s</strong>. Espera "connection state == CONNECTED". Hoje via <code>await asyncio.sleep(40)</code> conservador.</p>
+            </div>
+            <div class="gate-row waits">
+              <h4>4. Sleep-based waits no test</h4>
+              <p><strong>~85s acumulados</strong>. <code>await asyncio.sleep(N)</code> em 7 pontos do <code>run_mission.py</code>. Cada um é "espera N segundos pra ter certeza".</p>
+            </div>
+            <div class="gate-row integration">
+              <h4>5. Execução real da missão</h4>
+              <p><strong>~95s</strong>. Voo: takeoff, 4 waypoints, land. Isso é a única parte "essencial".</p>
+            </div>
+            <div class="gate-row metrics">
+              <h4>6. Coleta + parse de ULog</h4>
+              <p><strong>~25s</strong>. Download do log, <code>pyulog</code> extrai KPIs.</p>
+            </div>
+          </div>
+          <p class="hint-caption">~410s + overhead = ~7-8min. Apenas ~95s (23%) é "fazer o voo". Os outros 77% são <strong>setup recuperável</strong>.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Top-3 gargalos e estratégia -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Top-3 gargalos e por onde atacar</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Cada gargalo tem uma camada certa. Aplicar técnica errada na camada errada = ganho marginal ou flake. Diagnóstico antes de solução:</p>
+          <div class="compare-grid">
+            <div class="compare-col">
+              <h4>Gargalo</h4>
+              <ul>
+                <li><strong>Pull SITL image (95s)</strong> — repete por job, mesmo SHA</li>
+                <li><strong>Cold-start SITL (70s)</strong> — repete por TESTE (cada test_*.py reinicia)</li>
+                <li><strong>Sleep-based waits (85s)</strong> — folga conservadora em estado já pronto</li>
+              </ul>
+            </div>
+            <div class="compare-col" style="border-top-color: var(--inteli-coral);">
+              <h4>Camada que resolve</h4>
+              <ul>
+                <li>Cache do CI (Bloco 2): buildx + GHCR-as-cache</li>
+                <li>Fixtures <code>scope="session"</code> (Bloco 3): 1 SITL pra toda a suite</li>
+                <li><code>await condition()</code> em vez de <code>sleep()</code> (Bloco 3): poll real</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">A pergunta da escolha</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">"Esse custo é por commit? Por job? Por teste? Por execução?" — a resposta dita a camada. Cache só ajuda em coisa <em>idêntica</em> à execução anterior. Fixture session só ajuda em coisa <em>compartilhável</em> entre testes na MESMA execução.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">08</div>
+        </div>
+      </section>
+
+      <!-- 09, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 25 min</span>
+        <h2>4 camadas de cache no CI</h2>
+        <p class="section-description">Pip, Sonar, Buildx layers, submódulo PX4. Cada uma resolve um custo recorrente diferente.</p>
+      </section>
+
+      <!-- 10, Visão geral das 4 camadas -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Visão geral: 4 chaves, 4 custos diferentes</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Cada chave de cache responde a uma pergunta: "o que torna esse trabalho idêntico ao da última execução?". Errar a chave = cache nunca hita OU hita quando não devia (correctness break).</p>
+          <div class="gate-stack">
+            <div class="gate-row pip">
+              <h4>1. pip cache</h4>
+              <p>Chave: <code>hashFiles('requirements*.txt')</code>. Pra reusar wheels Python entre runs sem reinstalar. Economia esperada: ~25s por job python-quality.</p>
+            </div>
+            <div class="gate-row sonar">
+              <h4>2. sonar cache</h4>
+              <p>Chave: <code>hashFiles('sonar-project.properties')</code> + branch. Pra evitar reanalisar arquivos não alterados. Economia: ~20s por job sonar-scan.</p>
+            </div>
+            <div class="gate-row buildx">
+              <h4>3. buildx layer cache</h4>
+              <p>Chave: gerenciada pelo Docker via <code>type=gha</code>. Pra reusar layers da imagem SITL quando Dockerfile não mudou. Economia: ~90s no pull + build (maior ganho).</p>
+            </div>
+            <div class="gate-row px4">
+              <h4>4. PX4 submódulo cache</h4>
+              <p>Chave: SHA do submódulo (saída de <code>git submodule status</code>). Submódulo PX4 raramente muda — clonar 200MB toda vez é desperdício. Economia: ~15s.</p>
+            </div>
+          </div>
+          <p class="hint-caption">Soma teórica: ~150s economizados por job, ~95s no maior (mission-test via buildx). Ganho real depende da taxa de hit — que é o tema do próximo slide.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">10</div>
+        </div>
+      </section>
+
+      <!-- 11, Pip + Sonar cache -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Camadas 1 e 2: pip + sonar</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">- uses: actions/cache@v4
+  with:
+    path: ~/.cache/pip
+    key: pip-${{ runner.os }}-${{ hashFiles('requirements*.txt') }}
+    restore-keys: |
+      pip-${{ runner.os }}-
+
+- uses: actions/cache@v4
+  with:
+    path: ~/.sonar/cache
+    key: sonar-${{ hashFiles('sonar-project.properties') }}-${{ github.ref_name }}
+    restore-keys: |
+      sonar-${{ hashFiles('sonar-project.properties') }}-
+      sonar-</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Anatomia da chave</p>
+              <ol>
+                <li><strong>hashFiles</strong> garante invalidação quando deps mudam.</li>
+                <li><strong>restore-keys</strong> permite fallback parcial: "se não tem cache exato, usa o mais recente da família" — partial hit é melhor que miss total.</li>
+                <li><strong>branch no sonar</strong> isola por PR: análise de branch X não polui Y.</li>
+                <li><strong>runner.os</strong> separa Linux/Mac/Win — pip cache não é portável.</li>
+                <li><strong>Cuidado</strong>: cache de pip <em>NÃO</em> instala. Sempre seguido de <code>pip install</code> (que vira no-op se hit).</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Buildx layer cache -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Camada 3: buildx layer cache (o maior ganho)</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">- uses: docker/setup-buildx-action@v3
+
+- uses: docker/build-push-action@v6
+  with:
+    context: .
+    file: docker/Dockerfile.sitl
+    push: true
+    tags: ghcr.io/josercf/px4-sitl:${{ github.sha }}
+    cache-from: type=gha,scope=sitl
+    cache-to:   type=gha,scope=sitl,mode=max</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Por que <code>type=gha</code> é a escolha</p>
+              <ol>
+                <li><strong>type=gha</strong>: usa o cache nativo do GitHub Actions (~10GB grátis por repo).</li>
+                <li><strong>scope=sitl</strong>: separa de outras imagens. Múltiplos workflows não colidem.</li>
+                <li><strong>mode=max</strong>: cacheia <em>todos</em> os layers, não só os finais. Custo: cache maior.</li>
+                <li><strong>Layer determinístico</strong>: cada FROM/COPY/RUN é uma chave. Layer só rebuilda quando o COPY ou comando muda.</li>
+                <li><strong>Layer compartilhado entre PRs</strong>: PR #5 e PR #6 abertos hoje reaproveitam layers do main. Cache amortiza pra toda a turma.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, PX4 submódulo cache -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Camada 4: cache do submódulo PX4</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">- name: Get PX4 submodule SHA
+  id: px4-sha
+  run: |
+    SHA=$(git submodule status PX4-Autopilot | awk '{print $1}' | tr -d '+-')
+    echo "sha=$SHA" >> $GITHUB_OUTPUT
+
+- uses: actions/cache@v4
+  with:
+    path: PX4-Autopilot
+    key: px4-submodule-${{ steps.px4-sha.outputs.sha }}
+
+- name: Init submodule if cache miss
+  if: steps.cache.outputs.cache-hit != 'true'
+  run: |
+    git submodule update --init --recursive --depth 1 PX4-Autopilot</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Truques desta camada</p>
+              <ol>
+                <li><strong>Chave = SHA do submódulo</strong>, não da branch. Submódulo só muda quando ADR-001 manda — raro.</li>
+                <li><strong>Sem restore-keys</strong>: queremos hit exato ou clone limpo (PX4 parcial = compila errado).</li>
+                <li><strong>Init condicional</strong>: <code>git submodule update</code> só roda se cache miss. Economia ~15s na maioria dos PRs.</li>
+                <li><strong>depth 1</strong>: shallow clone, suficiente pra build do firmware.</li>
+                <li><strong>ADR-008 documenta</strong>: cache de submódulo é o único onde correctness > speedup — invalidação errada quebra build em tempo de execução.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 30 min</span>
+        <h2>SITL warm — fixtures, await condition, xdist</h2>
+        <p class="section-description">Cache resolve o que se repete entre runs. Agora atacamos o que se repete entre testes dentro do MESMO run.</p>
+      </section>
+
+      <!-- 15, conftest session-scope -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>conftest.py</code>: uma SITL pra toda a suite</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python"># tests/sitl/conftest.py
+
+@pytest.fixture(scope="session")
+def sitl_process():
+    """Sobe PX4 + Gazebo uma vez por suite. Custo: ~70s, pago uma vez."""
+    proc = launch_sitl(headless=True, model="x500")
+    wait_for_log_pattern(proc, "Ready for takeoff")
+    yield proc
+    teardown_sitl(proc)
+
+@pytest.fixture(scope="session")
+async def drone(sitl_process):
+    """Conecta MAVSDK uma vez. Reutilizado por todos os tests da suite."""
+    d = System()
+    await d.connect(system_address="udp://:14540")
+    async for state in d.core.connection_state():
+        if state.is_connected:
+            break
+    yield d
+
+@pytest.fixture(scope="function")
+async def armed_drone(drone):
+    """Cada teste arma+desarma — estado isolado, conexão reaproveitada."""
+    await drone.action.arm()
+    yield drone
+    if await is_armed(drone):
+        await drone.action.disarm()</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">As 2 escolhas críticas</p>
+              <ol>
+                <li><strong>scope="session"</strong> em <code>sitl_process</code> e <code>drone</code>: pagam o setup 1x. Antes do PR #7 isso era <code>scope="function"</code> — 70s por teste.</li>
+                <li><strong>scope="function"</strong> em <code>armed_drone</code>: estado mutável (armed) deve isolar por teste.</li>
+                <li><strong>Teardown sempre</strong>: <code>yield</code> + cleanup garante que crash em meio à suite não vaza estado.</li>
+                <li><strong>Cuidado de isolamento</strong>: testes que poluem estado físico do drone (ex.: home position) ainda precisam reset entre runs.</li>
+                <li><strong>ADR-008 documenta</strong>: quando function-scope é não-negociável (mutação de estado), session-scope quebra correctness.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, await condition -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>await condition()</code> em vez de <code>sleep()</code></h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python"># ❌ Antes: tools/run_mission.py
+await drone.action.arm()
+await asyncio.sleep(5)   # "tempo conservador pra estar armado"
+
+await drone.action.takeoff()
+await asyncio.sleep(15)  # "tempo pra subir a 10m"
+
+await drone.mission.upload_mission(mission_plan)
+await asyncio.sleep(3)
+
+# ✅ Depois (PR #7):
+await drone.action.arm()
+await wait_until(lambda: is_armed(drone), timeout=10)
+# Sai quando estado real == True. Tempo típico: ~0.4s.
+
+await drone.action.takeoff()
+await wait_until(
+    lambda: altitude_above(drone, target=9.5),
+    timeout=30
+)
+# Sai quando altitude >= 9.5m. Tempo típico: ~6s.
+
+await drone.mission.upload_mission(mission_plan)
+await wait_until(lambda: mission_upload_complete(drone), timeout=10)</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Por que sleep é dívida técnica</p>
+              <ol>
+                <li><strong>Sleep é "pior caso fixo"</strong>: pagamos a folga TODA vez, mesmo quando o sistema convergiu em 0.4s.</li>
+                <li><strong>Sleep mente quando o sistema atrasa</strong>: se algo travar além do esperado, sleep passa direto e quebra silencioso.</li>
+                <li><strong>Poll real lê estado verdadeiro</strong>: <code>is_armed()</code>, <code>altitude_above()</code>, <code>mission_complete()</code>.</li>
+                <li><strong>Timeout protege contra hang</strong>: se condição nunca for atingida, falha com erro claro em vez de pendurar.</li>
+                <li><strong>5 sleeps removidos no PR #7</strong>: economia acumulada ~85s por mission-test.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, pytest-xdist -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>pytest-xdist</code>: missões em paralelo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python"># requirements-dev.txt:
+# pytest-xdist
+
+# tests/sitl/test_mission_invariants.py:
+@pytest.mark.parametrize("mission,max_rms_m", [
+    ("square_50m.yaml",   2.0),
+    ("triangle_30m.yaml", 1.5),
+    ("zigzag_80m.yaml",   2.5),
+])
+async def test_trajectory_within_rms(armed_drone, mission, max_rms_m):
+    plan = load_mission(f"missions/{mission}")
+    log = await run_mission(armed_drone, plan)
+    assert trajectory_rms(log) &lt;= max_rms_m
+
+# .github/workflows/ci.yml (job mission-test):
+- name: Run mission tests in parallel
+  run: pytest tests/sitl -n 3 --dist=loadgroup</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Paralelizar sem flake</p>
+              <ol>
+                <li><strong>3 missões parametrizadas</strong> em vez de 3 testes copy-paste. DRY + xdist enxerga 3 nós.</li>
+                <li><strong>-n 3</strong>: 3 workers. CPU do runner é o limite.</li>
+                <li><strong>--dist=loadgroup</strong>: testes do mesmo módulo ficam juntos (compartilham fixture session). Sem isso, cada worker abriria sua SITL — flake garantido.</li>
+                <li><strong>Cuidado MAVLink port</strong>: cada SITL escuta porta 14540. Em paralelo cada worker precisa de instância isolada. Fixture do PR #7 aloca porta dinâmica.</li>
+                <li><strong>Ganho real</strong>: 3 missões serial ~285s → paralelo ~110s. Economia: ~175s.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">17</div>
+        </div>
+      </section>
+
+      <!-- 18, Separador Bloco 4 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 4, 20 min</span>
+        <h2>Hands-on: rodar antes e depois</h2>
+        <p class="section-description">Cada grupo clona o PR #7, mede o tempo na própria máquina, e compara com o run do CI.</p>
+      </section>
+
+      <!-- 19, Hands-on instruções -->
+      <section class="exercise-slide">
+        <span class="exercise-tag">Atividade prática, 20 min</span>
+        <h2>Mãos no PR #7</h2>
+        <p style="font-size: 0.7em;">Em duplas. Cada dupla executa as 4 etapas. Quem chegar abaixo de 4min ganha pontos no AdaLove. Quem identificar 1 oportunidade adicional de cache que ainda não está no PR ganha o dobro.</p>
+        <ol style="font-size: 0.7em; line-height: 1.6;">
+          <li>Clone o repo demo e faça checkout da branch:
+            <pre style="font-size: 0.55em; margin: 4px 0; padding: 8px 12px; background: #1d1829; color: #e6eaeb; border-radius: 6px;"><code>git clone git@github.com:josercf/inteli-px4-cicd-demo.git
+cd inteli-px4-cicd-demo
+git checkout feat/pr7-pipeline-fast</code></pre>
+          </li>
+          <li>Rode o mission-test ANTES de aplicar o cache (com a base do PR #4) e anote duração.</li>
+          <li>Aplique todos os 4 caches (já no <code>ci.yml</code> da branch). Rode de novo. Anote.</li>
+          <li>Abra <code>docs/performance.md</code> e compare seu número com a tabela. Diferença > 30%? Anote o porquê (hardware? rede? hit ratio?).</li>
+        </ol>
+        <p class="hint-caption">Discussão final aos 18 min: cada dupla compartilha 1 número e 1 surpresa. Hermano sintetiza.</p>
+      </section>
+
+      <!-- 20, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, escolha de chave de cache</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Seu grupo adiciona <code>actions/cache</code> para o pip com chave <code>pip-${{ runner.os }}</code>. Os builds ficam rápidos. Uma semana depois, um deps novo no <code>requirements.txt</code> não é instalado, e o teste falha em prod. O que aconteceu?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Cache do GitHub Actions tem bug em chave estática</li>
+            <li data-correct="true">A chave não tem <code>hashFiles('requirements*.txt')</code> — cache acerta mesmo quando deps mudaram, e o <code>pip install</code> usa cache antigo sem o pacote novo</li>
+            <li data-correct="false">runner.os mudou de versão silenciosamente</li>
+            <li data-correct="false">É necessário sempre usar <code>cache: 'pip'</code> nativo do setup-python</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. Chave estática = hit eterno. Cache deve invalidar quando o input invalida o output. hashFiles transforma o conteúdo do requirements em parte da chave: mudou o arquivo, chave diferente, cache miss, pip baixa o novo pacote. A regra: 'a chave é o resumo de tudo que torna o trabalho idêntico ao anterior'."
+               data-incorrect-msg="A chave estática (sem hashFiles) hita sempre — independente de mudanças em requirements.txt. O pip vê o cache, vê que tem wheels lá, e não baixa nada novo. O pacote adicionado fica de fora. Esse é o pior tipo de bug de cache: silencioso, intermitente (passa local, falha em CI fresh)."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, escopo de fixture</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Você promoveu <code>drone</code> para <code>scope="session"</code>. Funciona. Mas um teste de "drone com bateria baixa" agora afeta o teste seguinte de "missão completa". Qual é a correção CORRETA?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Reverter tudo para <code>scope="function"</code> e aceitar a lentidão</li>
+            <li data-correct="false">Adicionar <code>asyncio.sleep(10)</code> entre os testes</li>
+            <li data-correct="true">Manter <code>drone</code> session-scope, criar fixture <code>fresh_battery</code> function-scope que reseta a bateria antes do teste de missão</li>
+            <li data-correct="false">Marcar o teste de bateria baixa como <code>@pytest.mark.skip</code></li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. O princípio: o que é caro e imutável fica session. O que é mutável e barato de resetar fica function. Tem-se a conexão (cara) reusada, e o estado mutado (bateria) isolado. ADR-008 explicita: fixtures de teardown limpo são o que torna session-scope seguro."
+               data-incorrect-msg="Reverter joga fora o ganho de ~70s/teste. Sleep esconde o problema (e ainda falha quando estado real demora mais que o sleep). Skip remove o teste de bateria, perdendo cobertura. A solução boa preserva o ganho de session-scope E resgata o isolamento — via fixture menor que reseta só o que precisa."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Checklist Performance -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist de pipeline performant</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">6 sinais de que vocês têm performance sob controle. Não é "pipeline rápido", é "pipeline com custo medido e cada decisão justificada".</p>
+          <div class="three-cards" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div class="card">
+              <h4>1. Profile, não palpite</h4>
+              <p>Você sabe os top-3 gargalos do seu mission-test (em segundos, não "parece lento").</p>
+            </div>
+            <div class="card">
+              <h4>2. 4 camadas de cache</h4>
+              <p>pip + sonar + buildx + submódulo. Cada chave invalida quando deve, e só quando deve.</p>
+            </div>
+            <div class="card">
+              <h4>3. Hit ratio monitorado</h4>
+              <p>Log do CI mostra "Cache hit ✓" pra 4 chaves no caso comum. PR que muda requirements vê pip miss, restantes hit.</p>
+            </div>
+            <div class="card">
+              <h4>4. Fixtures session-scope</h4>
+              <p>O caro (SITL boot, conexão MAVSDK) paga 1x por suite. Função-scope só onde estado muda.</p>
+            </div>
+            <div class="card">
+              <h4>5. Zero <code>sleep()</code> em path crítico</h4>
+              <p>Toda espera é <code>await condition()</code> com timeout. Folga conservadora foi embora.</p>
+            </div>
+            <div class="card">
+              <h4>6. <code>docs/performance.md</code></h4>
+              <p>Tabela antes/depois versionada. Próximo speedup tem baseline pra comparar.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Aula 11: completam até o item 6</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">PR #7 entrega os 6. Quem fizer hands-on completo + identificar uma 7ª camada (ex.: cache do Sonar binário, cache de wheel customizado) ganha ponto extra.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Auto-estudo Aula 12 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 12</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Aula 12 (José Romualdo, 11/06) traduz o runner self-hosted em código Terraform com Multipass. Três provocações pra preparar:</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Vídeo, Terraform em 30 min</h4>
+              <p>"Terraform Tutorial for Beginners" (HashiCorp official, ~30 min). Conceitos: state, plan, apply, destroy. Foque na ideia de "descrever o estado-alvo, não os passos".</p>
+            </div>
+            <div class="concept-card">
+              <h4>Leitura, IaC declarativo vs imperativo</h4>
+              <p>Capítulo "Infrastructure as Code" do livro "Site Reliability Engineering" do Google. 25 min. Por que declarativo é diferente de um script bash.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Setup, Multipass</h4>
+              <p>Instale Multipass localmente (<code>brew install multipass</code> no Mac, <code>snap install multipass</code> no Linux). Rode <code>multipass launch --name teste</code>. Vai usar na aula.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">(1) Print da duração do mission-test ANTES e DEPOIS dos caches no PR de vocês. (2) Print do <code>multipass list</code> mostrando a instância "teste" rodando localmente. (3) Uma frase: "qual camada de cache deu o maior ganho no meu repo e por quê".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 11, Performance no SITL e CI, Sprint 04</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Performance medida, pipeline rápido</h2>
+        <p>Aula 12, 11 de junho — Terraform + Multipass, o runner como gado</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>
