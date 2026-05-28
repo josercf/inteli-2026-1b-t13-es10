@@ -776,6 +776,179 @@ quality-gates:
         </div>
       </section>
 
+      <!-- 15c, fluxo human-in-the-loop (SVG) -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Human in the loop — fluxo do PR ao merge</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 4px;">Robôs avaliam tudo. Humano confere o resumo. Robôs voltam pra dar o veredito final e liberam o merge.</p>
+          <svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="Fluxo human-in-the-loop: ROBÔS disparam CI (push, build, mission-test), HUMANO revisa via environment quality-review e aprova, ROBÔS rodam quality-gates e habilitam merge. Três desfechos: aprova, rejeita, timeout."
+               style="width: 100%; max-width: 1140px; max-height: 72vh; display: block; margin: 4px auto 0;">
+            <defs>
+              <marker id="arrDark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#1d1829"/>
+              </marker>
+              <marker id="arrCoral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#ff4545"/>
+              </marker>
+              <marker id="arrGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#066d73"/>
+              </marker>
+            </defs>
+
+            <!-- Swim lane backgrounds -->
+            <rect x="0" y="20" width="1200" height="170" rx="14" fill="#dfe5f8"/>
+            <rect x="0" y="210" width="1200" height="170" rx="14" fill="#ffd4d4"/>
+
+            <!-- Lane label: ROBÔS -->
+            <g transform="translate(20, 80)">
+              <line x1="30" y1="0" x2="30" y2="-14" stroke="#1d1829" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="30" cy="-18" r="4" fill="#1d1829"/>
+              <rect x="8" y="0" width="44" height="38" rx="7" fill="#1d1829"/>
+              <circle cx="20" cy="16" r="4" fill="#dfe5f8"/>
+              <circle cx="40" cy="16" r="4" fill="#dfe5f8"/>
+              <rect x="20" y="26" width="20" height="3" rx="1.5" fill="#dfe5f8"/>
+              <text x="30" y="60" text-anchor="middle" font-family="'Space Mono', monospace" font-size="14" font-weight="700" fill="#1d1829" letter-spacing="2">ROBÔS</text>
+            </g>
+
+            <!-- Lane label: HUMANOS -->
+            <g transform="translate(20, 265)">
+              <circle cx="30" cy="0" r="11" fill="#ff4545"/>
+              <path d="M14,46 C14,32 20,22 30,22 C40,22 46,32 46,46 Z" fill="#ff4545"/>
+              <text x="30" y="62" text-anchor="middle" font-family="'Space Mono', monospace" font-size="14" font-weight="700" fill="#ff4545" letter-spacing="2">HUMANOS</text>
+            </g>
+
+            <!-- ROBÔ Step 1: push trigger -->
+            <g transform="translate(100, 60)">
+              <rect width="160" height="100" rx="10" fill="#ffffff" stroke="#90a5e5" stroke-width="2"/>
+              <text x="80" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#90a5e5" letter-spacing="1.5">01 · TRIGGER</text>
+              <text x="80" y="50" text-anchor="middle" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1d1829">push em PR</text>
+              <text x="80" y="74" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">on: pull_request</text>
+              <text x="80" y="88" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">ci.yml dispara</text>
+            </g>
+
+            <!-- ROBÔ Step 2: build / scan -->
+            <g transform="translate(280, 60)">
+              <rect width="160" height="100" rx="10" fill="#ffffff" stroke="#90a5e5" stroke-width="2"/>
+              <text x="80" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#90a5e5" letter-spacing="1.5">02 · BUILD</text>
+              <text x="80" y="50" text-anchor="middle" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1d1829">lint · sonar · build</text>
+              <text x="80" y="74" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">3 jobs sequenciais</text>
+              <text x="80" y="88" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">~14 min</text>
+            </g>
+
+            <!-- ROBÔ Step 3: mission-test -->
+            <g transform="translate(460, 60)">
+              <rect width="160" height="100" rx="10" fill="#ffffff" stroke="#90a5e5" stroke-width="2"/>
+              <text x="80" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#90a5e5" letter-spacing="1.5">03 · MISSÃO</text>
+              <text x="80" y="50" text-anchor="middle" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1d1829">mission-test</text>
+              <text x="80" y="74" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">SITL + extract KPIs</text>
+              <text x="80" y="88" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">comenta no PR</text>
+            </g>
+
+            <!-- ROBÔ Step 4 (PAUSA): manual-approval -->
+            <g transform="translate(640, 60)">
+              <rect width="160" height="100" rx="10" fill="#fff3d4" stroke="#ff4545" stroke-width="2.5" stroke-dasharray="6,4"/>
+              <text x="80" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#ff4545" letter-spacing="1.5">04 · PAUSA</text>
+              <text x="80" y="50" text-anchor="middle" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1d1829">manual-approval</text>
+              <text x="80" y="74" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">aguardando review</text>
+              <text x="80" y="88" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">timeout 60 min</text>
+            </g>
+
+            <!-- ROBÔ Step 5: quality-gates -->
+            <g transform="translate(820, 60)">
+              <rect width="160" height="100" rx="10" fill="#ffffff" stroke="#90a5e5" stroke-width="2"/>
+              <text x="80" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#90a5e5" letter-spacing="1.5">05 · VEREDITO</text>
+              <text x="80" y="50" text-anchor="middle" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1d1829">quality-gates</text>
+              <text x="80" y="74" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">YAML × KPIs</text>
+              <text x="80" y="88" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">+ Sonar API</text>
+            </g>
+
+            <!-- ROBÔ Step 6: merge habilitado -->
+            <g transform="translate(1000, 60)">
+              <rect width="160" height="100" rx="10" fill="#ffffff" stroke="#066d73" stroke-width="2.5"/>
+              <text x="80" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#066d73" letter-spacing="1.5">06 · MERGE</text>
+              <text x="80" y="50" text-anchor="middle" font-family="Manrope, sans-serif" font-size="16" font-weight="700" fill="#1d1829">branch protected</text>
+              <text x="80" y="74" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">libera o botão</text>
+              <text x="80" y="88" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" fill="#2e2640">"Merge" no GitHub</text>
+            </g>
+
+            <!-- HUMANO Step: review @ environment -->
+            <g transform="translate(620, 240)">
+              <rect width="200" height="125" rx="10" fill="#ffffff" stroke="#ff4545" stroke-width="2.5"/>
+              <text x="100" y="22" text-anchor="middle" font-family="'Space Mono', monospace" font-size="10" font-weight="700" fill="#ff4545" letter-spacing="1.5">REVIEW</text>
+              <text x="100" y="48" text-anchor="middle" font-family="Manrope, sans-serif" font-size="15" font-weight="700" fill="#1d1829">environment</text>
+              <text x="100" y="68" text-anchor="middle" font-family="Manrope, sans-serif" font-size="15" font-weight="700" fill="#1d1829">quality-review</text>
+              <text x="100" y="93" text-anchor="middle" font-family="'Space Mono', monospace" font-size="11" fill="#2e2640">required reviewers</text>
+              <text x="100" y="112" text-anchor="middle" font-family="'Space Mono', monospace" font-size="12" font-weight="700" fill="#ff4545">@josercf  ·  @hermanopoj</text>
+            </g>
+
+            <!-- Horizontal arrows ROBÔ chain -->
+            <line x1="260" y1="110" x2="280" y2="110" stroke="#1d1829" stroke-width="2.5" marker-end="url(#arrDark)"/>
+            <line x1="440" y1="110" x2="460" y2="110" stroke="#1d1829" stroke-width="2.5" marker-end="url(#arrDark)"/>
+            <line x1="620" y1="110" x2="640" y2="110" stroke="#1d1829" stroke-width="2.5" marker-end="url(#arrDark)"/>
+            <line x1="800" y1="110" x2="820" y2="110" stroke="#1d1829" stroke-width="2.5" marker-end="url(#arrDark)"/>
+            <line x1="980" y1="110" x2="1000" y2="110" stroke="#1d1829" stroke-width="2.5" marker-end="url(#arrDark)"/>
+
+            <!-- Curve A: mission-test (ROBÔ 3) → review (HUMANO) — comment on PR -->
+            <path d="M540,160 C540,200 660,210 690,240" stroke="#ff4545" stroke-width="2.5" stroke-dasharray="7,5" fill="none" marker-end="url(#arrCoral)"/>
+            <text x="425" y="210" font-family="'Space Mono', monospace" font-size="11" fill="#ff4545" font-weight="700">comentário com KPIs no PR</text>
+
+            <!-- Curve B: review (HUMANO) → manual-approval (ROBÔ 4) — approval -->
+            <path d="M760,240 C760,210 760,190 760,160" stroke="#066d73" stroke-width="2.5" fill="none" marker-end="url(#arrGreen)"/>
+            <text x="775" y="200" font-family="'Space Mono', monospace" font-size="11" fill="#066d73" font-weight="700">approve →</text>
+
+            <!-- Divider before outcomes -->
+            <line x1="40" y1="395" x2="1160" y2="395" stroke="#b2b6bf" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="40" y="415" font-family="'Space Mono', monospace" font-size="11" fill="#b2b6bf" font-weight="700" letter-spacing="1">3 DESFECHOS POSSÍVEIS NO GATE 04</text>
+
+            <!-- Outcomes panel -->
+            <g transform="translate(0, 420)">
+              <!-- APROVA -->
+              <g transform="translate(40, 0)">
+                <rect width="360" height="100" rx="10" fill="#ffffff" stroke="#066d73" stroke-width="2.5"/>
+                <circle cx="32" cy="30" r="14" fill="#066d73"/>
+                <path d="M25,30 L31,37 L40,25" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="58" y="36" font-family="Manrope, sans-serif" font-size="16" font-weight="800" fill="#066d73">APROVA</text>
+                <text x="20" y="62" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">manual-approval = success</text>
+                <text x="20" y="78" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">→ quality-gates roda</text>
+                <text x="20" y="94" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">→ se 5/5 passam, merge libera</text>
+              </g>
+              <!-- REJEITA -->
+              <g transform="translate(420, 0)">
+                <rect width="360" height="100" rx="10" fill="#ffffff" stroke="#d05050" stroke-width="2.5"/>
+                <circle cx="32" cy="30" r="14" fill="#d05050"/>
+                <line x1="25" y1="23" x2="39" y2="37" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <line x1="39" y1="23" x2="25" y2="37" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                <text x="58" y="36" font-family="Manrope, sans-serif" font-size="16" font-weight="800" fill="#d05050">REJEITA</text>
+                <text x="20" y="62" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">manual-approval = failure</text>
+                <text x="20" y="78" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">→ quality-gates skipped</text>
+                <text x="20" y="94" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">→ PR bloqueado, refazer commit</text>
+              </g>
+              <!-- TIMEOUT -->
+              <g transform="translate(800, 0)">
+                <rect width="360" height="100" rx="10" fill="#ffffff" stroke="#b2b6bf" stroke-width="2.5"/>
+                <circle cx="32" cy="30" r="14" fill="none" stroke="#1d1829" stroke-width="2.5"/>
+                <line x1="32" y1="30" x2="32" y2="22" stroke="#1d1829" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="32" y1="30" x2="39" y2="35" stroke="#1d1829" stroke-width="2.5" stroke-linecap="round"/>
+                <text x="58" y="36" font-family="Manrope, sans-serif" font-size="16" font-weight="800" fill="#1d1829">TIMEOUT</text>
+                <text x="20" y="62" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">60 min sem decisão</text>
+                <text x="20" y="78" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">→ job falha, runner liberado</text>
+                <text x="20" y="94" font-family="'Space Mono', monospace" font-size="11" fill="#1d1829">→ re-run manual destrava</text>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 10, Esteira como guardiã, Sprint 03</div>
+          <div class="footer-page">15c</div>
+        </div>
+      </section>
+
       <!-- 16, comentário PR -->
       <section class="content-slide">
         <div class="top-bar"></div>
