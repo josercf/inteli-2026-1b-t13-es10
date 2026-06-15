@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 13, SRE: SLOs sobre o que você já mede, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li { margin-bottom: 3px; }
+    .compare-col.bad { border-top-color: #d05050; }
+    .compare-col.good { border-top-color: var(--inteli-dark-green); }
+
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards.two-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Hierarquia (vertical) reaproveitada para SLI/SLO/Budget/Burn */
+    .gate-stack {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .gate-row {
+      background: var(--inteli-bg-soft);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 16px;
+      align-items: center;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .gate-row.sli { border-left-color: var(--inteli-lilac); }
+    .gate-row.slo { border-left-color: var(--inteli-purple); }
+    .gate-row.budget { border-left-color: var(--inteli-coral); }
+    .gate-row.burn { border-left-color: #f0a93b; }
+    .gate-row h4 {
+      font-size: 0.75em;
+      margin: 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .gate-row p {
+      font-size: 0.64em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    /* YAML/code block */
+    .yaml-block {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .yaml-block pre {
+      margin: 0;
+      font-size: 0.55em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .yaml-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.45;
+    }
+    .yaml-block .annot ol { margin: 0; padding-left: 18px; }
+    .yaml-block .annot li { margin-bottom: 3px; }
+    .yaml-block .annot strong { color: var(--inteli-coral); }
+
+    .perf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.68em;
+      margin-top: 8px;
+    }
+    .perf-table th, .perf-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--inteli-bg-soft);
+      text-align: left;
+    }
+    .perf-table th {
+      background: var(--inteli-bg-soft);
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.85em;
+    }
+    .perf-table td.delta-good { color: var(--inteli-dark-green); font-weight: 700; }
+    .perf-table td.delta-bad { color: #d05050; font-weight: 700; }
+    .perf-table td code { font-size: 0.92em; }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    .real-shot {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--inteli-lilac);
+      background: var(--inteli-bg-soft);
+      max-width: 100%;
+      position: relative;
+    }
+    .real-shot img { display: block; width: 100%; height: auto; }
+    .real-shot figcaption {
+      font-size: 0.6em;
+      padding: 6px 10px;
+      background: var(--inteli-purple-deep);
+      color: white;
+      font-family: var(--inteli-mono, monospace);
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 05, SRE e coding skills</span>
+          <h1>Do pass/fail pontual ao orçamento de falhas</h1>
+          <p class="subtitle">Aula 10 fechou os gates obrigatórios. Eles te dizem PASSOU ou FALHOU. Não te dizem qual é a taxa de sucesso das últimas 30 missões, nem quanto tempo até recuperar. Hoje viramos SLI/SLO/error budget sobre o que A08 já extrai.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>13 de 14</span>
+            <strong>Data</strong><span>16 de junho de 2026, terça-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>Hermano Peixoto de Oliveira Junior</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Sprint 05 abre cobrando o que A10 não entrega: visibilidade longitudinal. Pipeline diz PASSOU. SLO diz "estamos dentro do orçamento de falhas dos últimos 30 dias?". Aula assume os 4 vídeos do auto-estudo vistos: 60% prática e discussão, 40% exposição.</p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily Time</td><td>Check-in da Sprint 05: PR #4 mergeou? sentem o feedback dos gates?</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>Recap dos 4 vídeos de SRE em 4 cartões (duplas)</td><td>15 min</td></tr>
+              <tr><td>10h30, Bloco 2</td><td>SLI, SLO, Error Budget, Burn rate em 1 slide</td><td>15 min</td></tr>
+              <tr><td>10h45, Bloco 3</td><td>Workshop em duplas: escolhendo SLIs sobre KPIs do A08</td><td>25 min</td></tr>
+              <tr><td>11h10, Bloco 4</td><td>Walkthrough PR #9: slos.yaml, error_budget.py, job slo-check</td><td>20 min</td></tr>
+              <tr><td>11h30, Bloco 5</td><td>Hands-on principal: injete uma falha, veja o budget queimar</td><td>35 min</td></tr>
+              <tr><td>12h05, Bloco 6</td><td>Roda humana (toil, on-call, postmortem) + quiz</td><td>15 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          PR #4 de vocês mergeou? Quality gate quebrou alguma vez? Vocês saberiam dizer hoje a taxa de sucesso das últimas 10 missões do CI sem abrir o GitHub Actions? Quanto tempo até recuperar de uma falha em produção?
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim da aula, cada dupla diferencia SLI/SLO/SLA, escolhe SLIs bons sobre KPIs que A08 já extrai, calcula error budget e burn rate, e sabe decidir entre ajustar código, ajustar SLO ou aceitar a queima.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Diferenciar</h4>
+              <p>SLI mede (razão observada). SLO declara meta sobre o SLI em uma janela. SLA é contrato externo com penalidade.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Escolher</h4>
+              <p>De KPI para SLI bom: percentil > média, "good event" e "valid event" claros, janela explícita versionada.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Orçar</h4>
+              <p>Error budget = 1 menos SLO. Distinguir consumo lento (degradação) de queima aguda (incidente em curso).</p>
+            </div>
+            <div class="concept-card">
+              <h4>Decidir</h4>
+              <p>Com burn rate na mão: ajustar SLO (com ADR), ajustar código (revert e fix) ou aceitar a queima (budget existe pra ser gasto).</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Hook recap A10 + dor de visibilidade -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Aula 10 entrega isso. E só isso.</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 14px;">No PR #4, o comentário do bot quality-gate aparece assim, verde e tranquilo:</p>
+          <div style="text-align: center; margin: 18px 0;">
+            <div style="display: inline-block; background: #e7f3ec; border: 2px solid var(--inteli-dark-green); color: var(--inteli-dark-green); padding: 10px 20px; border-radius: 8px; font-family: monospace; font-size: 1.2em;">✓ 5/5 gates passed</div>
+          </div>
+          <p style="font-size: 0.7em; margin: 12px 0 0;">Isso te diz a taxa de falha das últimas 30 missões? Te diz quanto demoramos pra recuperar quando quebra? Te diz se podemos arriscar uma mudança grande hoje?</p>
+          <div class="callout" style="margin-top: 14px; padding: 10px 16px;">
+            <h4 style="margin: 0 0 4px;">A nova camada</h4>
+            <p style="font-size: 0.68em; margin: 0; line-height: 1.45;">Gates são pontuais (esta run passou). SLO é longitudinal (estes 30 dias estão dentro da meta?). Hoje somamos a segunda camada, em cima da mesma fonte de dados que A08 já alimenta.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 15 min</span>
+        <h2>Recap dos 4 vídeos em 4 cartões</h2>
+        <p class="section-description">Vocês viram. Em duplas, validem o que pegou. 3min por cartão, 1 frase de síntese.</p>
+      </section>
+
+      <!-- 07, Recap dos 4 vídeos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Os 4 vídeos de SRE, condensados</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 8px;">Cada cartão: 1 ideia central. Em duplas, marquem qual foi a ideia que mais mudou a leitura de vocês sobre o próprio projeto.</p>
+          <div class="three-cards two-cols">
+            <div class="card">
+              <h4>SRE, fazendo isso errado!</h4>
+              <p>SRE não é ops com outro nome. Sem SLI claro, todo deploy vira "medo de quebrar". Métrica antes de rito.</p>
+            </div>
+            <div class="card">
+              <h4>Ciclos virtuosos</h4>
+              <p>Toil mede tempo gasto em trabalho manual repetitivo. Acima de 50% é sinal pra automatizar. Error budget vira moeda de troca entre velocidade e estabilidade.</p>
+            </div>
+            <div class="card">
+              <h4>O lado humano da SRE</h4>
+              <p>Blameless postmortem: a falha é sintoma do sistema, não da pessoa. On-call sustentável: até 2 incidentes por turno, rotação curta, follow-up real.</p>
+            </div>
+            <div class="card">
+              <h4>SRE na prática (empresas)</h4>
+              <p>Google: error budget freia deploys quando esgota. Spotify: SLOs por squad, não por sistema. Etsy: blameless postmortem como documento público.</p>
+            </div>
+          </div>
+          <p class="hint-caption">Dinâmica: 3 min em dupla por cartão (12 min). Sobra 3 min para 1 dupla compartilhar a síntese mais forte.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 15 min</span>
+        <h2>SLI, SLO, Error Budget</h2>
+        <p class="section-description">3 conceitos. 1 slide. Resto da aula aplica em cima do demo.</p>
+      </section>
+
+      <!-- 09, Hierarquia SLI/SLO/Budget/Burn -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>A hierarquia em 1 slide</h2>
+        </div>
+        <div class="slide-body">
+          <div class="gate-stack">
+            <div class="gate-row sli">
+              <h4>SLI (Indicator)</h4>
+              <p>O que medimos. Razão: good_events / valid_events. Ex.: nº de missões que terminaram em LANDED dividido pelo nº de missões iniciadas.</p>
+            </div>
+            <div class="gate-row slo">
+              <h4>SLO (Objective)</h4>
+              <p>Meta declarada sobre o SLI em uma janela. Ex.: 95% das missões finalizam em LANDED em janela de 30 dias.</p>
+            </div>
+            <div class="gate-row budget">
+              <h4>Error Budget</h4>
+              <p>1 menos SLO sobre a janela. Se SLO=95%/30d e tivermos 200 missões, podemos "quebrar" até 10 sem violar.</p>
+            </div>
+            <div class="gate-row burn">
+              <h4>Burn rate</h4>
+              <p>Velocidade com que o budget é consumido. Burn alta numa janela curta (1h) sinaliza incidente agudo. Burn lenta numa janela longa (30d) sinaliza degradação.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Por que percentil é melhor que média</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Média esconde cauda. O p95 captura "os 5% piores", onde mora a dor do usuário. Um valor médio bonito pode conviver com 5% de missões catastróficas.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 10, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 25 min</span>
+        <h2>Workshop em duplas: escolhendo SLIs</h2>
+        <p class="section-description">Cada dupla pega 1 KPI do A08. Escreve SLI + SLO + janela em 15min. Apresenta em 1min. Discutimos os 3 juntos.</p>
+      </section>
+
+      <!-- 11, Workshop: 3 KPIs disponíveis -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>3 KPIs disponíveis no <code>reports/metrics.json</code></h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 8px;">Cada dupla escolhe 1 KPI. Em 15 min, escreve: qual é o "good event", qual é o "valid event", e qual janela faz sentido. Apresenta em 1 min.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>KPI: success rate</h4>
+              <p>Métrica A08: razão de missões terminadas em LANDED sobre total iniciado. Sua dupla escreve: bom evento? evento válido? janela?</p>
+            </div>
+            <div class="card">
+              <h4>KPI: p95 mission duration</h4>
+              <p>Métrica A08: percentil 95 da duração das missões (s). Sua dupla escreve: qual percentil escolher? sobre quais missões (só as que terminaram OK)?</p>
+            </div>
+            <div class="card">
+              <h4>KPI: rollback time</h4>
+              <p>Tempo entre "falha detectada" e "última versão verde redeploy". Sua dupla escreve: como medir começo e fim? aceitamos rollback parcial?</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Critério de qualidade</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">A definição cabe em 2 linhas, é mensurável com dado existente, e tem uma janela explícita. Se precisar de "dado novo", o SLI ainda não está pronto pra hoje.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Workshop exemplo trabalhado -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Exemplo trabalhado: <code>mission_success_rate</code></h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">slo:
+  name: mission_success_rate
+  sli:
+    good: "missões com terminal_state == LANDED e battery_pct &gt;= 20"
+    valid: "missões iniciadas com armed == true"
+  objective: 0.95
+  window: 30d
+  burn_rate_alerts:
+    - { window: 1h,  threshold: 14.4 }  # consome 2% do budget em 1h
+    - { window: 6h,  threshold: 6.0 }   # multi-window</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Por que cada linha está aí</p>
+              <ol>
+                <li><strong>good</strong> exclui pousos forçados (battery menor que 20).</li>
+                <li><strong>valid</strong> exclui missões abortadas pelo CI antes do arm.</li>
+                <li><strong>30d</strong> captura tendência longa; 1h e 6h capturam incidente em curso.</li>
+                <li><strong>Multi-window</strong>: 2 janelas alertam cedo sem alarme falso. ADR-010 detalha os thresholds.</li>
+                <li><strong>threshold 14.4</strong>: derivado de "queimar 2% do budget mensal em 1h".</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, Separador Bloco 4 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 4, 20 min</span>
+        <h2>Walkthrough PR #9</h2>
+        <p class="section-description">20min de demo. Eu mostro, vocês perguntam. Versão didática: 1 SLO de exemplo, parser simples, job no CI, comentário no PR.</p>
+      </section>
+
+      <!-- 14, slos.yaml com 3 SLOs -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>slos.yaml</code>: 3 SLOs do demo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml">metrics_source: reports/metrics.json   # mesma fonte que A08 alimenta
+
+slos:
+  - name: mission_success_rate
+    sli:  { good: "terminal_state == LANDED and battery_pct &gt;= 20",
+            valid: "armed == true" }
+    objective: 0.95
+    window: 30d
+    burn_rate_alerts:
+      - { window: 1h, threshold: 14.4 }
+      - { window: 6h, threshold: 6.0 }
+
+  - name: p95_mission_duration
+    sli:  { metric: "duration_s", aggregate: "p95",
+            valid: "terminal_state == LANDED" }
+    objective_max: 180        # segundos
+    window: 30d
+
+  - name: rollback_time_p95
+    sli:  { metric: "rollback_seconds", aggregate: "p95",
+            valid: "incident == true" }
+    objective_max: 300
+    window: 30d</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Anatomia do arquivo</p>
+              <ol>
+                <li><strong>metrics_source</strong>: aponta para o mesmo <code>reports/metrics.json</code> que o job mission-test já gera desde A08. Nenhum dado novo.</li>
+                <li><strong>objective vs objective_max</strong>: razão de sucesso quer "no mínimo X"; latência quer "no máximo Y segundos".</li>
+                <li><strong>3 SLOs, 3 dimensões</strong>: confiabilidade (success), performance (p95), recuperação (rollback).</li>
+                <li><strong>Versionado em git</strong>: mudar SLO vira PR, vira ADR, vira discussão. Não vira chat no Slack.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">14</div>
+        </div>
+      </section>
+
+      <!-- 15, tools/error_budget.py núcleo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2><code>tools/error_budget.py</code>: o núcleo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python"># tools/error_budget.py
+# history.jsonl é apêndice. A08 vai precisar de update pra escrever lá:
+# { "ts": "2026-06-15T10:00:00Z", "success": true, "duration_s": 172, ... }
+
+from datetime import datetime, timedelta, timezone
+import json, pathlib
+
+def load_history(path="metrics/history.jsonl"):
+    with pathlib.Path(path).open() as f:
+        return [json.loads(line) for line in f if line.strip()]
+
+def within(window, runs, now=None):
+    now = now or datetime.now(timezone.utc)
+    cutoff = now - window
+    return [r for r in runs if datetime.fromisoformat(r["ts"]) &gt;= cutoff]
+
+def compute_burn_rate(slo, history, window):
+    runs = within(window, history)
+    if not runs:
+        return 0.0
+    failures = sum(1 for r in runs if not r["success"])
+    observed_error_rate = failures / len(runs)
+    allowed_error_rate = 1.0 - slo["objective"]
+    if allowed_error_rate == 0:
+        return float("inf") if observed_error_rate &gt; 0 else 0.0
+    return observed_error_rate / allowed_error_rate   # burn rate</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">O que ler aqui</p>
+              <ol>
+                <li><strong>history.jsonl</strong> é append-only. 1 linha por mission run. Sem schema rígido.</li>
+                <li><strong>within(window, ...)</strong>: filtra runs nas últimas N (1h, 6h, 30d).</li>
+                <li><strong>burn_rate = observed / allowed</strong>: 1.0x significa "queimando exatamente no ritmo do budget". 14.4x é incêndio.</li>
+                <li><strong>Edge case</strong>: SLO 100% (allowed=0) é divisão por zero. Defendido explicitamente.</li>
+                <li><strong>Testes</strong>: history vazio, janela menor que dado disponível, SLO 100%.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, Job slo-check + comentário PR -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Job <code>slo-check</code> + comentário no PR</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-yaml"># .github/workflows/ci.yml
+slo-check:
+  needs: quality-gates
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/download-artifact@v4
+      with: { name: history, path: metrics/ }
+    - run: python tools/error_budget.py slos.yaml &gt; slo_report.md
+    - uses: marocchino/sticky-pull-request-comment@v2
+      with:
+        path: slo_report.md
+        header: slo-status
+
+## Comentário gerado no PR:
+
+## 📊 SLO Status
+
+| SLO                  | Target  | Current (30d) | Budget    | Burn rate (1h) |
+|----------------------|---------|---------------|-----------|----------------|
+| mission_success_rate | 95%     | 96.5%         | 30% used  | 0.8x (ok)      |
+| p95_mission_duration | ≤ 180s  | 172s          | 60% used  | 1.2x (ok)      |
+| rollback_time_p95    | ≤ 300s  | 245s          | 18% used  | 0x   (ok)      |
+
+🟢 Todos os SLOs dentro do budget.</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">3 escolhas didáticas</p>
+              <ol>
+                <li><strong>needs: quality-gates</strong>: roda DEPOIS dos gates de A10. Não substitui, complementa.</li>
+                <li><strong>Não bloqueia merge</strong>: SLO esgotado é sinal pra time, não veto automático. ADR-010 trata.</li>
+                <li><strong>sticky comment</strong>: atualiza o mesmo comentário a cada push. Não vira spam no PR.</li>
+                <li><strong>Tabela markdown</strong>: leitura rápida no PR. Verde/amarelo/vermelho pelo emoji header.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, Separador Bloco 5 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 5, 35 min</span>
+        <h2>Hands-on: injete uma falha, veja o budget queimar</h2>
+        <p class="section-description">35min. Em duplas. Vocês adicionam um sleep gigante numa missão (ou trocam waypoint pra coordenada inválida). Rodam CI. Vêem o budget descer. Decidem: ajustar SLO ou ajustar código?</p>
+      </section>
+
+      <!-- 18, Hands-on passo a passo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Passo a passo do hands-on</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 8px;">Em duplas. 35 min cronometrados. Discussão guiada começa aos 30 min.</p>
+          <ol style="font-size: 0.68em; line-height: 1.55;">
+            <li>Clone a branch <code>feat/pr9-slo</code> do demo: <code>git checkout feat/pr9-slo</code>.</li>
+            <li>Verifique que o CI verde rodou e que <code>metrics/history.jsonl</code> tem pelo menos 10 entradas (preenchido por script de seed).</li>
+            <li>Em <code>tools/run_mission.py</code>, troque o Y do segundo waypoint por <code>-9999</code> (coordenada inválida), OU adicione <code>await asyncio.sleep(300)</code> antes do takeoff.</li>
+            <li>Commit, push, abra PR contra <code>main</code>.</li>
+            <li>Veja o CI rodar: <code>mission-test</code> pode falhar OU dar timeout. Em qualquer caso, <code>slo-check</code> comenta o burn rate atualizado.</li>
+            <li>Reverta a mudança. Veja o budget recuperar nas próximas runs do CI.</li>
+          </ol>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Discussão aos 30 min</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Qual SLO queimou mais? Foi proporcional ao tamanho da falha que vocês injetaram? Se não foi proporcional, qual SLI estava mal definido?</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 19, Hands-on framework de decisão -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Budget queimou. E agora? 3 caminhos.</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 8px;">Diante do burn rate em curso, SRE saudável pondera 3 respostas. Não existe "a certa": existe "a defensável diante do dado".</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Ajustar o código</h4>
+              <p>Burn agudo inesperado após mudança identificável: revert mais correção. Padrão saudável. É o caminho default quando há causa clara.</p>
+            </div>
+            <div class="card">
+              <h4>Ajustar o SLO</h4>
+              <p>Burn sustentado com causa estrutural (hardware muda, missão muda): revisar meta com dado, NÃO com ansiedade. Vide ADR-005 como referência de revisão guiada por dado.</p>
+            </div>
+            <div class="card">
+              <h4>Aceitar a queima</h4>
+              <p>Budget existe pra ser gasto. Se sobra 30% no fim do mês, talvez o SLO esteja conservador demais. Ou vocês não estão mudando o bastante.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Erro comum a evitar</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Tratar SLO como SLA. SLA é externo (contrato com penalidade). SLO é interno (acordo entre dev e produto). Ajustar SLO não "engana" ninguém, desde que documentado em ADR.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">19</div>
+        </div>
+      </section>
+
+      <!-- 20, Separador Bloco 6 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 6, 15 min</span>
+        <h2>Lado humano: toil, on-call, blameless postmortem</h2>
+        <p class="section-description">Você tem o número. Mas SRE é também sobre como o time vive com o número. 15min de discussão guiada.</p>
+      </section>
+
+      <!-- 21, Roda humana 3 perguntas -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>3 perguntas pra discutir em dupla</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 8px;">Não precisa responder em voz alta. Cada dupla escolhe 1 das 3 pra discutir por 5 min. Depois, 1 dupla compartilha por bloco.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4>Toil no nosso projeto</h4>
+              <p>Quanto do tempo de vocês é manual, repetitivo, sem aprendizado? Citem 1 toil que daria pra automatizar essa semana.</p>
+            </div>
+            <div class="card">
+              <h4>On-call sustentável</h4>
+              <p>Se hoje o CI quebrasse a 1h da manhã, quem responderia? Vocês têm rotação? Quanto pesa quando cai no mesmo de novo?</p>
+            </div>
+            <div class="card">
+              <h4>Blameless postmortem</h4>
+              <p>O último bug grande de vocês: o relato culpou pessoa ou sistema? Que pergunta mudaria o tom?</p>
+            </div>
+          </div>
+          <p class="hint-caption">Hermano fecha o bloco com 1 padrão observado entre as duplas: o que o time MEDE já mudou como o time CONVERSA?</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, budget esgotado</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Você define SLO de 99.9% de sucesso em 30 dias. O budget esgota no dia 28 do mês após um deploy ruim. Qual é a resposta SRE saudável?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Aumentar SLO pra 99.99% e prometer mais qualidade</li>
+            <li data-correct="true">Freezar deploys não-críticos até o budget recuperar; postmortem do deploy ruim; reavaliar SLO só se o padrão se repetir nos próximos meses</li>
+            <li data-correct="false">Baixar SLO pra 99% imediatamente pra não esgotar de novo</li>
+            <li data-correct="false">Ignorar, budget esgotado é problema do mês passado</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. Error budget esgotado é sinal pra ALTERAR comportamento (freeze, postmortem), não pra mudar a meta no susto. Mudar SLO sem dado é cosmético. ADR muda meta quando há padrão sustentado."
+               data-incorrect-msg="SLO não muda no impulso. Apertar pra 99.99% promete o que não dá pra entregar; afrouxar pra 99% esconde a regressão; ignorar treina o time a não confiar no SLO. A resposta SRE é freezar deploys, fazer postmortem, e medir antes de mexer na meta."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, multi-window burn</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Burn rate de 14.4x na janela de 1h, mas 0.5x na janela de 30d. Como interpretar?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Sistema está fora de SLO, declare incidente</li>
+            <li data-correct="false">Sistema está dentro de SLO, ignore o burn de 1h</li>
+            <li data-correct="true">Incidente AGUDO em curso. 30d ainda mascara porque a janela é longa; 1h captura no calor. Investigue AGORA, antes que 30d acompanhe</li>
+            <li data-correct="false">Burn rate de 1h é falso positivo, monitore só por 30d</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Multi-window existe pra isso. 30d é tendência (degradação lenta); 1h é alarme (incidente). 14.4x em 1h significa que se essa taxa continuar, todo o orçamento mensal seria consumido em cerca de 2h. ADR-010 detalha as 2 janelas como complementares."
+               data-incorrect-msg="30d sozinho atrasa a detecção de incidente agudo: quando ele aparece, já queimou muito. 1h sozinho gera alarme demais (qualquer pico passa de 14.4x). As DUAS janelas juntas dão: 1h alerta cedo, 30d valida que a tendência é real."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Checklist PR #9 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist do PR #9</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">6 itens que entram no PR de SLO. Não é "tem SLO?", é "tem SLO definido, calculado, comentado no PR, e documentado em ADR + glossário".</p>
+          <div class="three-cards" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div class="card">
+              <h4>1. slos.yaml versionado</h4>
+              <p>3 SLOs declarados com window e burn_rate_alerts. Mudança vira PR, não chat.</p>
+            </div>
+            <div class="card">
+              <h4>2. tools/error_budget.py com testes</h4>
+              <p>Cobertura de pelo menos 80%, casos de borda cobertos (history vazio, janela menor que dados disponíveis, SLO 100%).</p>
+            </div>
+            <div class="card">
+              <h4>3. Job slo-check no ci.yml</h4>
+              <p>Roda após quality-gates. Não bloqueia merge: só comenta. ADR-010 justifica o "não bloqueia".</p>
+            </div>
+            <div class="card">
+              <h4>4. Comentário no PR com tabela</h4>
+              <p>SLO, target, current, budget, burn por janela. Sticky comment, atualiza a cada push.</p>
+            </div>
+            <div class="card">
+              <h4>5. ADR-010</h4>
+              <p>Multi-window SLO documentada: por que 1h E 30d, por que slo-check não bloqueia, como mudar SLO.</p>
+            </div>
+            <div class="card">
+              <h4>6. docs/sre-basics.md</h4>
+              <p>Glossário (SLI, SLO, SLA, error budget, toil, burn rate) com exemplos do próprio demo.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Aula 13: entrega itens 1 a 6</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Quem fizer hands-on completo e propor um 4º SLO (ex.: noise no MAVLink, jitter de telemetria) ganha ponto extra no AdaLove.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">24</div>
+        </div>
+      </section>
+
+      <!-- 25, Auto-estudo Aula 14 -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo para a Aula 14</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.74em; margin: 0 0 6px;">Aula 14 (Hermano, 22/06) fecha o módulo com "Improve your coding skills". 4 vídeos pra preparar:</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Vídeo principal, Hermano</h4>
+              <p>"Improve your coding skills". Vídeo gravado pelo próprio professor com a síntese dos hábitos que ele observa em devs que evoluem.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo de apoio</h4>
+              <p>"Como você melhora suas habilidades de programação?". Complementa o principal com perspectivas de outros engenheiros sêniores.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Vídeo em inglês</h4>
+              <p>"How To Be A GREAT Programmer". 15 min, foco em hábitos diários e leitura de código alheio como prática deliberada.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Refresher de OOP</h4>
+              <p>"Object-Oriented Programming". Reativa fundamentos (encapsulamento, herança, polimorfismo) antes da discussão sobre design de código limpo em A14.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega para o AdaLove</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">(1) Print do comentário slo-check no PR de vocês com burn rate de pelo menos 2 SLOs. (2) Uma frase: "qual SLO ficou mais difícil de definir e por quê". (3) Sua opinião escrita (2 ou 3 frases): "no projeto de vocês, o que conta como toil hoje?".</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 13, SRE: SLOs sobre o que você já mede, Sprint 05</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>SLOs medem o longo prazo. Pipeline mede o agora.</h2>
+        <p>Aula 14, 22 de junho, Improve your coding skills, com Hermano</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>

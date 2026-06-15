@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280, initial-scale=1.0" />
+  <title>Aula 14, Improve your coding skills, Inteli T13</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/white.min.css" id="theme" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css" />
+
+  <link rel="stylesheet" href="assets/css/inteli-theme.css" />
+  <link rel="stylesheet" href="assets/css/inteli-print.css" />
+
+  <style>
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 10px;
+    }
+    .compare-col {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .compare-col h4 {
+      font-size: 0.88em;
+      color: var(--inteli-coral);
+      margin: 0 0 6px 0;
+    }
+    .compare-col ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.68em;
+      line-height: 1.5;
+    }
+    .compare-col li { margin-bottom: 3px; }
+    .compare-col.bad { border-top-color: #d05050; }
+    .compare-col.good { border-top-color: var(--inteli-dark-green); }
+    .compare-col pre { margin: 0; font-size: 0.55em; line-height: 1.35; padding: 10px 12px; }
+
+    .three-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .three-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .three-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .three-cards .card p {
+      font-size: 0.66em;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .two-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .two-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--inteli-coral);
+    }
+    .two-cards .card h4 {
+      font-size: 0.82em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+    }
+    .two-cards .card p {
+      font-size: 0.68em;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .five-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .five-cards .card {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 10px 12px;
+      border-top: 3px solid var(--inteli-lilac);
+    }
+    .five-cards .card h4 {
+      font-size: 0.7em;
+      margin: 0 0 4px 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .five-cards .card p {
+      font-size: 0.56em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .gate-stack {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .gate-row {
+      background: var(--inteli-bg-soft);
+      border-radius: 8px;
+      padding: 8px 14px;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 16px;
+      align-items: center;
+      border-left: 4px solid var(--inteli-lilac);
+    }
+    .gate-row.nome { border-left-color: var(--inteli-coral); }
+    .gate-row.funcao { border-left-color: var(--inteli-purple); }
+    .gate-row.ramificacao { border-left-color: var(--inteli-dark-green); }
+    .gate-row.acoplamento { border-left-color: #f0a93b; }
+    .gate-row.teste { border-left-color: var(--inteli-lilac); }
+    .gate-row.q1 { border-left-color: var(--inteli-coral); }
+    .gate-row.q2 { border-left-color: var(--inteli-purple); }
+    .gate-row.q3 { border-left-color: var(--inteli-dark-green); }
+    .gate-row.q4 { border-left-color: #f0a93b; }
+    .gate-row.q5 { border-left-color: var(--inteli-lilac); }
+    .gate-row h4 {
+      font-size: 0.74em;
+      margin: 0;
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+    }
+    .gate-row p {
+      font-size: 0.64em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .yaml-block {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .yaml-block pre {
+      margin: 0;
+      font-size: 0.5em;
+      line-height: 1.4;
+      padding: 12px 14px;
+    }
+    .yaml-block .annot {
+      background: var(--inteli-bg-soft);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.6em;
+      line-height: 1.45;
+    }
+    .yaml-block .annot ol { margin: 0; padding-left: 18px; }
+    .yaml-block .annot li { margin-bottom: 3px; }
+    .yaml-block .annot strong { color: var(--inteli-coral); }
+
+    .perf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.68em;
+      margin-top: 8px;
+    }
+    .perf-table th, .perf-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--inteli-bg-soft);
+      text-align: left;
+    }
+    .perf-table th {
+      background: var(--inteli-bg-soft);
+      color: var(--inteli-purple-deep);
+      font-family: var(--inteli-mono, monospace);
+      font-size: 0.85em;
+    }
+
+    .hint-caption {
+      color: var(--inteli-gray-dark);
+      font-size: 0.65em;
+      font-style: italic;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- 01, Capa -->
+      <section class="cover-slide">
+        <div class="top-bar"></div>
+        <div class="cover-content">
+          <span class="sprint-tag">Sprint 05, SRE e coding skills</span>
+          <h1>Você já entrega. Agora entrega bem.</h1>
+          <p class="subtitle">Sprint 03 ensinou a entregar. Sprint 04 a entregar com infra. Sprint 05 abriu visibilidade longitudinal com SLO. Hoje a última cobrança: a qualidade do código que você escreve, não só do pipeline que o entrega. Hábitos do bom programador, OOP aplicada, refactor dojo sobre o demo real.</p>
+          <div class="cover-meta">
+            <strong>Aula</strong><span>14 de 14</span>
+            <strong>Data</strong><span>22 de junho de 2026, segunda-feira, 10h00 às 12h00</span>
+            <strong>Professor</strong><span>Hermano Peixoto de Oliveira Junior</span>
+            <strong>Módulo</strong><span>13, Engenharia de Software, Turma T13</span>
+          </div>
+        </div>
+        <span class="cover-branding inteli-wordmark">inteli</span>
+      </section>
+
+      <!-- 02, Agenda -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Agenda da aula</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Últimas duas horas do módulo. Cobramos o que sobra de fora do pipeline: a qualidade de código que você escreve. Pouca exposição, muita prática em duplas, code review entre vocês.</p>
+          <table>
+            <thead>
+              <tr><th style="width: 28%;">Bloco</th><th style="width: 52%;">Atividade</th><th style="width: 20%;">Duração</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>10h00, Daily</td><td>Check-in: qual foi o código mais feio que você escreveu nesse módulo?</td><td>15 min</td></tr>
+              <tr><td>10h15, Bloco 1</td><td>Mapa dos 4 vídeos do Hermano em 4 cartões</td><td>15 min</td></tr>
+              <tr><td>10h30, Bloco 2</td><td>Heurísticas do bom código, aplicadas a trechos do demo</td><td>15 min</td></tr>
+              <tr><td>10h45, Bloco 3</td><td>OOP aplicada ao demo, live coding do Gate</td><td>20 min</td></tr>
+              <tr><td>11h05, Bloco 4</td><td>Refactor Dojo em duplas, 30min refactor + 15min diff</td><td>45 min</td></tr>
+              <tr><td>11h50, Bloco 5</td><td>Code Review Cruzado entre duplas</td><td>20 min</td></tr>
+              <tr><td>12h10, Fechamento</td><td>Mapa do módulo A01 a A14 + ponderada OpenChoreo</td><td>15 min</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">02</div>
+        </div>
+      </section>
+
+      <!-- 03, Daily -->
+      <section class="daily-slide">
+        <span class="daily-tag">Daily, 15 min</span>
+        <h2>Daily Time</h2>
+        <p class="daily-subtitle">
+          Qual é o trecho de código mais feio que você escreveu nesse módulo? Por que ele ficou feio? Você refatoraria hoje? Se sim, em quê?
+        </p>
+        <div class="inteli-timer" data-minutes="15">
+          <div class="inteli-timer-display">15:00</div>
+          <div class="inteli-timer-controls">
+            <button data-action="start">Iniciar</button>
+            <button data-action="pause">Pausar</button>
+            <button data-action="reset">Zerar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04, Objetivos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Objetivos de aprendizagem</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">Ao fim da aula, cada dupla refatorou 1 trecho real do demo, fez review de outra dupla com critério escrito, e tem vocabulário para defender escolhas de design.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Ler com olhar crítico</h4>
+              <p>Identificar 5 heurísticas violadas em código real do demo. Não "achar feio", justificar com critério.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Refatorar com motivo</h4>
+              <p>Cada mudança tem 1 frase de justificativa. Não "ficou melhor", mas "reduz acoplamento entre X e Y".</p>
+            </div>
+            <div class="concept-card">
+              <h4>Aplicar OOP onde paga</h4>
+              <p>Reconhecer "parser procedural com if/elif crescendo" como sinal de polimorfismo. Não OOP em tudo, OOP quando elimina ramificação.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Revisar pares</h4>
+              <p>Code review como conversa técnica, não veredito. Perguntar antes de afirmar.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">04</div>
+        </div>
+      </section>
+
+      <!-- 05, Hook: dois snippets do demo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Hook: mesma feature, duas formas</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Trechos reais de <code>tools/quality_gates.py</code> do demo. Esquerda, como está hoje. Direita, refatorado com tipo + polimorfismo. A feature é IDÊNTICA.</p>
+          <div class="compare-grid">
+            <div class="compare-col bad">
+              <h4>Antes, procedural</h4>
+<pre><code class="language-python">def check_gate(name, actual, threshold, operator):
+    if operator == "&gt;=":
+        passed = actual &gt;= threshold
+    elif operator == "&lt;=":
+        passed = actual &lt;= threshold
+    elif operator == "==":
+        passed = actual == threshold
+    elif operator == "&lt;":
+        passed = actual &lt; threshold
+    elif operator == "&gt;":
+        passed = actual &gt; threshold
+    else:
+        raise ValueError(operator)
+    return {
+        "name": name,
+        "passed": passed,
+        "actual": actual,
+        "threshold": threshold,
+    }</code></pre>
+            </div>
+            <div class="compare-col good">
+              <h4>Depois, polimorfismo</h4>
+<pre><code class="language-python">class Gate(ABC):
+    def __init__(self, name, threshold):
+        self.name = name
+        self.threshold = threshold
+
+    def evaluate(self, actual) -&gt; GateResult:
+        return GateResult(
+            name=self.name,
+            passed=self._compare(actual),
+            actual=actual,
+            threshold=self.threshold,
+        )
+
+    @abstractmethod
+    def _compare(self, actual): ...
+
+class MinThresholdGate(Gate):
+    def _compare(self, actual):
+        return actual &gt;= self.threshold
+
+class MaxThresholdGate(Gate):
+    def _compare(self, actual):
+        return actual &lt;= self.threshold</code></pre>
+            </div>
+          </div>
+          <p class="hint-caption">Mesma feature. Qual você quer dar manutenção daqui a 6 meses? Por quê?</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">05</div>
+        </div>
+      </section>
+
+      <!-- 06, Separador Bloco 1 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 1, 15 min</span>
+        <h2>Mapa dos 4 vídeos em 4 cartões</h2>
+        <p class="section-description">Vocês viram. Em duplas, validem o que pegou. Cada dupla escolhe 1 cartão pra resumir em 1 frase.</p>
+      </section>
+
+      <!-- 07, Os 4 vídeos do Hermano -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Os 4 vídeos do Hermano, em 4 cartões</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Cada cartão sintetiza 1 vídeo. Sua dupla pega 1 e devolve em 1 frase (o que ficou de mais útil).</p>
+          <div class="two-cards">
+            <div class="card">
+              <h4>Improve your coding skills</h4>
+              <p>Práticas deliberadas: ler código bom (não só escrever), refatorar código velho, code katas. Habilidade vem de exposição + repetição com feedback, não de horas de cadeira.</p>
+            </div>
+            <div class="card">
+              <h4>Como você melhora suas habilidades de programação?</h4>
+              <p>3 alavancas: leitura ativa de código alheio, projetos paralelos que forçam stack nova, escrita técnica (blog ou PR description bem feito).</p>
+            </div>
+            <div class="card">
+              <h4>How To Be A GREAT Programmer</h4>
+              <p>Bons programadores otimizam pra LEITURA, não pra escrita. Código é escrito 1x e lido 100x. Investir 5min de clareza economiza 1h depois.</p>
+            </div>
+            <div class="card">
+              <h4>Object-Oriented Programming</h4>
+              <p>OOP não é sobre classes, é sobre limitar acoplamento via mensagens. Encapsulamento &gt; herança. Composição &gt; herança. Polimorfismo quando elimina if/elif.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">07</div>
+        </div>
+      </section>
+
+      <!-- 08, Separador Bloco 2 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 2, 15 min</span>
+        <h2>Heurísticas do bom código sobre o demo</h2>
+        <p class="section-description">5 heurísticas. Aplicadas a trechos REAIS de <code>tools/</code> e <code>libs/</code> do <code>inteli-px4-cicd-demo</code>. Vocês vão usar nas próximas 2h.</p>
+      </section>
+
+      <!-- 09, 5 heurísticas -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>5 heurísticas, com exemplo no demo</h2>
+        </div>
+        <div class="slide-body">
+          <div class="gate-stack">
+            <div class="gate-row nome">
+              <h4>1. Nomes que dizem intenção</h4>
+              <p><code>def x(d, t):</code> vs <code>def evaluate_gate(metrics, thresholds):</code>. Tipo + papel no nome. Aplicado: <code>tools/extract_metrics.py</code> tem 3 funções com nome OK, 2 com nome opaco.</p>
+            </div>
+            <div class="gate-row funcao">
+              <h4>2. Funções curtas, um trabalho</h4>
+              <p>Limite mental: cabe em 1 tela sem rolar (~30 linhas). <code>quality_gates.check_coverage()</code> faz: ler XML, parsear, comparar, formatar. 4 trabalhos. Quebrar.</p>
+            </div>
+            <div class="gate-row ramificacao">
+              <h4>3. Eliminar ramificação tipo-baseada</h4>
+              <p>If/elif sobre "tipo de operação" = polimorfismo escondido. <code>check_gate(operator='&gt;=')</code> é um dispatch manual.</p>
+            </div>
+            <div class="gate-row acoplamento">
+              <h4>4. Limitar acoplamento</h4>
+              <p>Função que recebe dict opaco + 4 strings = consumidor precisa saber estrutura interna. Receber objeto tipado = compilador valida.</p>
+            </div>
+            <div class="gate-row teste">
+              <h4>5. Testabilidade no design</h4>
+              <p>Função que abre arquivo + parsa + compara = só testa com arquivo real. Função que recebe dados já parseados + retorna resultado = unit test puro.</p>
+            </div>
+          </div>
+          <p class="hint-caption">Heurística não é regra. Heurística é direção. Romper a regra com motivo escrito é melhor que segui-la sem entender.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">09</div>
+        </div>
+      </section>
+
+      <!-- 10, Separador Bloco 3 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 3, 20 min</span>
+        <h2>OOP aplicada ao demo, live coding do Gate</h2>
+        <p class="section-description">20min ao vivo. Eu refatoro <code>quality_gates.py</code>. Vocês perguntam quando algo não fizer sentido. Template method, sem overengineer.</p>
+      </section>
+
+      <!-- 11, Antes: procedural -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Antes, <code>quality_gates.py</code> procedural</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python"># tools/quality_gates.py (estado atual)
+
+def check_coverage(xml_path, threshold):
+    tree = ET.parse(xml_path)
+    line_rate = float(tree.getroot().attrib["line-rate"])
+    passed = line_rate &gt;= threshold
+    return {"name": "coverage", "passed": passed,
+            "actual": line_rate, "threshold": threshold}
+
+def check_mission_metrics(json_path, thresholds):
+    data = json.loads(Path(json_path).read_text())
+    rms = data["trajectory_rms_m"]
+    passed = rms &lt;= thresholds["max_rms_m"]
+    return {"name": "mission_rms", "passed": passed,
+            "actual": rms, "threshold": thresholds["max_rms_m"]}
+
+def check_sonar(report_path, threshold):
+    data = json.loads(Path(report_path).read_text())
+    bugs = data["bugs"]
+    passed = bugs &lt;= threshold
+    return {"name": "sonar_bugs", "passed": passed,
+            "actual": bugs, "threshold": threshold}
+
+# E quando vier o 4º? E o 5º? Copia-cola de novo.</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Sintomas</p>
+              <ol>
+                <li><strong>4 funções com mesma estrutura</strong>: lê fonte, parseia, compara, retorna dict.</li>
+                <li><strong>Adicionar o 5º gate</strong> = copiar-colar a 5ª vez. Cada cópia é uma chance de divergir o formato do dict.</li>
+                <li><strong>Tratamento de erro</strong> (arquivo ausente, JSON mal-formado) terá que ser repetido em cada função.</li>
+                <li><strong>Teste unitário</strong> precisa de arquivo real em disco. Não dá pra mockar só a leitura.</li>
+                <li><strong>Forma é estável, conteúdo varia</strong>. É o sinal clássico de template method.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">11</div>
+        </div>
+      </section>
+
+      <!-- 12, Depois: Gate template method -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Depois, <code>Gate</code> como template method</h2>
+        </div>
+        <div class="slide-body">
+          <div class="yaml-block">
+<pre><code class="language-python">from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
+@dataclass
+class GateResult:
+    name: str
+    passed: bool
+    actual: float | None
+    threshold: float
+    message: str
+
+class Gate(ABC):
+    def __init__(self, name: str, threshold: float):
+        self.name = name
+        self.threshold = threshold
+
+    def evaluate(self) -&gt; GateResult:
+        try:
+            actual = self._read_actual()
+        except FileNotFoundError as e:
+            return GateResult(self.name, False, None,
+                              self.threshold, str(e))
+        passed = self._compare(actual)
+        return GateResult(self.name, passed, actual,
+                          self.threshold,
+                          self._format(actual, passed))
+
+    @abstractmethod
+    def _read_actual(self) -&gt; float: ...
+    @abstractmethod
+    def _compare(self, actual: float) -&gt; bool: ...
+    @abstractmethod
+    def _format(self, actual: float, passed: bool) -&gt; str: ...
+
+class CoverageGate(Gate):
+    def __init__(self, threshold: float, path: Path):
+        super().__init__("coverage.min_line_coverage", threshold)
+        self._path = path
+    def _read_actual(self): return _parse_coverage_xml(self._path)
+    def _compare(self, actual): return actual &gt;= self.threshold
+    def _format(self, actual, passed):
+        op = "≥" if passed else "&lt;"
+        return f"line coverage {actual:.1%} {op} {self.threshold:.0%}"</code></pre>
+            <div class="annot">
+              <p style="margin: 0 0 6px; font-weight: 700; color: var(--inteli-purple-deep);">Anatomia</p>
+              <ol>
+                <li><strong>Template method</strong>: <code>evaluate()</code> é o algoritmo geral. Subclasses preenchem os 3 vazios.</li>
+                <li><strong>Adicionar SonarGate</strong> = 1 classe, 0 if novos.</li>
+                <li><strong>Erros de leitura centralizados</strong> no método pai. Toda subclasse herda o tratamento.</li>
+                <li><strong>GateResult tipado</strong>: dataclass documenta a interface. Consumidor não precisa adivinhar keys.</li>
+                <li><strong>Testabilidade</strong>: mock só <code>_read_actual</code>, teste lógica de compare/format sem disco.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">12</div>
+        </div>
+      </section>
+
+      <!-- 13, Trade-offs honestos -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Trade-offs honestos do refactor</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">OOP não é grátis. Antes de aplicar em todo módulo, encarar o que se ganha e o que se perde.</p>
+          <div class="compare-grid">
+            <div class="compare-col good">
+              <h4>Ganhos</h4>
+              <ul>
+                <li>Adicionar gate = 1 classe nova, sem tocar no resto.</li>
+                <li>Erros de IO centralizados no método pai.</li>
+                <li>Tipo do <code>actual</code> documenta intenção.</li>
+                <li>Testes unitários por gate (mock só do <code>_read_actual</code>).</li>
+                <li>Pipeline de execução genérico: <code>for g in gates: g.evaluate()</code>.</li>
+              </ul>
+            </div>
+            <div class="compare-col bad">
+              <h4>Custos</h4>
+              <ul>
+                <li>Mais arquivos pra navegar.</li>
+                <li>1 classe pra 1 uso = overengineer (não vale a pena se nunca crescer).</li>
+                <li>Herança como contrato escondido, quem implementa <code>Gate</code> deve preencher os 3 abstratos sem esquecer.</li>
+                <li>Debug exige seguir o método pai + subclasse (2 saltos mentais).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Critério</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">OOP entra quando tem ≥3 variações com mesma forma. 2 variações = duplicação aceitável. 1 variação = função simples. Não OOP por OOP.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">13</div>
+        </div>
+      </section>
+
+      <!-- 14, Separador Bloco 4 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 4, 45 min</span>
+        <h2>Refactor Dojo: 1 trecho do demo, em duplas, 30min de refactor + 15min de prep do diff</h2>
+        <p class="section-description">Cada dupla escolhe 1 entre 3 trechos disponíveis em <code>aulas/aula14-material/refactor-dojo/</code>. Critério: clareza + testes ainda verdes.</p>
+      </section>
+
+      <!-- 15, 3 trechos disponíveis -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>3 trechos disponíveis para o Dojo</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 6px;">Escolha 1. Os três têm sintomas claros e tamanho compatível com 30min de trabalho. Sem certo ou errado entre eles.</p>
+          <div class="three-cards">
+            <div class="card">
+              <h4><code>tools/extract_metrics.py</code></h4>
+              <p>Função <code>extract_kpis(ulog_path)</code> com ~50 linhas: abre, itera mensagens, agrega 6 KPIs em dict solto. Sintomas: nome do KPI hardcoded como string em 6 lugares. Sugestão: enum + dataclass.</p>
+            </div>
+            <div class="card">
+              <h4><code>tools/run_mission.py</code></h4>
+              <p>Sequência takeoff, 4 waypoints, land com lógica de retry inline. Sintomas: <code>asyncio.sleep(2)</code> espalhado, magic numbers (altitude 10m), exceções genéricas. Sugestão: <code>Mission(plan)</code> com fases nomeadas.</p>
+            </div>
+            <div class="card">
+              <h4><code>libs/drone_modeling/</code></h4>
+              <p>Módulo com cálculos físicos: thrust, drag, energy. Sintomas: 12 constantes top-level (rho_ar, g, motor_kv...), funções que recebem 8 args primitivos. Sugestão: dataclass <code>DroneConfig</code> + métodos.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Regra</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">1 commit por refactor. Mensagem do commit explica o motivo, não o quê. Testes existentes precisam continuar verdes (rode <code>pytest tests/unit/test_&lt;modulo&gt;.py</code> antes do diff).</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">15</div>
+        </div>
+      </section>
+
+      <!-- 16, Critério de aceitação -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Refactor Dojo, critério de aceitação</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">5 critérios que separam refactor responsável de "mexer pra ver no que dá". Sua dupla precisa atender os 5 pra entregar.</p>
+          <ol style="font-size: 0.72em; line-height: 1.6;">
+            <li>Diff cabe em até 100 linhas (limite mental do review).</li>
+            <li>Pelo menos 1 das 5 heurísticas do Bloco 2 é endereçada (escreva qual no commit).</li>
+            <li>Testes existentes passam sem modificação (se mudou API, ajuste o teste em commit separado).</li>
+            <li>README do trecho ganha 3 linhas explicando o "antes/depois" e por quê.</li>
+            <li>Pelo menos 1 trecho NÃO refatorado: o que vocês decidiram deixar e por quê (decisão consciente &gt; limpeza compulsiva).</li>
+          </ol>
+          <p class="hint-caption">Dúvida frequente: "isso vale a pena ser feito agora?", se a resposta é "pode esperar mais um ciclo", deixa pra próxima. Refactor com pressa quebra mais que conserta.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">16</div>
+        </div>
+      </section>
+
+      <!-- 17, Separador Bloco 5 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 5, 20 min</span>
+        <h2>Code Review Cruzado: revise outra dupla com 5 perguntas</h2>
+        <p class="section-description">Troca de diffs entre duplas. 15min revisando + 5min de feedback ao vivo. Não é nota, é conversa técnica.</p>
+      </section>
+
+      <!-- 18, Checklist de review -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist de review, 5 perguntas</h2>
+        </div>
+        <div class="slide-body">
+          <div class="gate-stack">
+            <div class="gate-row q1">
+              <h4>1. Motivo está claro?</h4>
+              <p>Você entende o motivo do diff sem perguntar? Se a justificativa não está clara em commit ou README, é sinal de motivo fraco.</p>
+            </div>
+            <div class="gate-row q2">
+              <h4>2. Nome novo &gt; nome velho?</h4>
+              <p>O nome novo diz mais que o velho? Se você precisa ler o corpo da função pra entender, o nome falhou.</p>
+            </div>
+            <div class="gate-row q3">
+              <h4>3. Testes ainda fazem sentido?</h4>
+              <p>Refactor sem quebrar teste = bom. Refactor mudando expectativa = scope creep. Pergunte o porquê da mudança no teste.</p>
+            </div>
+            <div class="gate-row q4">
+              <h4>4. Você adicionaria essa abstração?</h4>
+              <p>Honestidade: às vezes a resposta é "não, mas o autor tem motivo válido". Pergunte ao autor antes de bloquear.</p>
+            </div>
+            <div class="gate-row q5">
+              <h4>5. Quer copiar pro seu código?</h4>
+              <p>Tem algo aqui que você quer copiar pro seu próprio código? Review como aprendizado mútuo, não só correção.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Tom importa</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">"Por que essa escolha?" &gt; "isso está errado". Code review é técnica social tanto quanto técnica.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">18</div>
+        </div>
+      </section>
+
+      <!-- 19, Separador Bloco 6 -->
+      <section class="section-slide">
+        <span class="section-number">Bloco 6, 15 min</span>
+        <h2>Fechamento de módulo: 14 aulas, 1 esteira de aprendizado</h2>
+        <p class="section-description">O que vocês saem sabendo. Onde caçar o próximo passo. E a ponderada async da semana.</p>
+      </section>
+
+      <!-- 20, Mapa do módulo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Mapa do módulo, A01 a A14</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.7em; margin: 0 0 8px;">14 aulas em 5 sprints. Cada sprint adicionou uma camada na esteira de qualidade.</p>
+          <div class="five-cards">
+            <div class="card">
+              <h4>Sprint 01 (A01-A03)</h4>
+              <p>Fundamentos: ciclo de vida, SCM, métricas (DORA).</p>
+            </div>
+            <div class="card">
+              <h4>Sprint 02 (A04-A06)</h4>
+              <p>Qualidade local: linters, IA no processo, SAST/DAST.</p>
+            </div>
+            <div class="card">
+              <h4>Sprint 03 (A07-A10)</h4>
+              <p>CI/CD real: hello CD, métricas no PR, testes bons, gates obrigatórios.</p>
+            </div>
+            <div class="card">
+              <h4>Sprint 04 (A11-A12)</h4>
+              <p>Performance + IaC: cache no CI, fixtures session, Terraform/Multipass.</p>
+            </div>
+            <div class="card">
+              <h4>Sprint 05 (A13-A14)</h4>
+              <p>SRE + craft: SLO/error budget, refactor com critério, code review entre pares.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 12px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">14 aulas, 9 PRs no demo, 10 ADRs</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">Uma esteira completa de qualidade. Vocês saem com vocabulário pra entrar em time DevOps sênior em estágio.</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">20</div>
+        </div>
+      </section>
+
+      <!-- 21, Ponderada OpenChoreo -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Ponderada da Semana 10: Configurar OpenChoreo (async)</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 10px;">Atividade individual, sem ocupar tempo de aula. Você vai instalar OpenChoreo localmente, criar 1 component, deployar a aplicação demo no seu cluster, e gerar print da console funcionando.</p>
+          <div class="callout" style="margin-top: 0; padding: 14px 18px;">
+            <h4 style="margin: 0 0 6px;">O que entregar</h4>
+            <p style="font-size: 0.7em; margin: 0; line-height: 1.5;">Critério, prazo e link de entrega: Trello/Blackboard (José Romualdo posta detalhes nesta semana). Vale como nota individual.</p>
+          </div>
+          <p class="hint-caption" style="margin-top: 14px;">Por que async: a setup do OpenChoreo (Kind cluster + helm + operators) leva 30-60min e varia muito por máquina. Não cabe em sala. Faça em casa, traga dúvidas no Discord ou no encontro de monitoria.</p>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">21</div>
+        </div>
+      </section>
+
+      <!-- 22, Quiz 1 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 1 de 2, quando aplicar polimorfismo</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Você está refatorando um módulo com 2 variações similares (<code>process_csv</code> e <code>process_json</code>). Cada um tem 30 linhas, 80% iguais. O caminho mais RESPONSÁVEL agora é:</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Criar classe abstrata <code>Processor</code> com <code>process_csv</code> e <code>process_json</code> como subclasses, antecipando JSON-LD, YAML, XML no futuro</li>
+            <li data-correct="true">Extrair função compartilhada para a parte comum, deixar 2 funções (<code>process_csv</code>, <code>process_json</code>) usando ela. Polimorfismo só quando aparecer a 3ª variação</li>
+            <li data-correct="false">Deixar duplicado, comentar "TODO: refatorar quando virar 3"</li>
+            <li data-correct="false">Mover ambos para um único <code>process(data, format)</code> com if/elif no operador</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Exato. Regra dos 3: 1 caso é função, 2 casos é duplicação aceitável (basta extrair o comum), 3 casos é polimorfismo. Criar Processor antes da 3ª variação é especulação, você acerta a forma da 3ª por acaso. Extrair função comum hoje resolve a duplicação SEM apostar."
+               data-incorrect-msg="Criar hierarquia para 2 casos é overengineer: você ancora o design na variação imaginada (XML/JSON-LD/...), não na real. If/elif sobre format reproduz dispatch manual e mascara a duplicação. Comment TODO sem ação vira poluição. A jogada é: extrai o comum, mantém 2 funções, e espera a 3ª te dizer a forma."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">22</div>
+        </div>
+      </section>
+
+      <!-- 23, Quiz 2 -->
+      <section class="quiz-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checagem 2 de 2, postura de code review</h2>
+        </div>
+        <div class="quiz-container">
+          <p class="quiz-question">Sua dupla recebe um diff para review com 200 linhas mudadas, sem mensagem de commit explicativa, e os testes existentes foram TODOS atualizados. Qual a resposta de review mais SAUDÁVEL?</p>
+          <ul class="quiz-options">
+            <li data-correct="false">Aprovar, se passa nos testes atualizados, está OK</li>
+            <li data-correct="false">Rejeitar e exigir que refaça em commits menores</li>
+            <li data-correct="true">Aprovar BLOQUEANDO até o autor explicar (em comment ou em call): o motivo da mudança e por que os testes precisaram ser atualizados. Talvez quebrar em commits, talvez não, depende da resposta</li>
+            <li data-correct="false">Aprovar e abrir issue separada pra discutir depois</li>
+          </ul>
+          <div class="quiz-feedback"
+               data-correct-msg="Correto. Review não é vereditas. Quando o motivo está faltando, a resposta certa é PERGUNTAR, não aprovar (sem entender), não rejeitar (sem ouvir), nem postergar (não cria pressão pra contexto). Testes atualizados em massa é sinal amarelo: pode ser refactor legítimo, pode ser scope creep, pode ser bug coberto. Conversar revela qual."
+               data-incorrect-msg="Aprovar testes verdes sem entender o motivo trata code review como CI. Rejeitar sem conversar é arrogante (talvez tenha motivo bom). Postergar pra issue separada perde a janela: vai mergear e a conversa some. A versão saudável é bloquear com pergunta, força contexto sem confronto."></div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">23</div>
+        </div>
+      </section>
+
+      <!-- 24, Checklist de craft pessoal -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Checklist de craft pessoal</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 8px;">6 hábitos que separam quem entrega de quem entrega bem. Pra levar pra além do módulo.</p>
+          <div class="three-cards" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
+            <div class="card">
+              <h4>1. Leitura ativa semanal</h4>
+              <p>1 PR open-source bem feito ou 1 capítulo de Clean Code, com 1 anotação.</p>
+            </div>
+            <div class="card">
+              <h4>2. Refactor sem feature</h4>
+              <p>Pelo menos 1 PR por sprint que só limpa código. Sem feature nova. Sem permissão especial.</p>
+            </div>
+            <div class="card">
+              <h4>3. Commit como narrativa</h4>
+              <p>Mensagem explica o porquê. Diffs caem em ≤200 linhas. Quem revisar entende sem call.</p>
+            </div>
+            <div class="card">
+              <h4>4. Review como aprendizado</h4>
+              <p>Pelo menos 1 pergunta por review (não só sugestão). Aprenda do diff alheio.</p>
+            </div>
+            <div class="card">
+              <h4>5. Decisão escrita</h4>
+              <p>ADR ou doc para qualquer escolha não-trivial. Decisão sem doc vira lenda em 3 meses.</p>
+            </div>
+            <div class="card">
+              <h4>6. Prática deliberada</h4>
+              <p>1 kata, 1 projeto paralelo, 1 stack nova por trimestre. Habilidade decai sem uso.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">24</div>
+        </div>
+      </section>
+
+      <!-- 25, Auto-estudo pós-módulo + entrega final -->
+      <section class="content-slide">
+        <div class="top-bar"></div>
+        <span class="inteli-logo-header inteli-wordmark">inteli</span>
+        <div class="slide-title-area">
+          <div class="accent-bar"></div>
+          <h2>Auto-estudo pós-módulo + entrega final</h2>
+        </div>
+        <div class="slide-body">
+          <p style="font-size: 0.72em; margin: 0 0 6px;">O módulo acaba. O craft continua. Três trilhas curtas pra próxima semana, e a entrega final do módulo.</p>
+          <div class="concept-cards">
+            <div class="concept-card">
+              <h4>Leitura, "Pragmatic Programmer" (Hunt/Thomas)</h4>
+              <p>Capítulos 7-10: refactoring, testing, BBD. ~3h.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Prática, escolher 1 PR antigo do projeto</h4>
+              <p>Refatore com as 5 heurísticas. Diff em fork pessoal. Não precisa mergear, precisa fazer.</p>
+            </div>
+            <div class="concept-card">
+              <h4>Conversa, 1 review de PR alheio</h4>
+              <p>Em outro projeto (open-source, time, lab). Aplique o checklist de 5 perguntas.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top: 10px; padding: 8px 14px;">
+            <h4 style="margin: 0 0 2px;">Entrega AdaLove final do módulo</h4>
+            <p style="font-size: 0.66em; margin: 0; line-height: 1.4;">(1) Diff do refactor da aula no PR de vocês (mesmo que não-mergeado). (2) Print do review cruzado que vocês fizeram (comments na outra dupla). (3) Uma reflexão de 4-5 frases: "qual é o próximo passo do seu craft pessoal", escrita honesta, não respostas-padrão. (4) Print da ponderada OpenChoreo (console rodando).</p>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="footer-bar">Aula 14, Improve your coding skills, Sprint 05</div>
+          <div class="footer-page">25</div>
+        </div>
+      </section>
+
+      <!-- 26, Encerramento -->
+      <section class="end-slide">
+        <span class="inteli-wordmark light">inteli</span>
+        <h2>Módulo encerrado. 14 aulas. 1 esteira completa.</h2>
+        <p>Vai construir? Construa com critério. Vai medir? Meça o que importa. Vai entregar? Entregue bem. Hermano e José Romualdo, T13 Inteli, 2026.1B.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+  <script src="assets/js/inteli-quiz.js"></script>
+  <script src="assets/js/inteli-zoom.js"></script>
+  <script src="assets/js/inteli-timer.js"></script>
+  <script src="assets/js/inteli-pdf-export.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: false,
+      width: 1280,
+      height: 720,
+      margin: 0,
+      transition: 'slide',
+      plugins: [RevealHighlight]
+    });
+  </script>
+</body>
+</html>

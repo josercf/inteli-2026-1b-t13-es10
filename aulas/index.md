@@ -28,5 +28,5 @@ A navegação principal está em `index.html` (com cronograma visual e links par
 
 ## Sprint 5, SRE e coding skills (15/06 a 26/06)
 
-- Aula 13, 16/06, Hermano Peixoto: SRE, você está fazendo isso errado!
-- Aula 14, 22/06, Hermano Peixoto: Improve your coding skills
+- Aula 13, 16/06, Hermano Peixoto: SRE, SLOs sobre o que você já mede
+- Aula 14, 22/06, Hermano Peixoto: Improve your coding skills, craft sobre o demo
